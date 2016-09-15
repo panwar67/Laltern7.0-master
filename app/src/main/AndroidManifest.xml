@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sparsh23.laltern">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logoss"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".Update"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProductView"
+            android:label="@string/title_activity_product_view"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Upload"
+            android:label="@string/title_activity_upload"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Profile"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SetupProfile"
+            android:label="@string/title_activity_setup_profile"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProfileForm"
+            android:label="@string/title_activity_profile_form"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SubmitRequest"
+            android:label="@string/title_activity_submit_request"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".YourEnquiries"
+            android:label="@string/title_activity_your_enquiries"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Artist_Profile"
+            android:label="@string/title_activity_artist__profile"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".NavigationMenu"
+            android:label="@string/title_activity_navigation_menu"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
+        <activity
+            android:name=".SearchableActivity"
+            android:label="@string/title_activity_searchable"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/search" />
+        </activity>
+        <activity
+            android:name=".SearchInflated"
+            android:label="@string/title_activity_search_inflated"
+            android:theme="@style/AppTheme" />
+
+        <provider
+            android:name=".CountryContentProvider"
+            android:authorities="com.example.sparsh23.laltern.CountryContentProvider"
+            android:exported="true" />
+
+        <activity
+            android:name=".FilterableActivity"
+            android:label="@string/title_activity_filterable"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ArtisianPageShow"
+            android:label="@string/title_activity_artisian_page_show"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".SearchPageFilter" />
+        <activity
+            android:name=".CartActivity"
+            android:label="@string/title_activity_cart"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Submit_Request_Random"
+            android:label="@string/title_activity_submit__request__random"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ProfileDrawer"
+            android:label="@string/title_activity_profile_drawer"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ChatUs"
+            android:label="@string/title_activity_chat_us"
+            android:theme="@style/AppTheme"></activity>
+    </application>
+
+</manifest>

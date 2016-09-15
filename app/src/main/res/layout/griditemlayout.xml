@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shadowbag">
+
+    <LinearLayout
+        android:layout_margin="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        >
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:paddingRight="1dp"
+
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginBottom="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/gridimg1"
+
+
+
+                android:background="@color/white"/>
+        </LinearLayout>
+
+        <LinearLayout
+
+
+
+            android:paddingLeft="5dp"
+
+            android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            android:background="@drawable/round"
+
+            >
+            <TextView
+
+                android:background="@color/white"
+                android:id="@+id/titlegrid"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="Title"/>
+
+            <TextView
+
+                android:background="@color/white"
+
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pricegrid"
+
+                android:paddingTop="5dp"
+                android:textColor="@color/green"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="price"/>
+            <TextView
+
+                android:background="@color/white"
+
+                android:textSize="13dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/moqgrid"
+                android:paddingTop="3dp"
+
+
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="MOQ"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artist"
+                android:textSize="10dp"
+                android:id="@+id/artgrid"
+                android:paddingTop="3dp"
+                android:textAppearance="?attr/textAppearanceListItem"/>
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+
+                android:stepSize="0.1"
+                android:rating="1"
+                android:id="@+id/productratingview"
+                style="?android:attr/ratingBarStyleSmall"
+
+                />
+
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

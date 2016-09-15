@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ff000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="maintheme">#37474f</color>
+    <color name="backgroundoff">#d6d7d7</color>
+    <color name="green">#669900</color>
+    <color name="backoffoff">#bebebe</color>
+    <color name="teal">#008080</color>
+    </resources>

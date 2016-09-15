@@ -1,0 +1,175 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundoff"
+    tools:context="com.example.sparsh23.laltern.FilterFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:background="@drawable/shadowbag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CATEGORY"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <Spinner
+                    android:id="@+id/catspin"
+                    android:layout_margin="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog">
+
+                </Spinner>
+
+                <Spinner
+                    android:id="@+id/subcatspin"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"></Spinner>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="10dp"
+
+            android:background="@drawable/shadowbag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+
+                android:layout_margin="5dp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="COLOR"/>
+
+            <Spinner
+                android:id="@+id/colorspinner"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"></Spinner>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SIZE"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <Spinner
+                android:id="@+id/sizespinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:spinnerMode="dialog"></Spinner>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PRODUCT TYPE"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+
+            <Spinner
+                android:id="@+id/producttypespinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:spinnerMode="dialog"></Spinner>
+
+
+            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                android:id="@+id/rangeSeekbarprice"
+                android:layout_margin="5dp"
+                android:layout_marginTop="10dp"
+                app:max_start_value="10000"
+                app:min_start_value="100"
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Min"
+
+                    android:id="@+id/filterpricemin"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"/>
+                <TextView
+
+
+                    android:id="@+id/filterpricemax"
+
+                    android:paddingRight="10dp"
+                    android:layout_gravity="end"
+                    android:textAlignment="textEnd"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="max"/>
+
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:layout_margin="5dp"
+                android:id="@+id/applyfilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/apply"/>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

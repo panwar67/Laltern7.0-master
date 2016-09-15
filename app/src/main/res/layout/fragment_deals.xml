@@ -1,0 +1,23 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dealsfragments"
+    android:background="@color/white"
+    tools:context="com.example.sparsh23.laltern.categoryFragment">
+
+    <!-- TODO: Update blank fragment gridsubitem -->
+
+
+
+    <in.srain.cube.views.GridViewWithHeaderAndFooter
+
+        android:id="@+id/subcatgrid"
+        android:numColumns="2"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+    </in.srain.cube.views.GridViewWithHeaderAndFooter>
+
+</FrameLayout>

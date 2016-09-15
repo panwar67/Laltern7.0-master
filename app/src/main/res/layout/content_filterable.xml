@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:background="@color/backgroundoff"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.sparsh23.laltern.FilterableActivity"
+    tools:showIn="@layout/activity_filterable">
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/backgroundoff"
+        android:layout_height="match_parent">
+        
+        <LinearLayout
+
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shadowbag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SORT BY RATING"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_margin="5dp"/>
+        
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+            <ToggleButton
+
+                android:id="@+id/productrate"
+                android:layout_margin="10dp"
+                android:background="@drawable/toggleback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="Product Rating"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+
+                android:textOn="Product Rating"/>
+
+            <ToggleButton
+                android:background="@drawable/toggleback"
+                android:layout_width="wrap_content"
+
+                android:id="@+id/artistrate"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textOn="Artist Rating"
+                android:layout_margin="10dp"
+                android:textOff="Artist Rating"
+                android:textColor="@color/white"
+                />
+            
+            
+        </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shadowbag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FILTER BY PRICE"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="20dp"
+
+                android:layout_margin="5dp"/>
+
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+
+
+                <ToggleButton
+
+                    android:id="@+id/below500"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/toggleback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="BELOW 500"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textOn=" BELOW 500 "/>
+
+
+                <ToggleButton
+
+                    android:id="@+id/below1500"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/toggleback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="BELOW 1500"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textOn="BELOW 1500"/>
+
+
+                <ToggleButton
+
+                    android:id="@+id/above2000"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/toggleback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="BELOW 2500"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textOn="BELOW 2500"/>
+
+                <ToggleButton
+                    android:id="@+id/below5000"
+                    android:background="@drawable/toggleback"
+                    android:layout_width="wrap_content"
+
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textOn="BELOW 5000"
+                    android:layout_margin="10dp"
+                    android:textOff="BELOW 5000"
+                    android:textColor="@color/white"
+                    />
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/shadowbag">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="CRAFTS &amp; TYPE "
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_margin="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <Spinner
+
+                    android:id="@+id/craftfilter"
+                    android:layout_margin="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dialog">
+
+                </Spinner>
+
+                <Spinner
+
+                    android:id="@+id/typefilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dialog">
+
+                </Spinner>
+
+
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shadowbag"
+            android:layout_width="match_parent"
+            android:id="@+id/filterhomeapply"
+            android:layout_height="wrap_content"
+            android:text="APPLY"/>
+
+    </LinearLayout>
+    
+    
+    
+    
+
+</RelativeLayout>

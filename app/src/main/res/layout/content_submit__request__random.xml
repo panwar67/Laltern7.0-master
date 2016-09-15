@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundoff"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.sparsh23.laltern.Submit_Request_Random"
+    tools:showIn="@layout/activity_submit__request__random">
+
+
+    <LinearLayout
+
+        android:layout_margin="12dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:src="@drawable/upload"
+            android:fitsSystemWindows="true"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/reqproimg"/>
+        <EditText
+            android:layout_margin="3dp"
+            android:id="@+id/desreq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Description"/>
+
+        <EditText
+            android:layout_margin="3dp"
+            android:layout_width="match_parent"
+            android:layout_height= "wrap_content"
+            android:id="@+id/requestcraft"
+            android:hint="Enter Craft (if any)"/>
+
+
+
+        <EditText
+            android:layout_margin="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/requestquantity"
+            android:hint="Enter Quantity"
+            />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/reqbutton"
+            android:textColor="@color/white"
+            android:background="@color/maintheme"
+            android:layout_gravity="center_vertical"
+            android:text="Submit Request"/>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

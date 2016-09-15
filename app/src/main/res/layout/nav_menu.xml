@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/backgroundoff">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+    <TextView
+
+
+
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EXPLORE CATEGORIES"
+        android:textColor="#5a595b"
+        android:paddingLeft="5dp"
+
+
+        android:background="@color/white"
+        android:textStyle="bold"/>
+
+    <HorizontalScrollView
+
+
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        >
+
+        <LinearLayout
+
+            android:clipToPadding="false"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:orientation="horizontal"
+            >
+
+
+            <ImageView
+
+                android:layout_margin="3dp"
+                android:id="@+id/hometextsupercat"
+                android:layout_width="100dp"
+
+                android:background="@drawable/shadowbag"
+                android:layout_height="80dp"
+
+
+                android:src="@drawable/hometexcat"/>
+
+
+            <ImageView
+
+                android:layout_margin="3dp"
+                android:background="@drawable/shadowbag"
+                android:id="@+id/JwlSuperCat"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/jewelcat"/>
+
+            <ImageView
+
+
+                android:layout_margin="3dp"
+                android:id="@+id/sareeSuperCat"
+                android:layout_width="100dp"
+                android:background="@drawable/shadowbag"
+                android:src="@drawable/sareecat"
+                android:layout_height="80dp" />
+
+            <ImageView
+                android:background="@drawable/shadowbag"
+                android:id="@+id/paintingsSuperCat"
+
+
+                android:layout_margin="3dp"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/paintingscat"/>
+
+            <ImageView
+
+                android:layout_margin="3dp"
+                android:background="@drawable/shadowbag"
+                android:id="@+id/homecatSuperCat"
+
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/homecat"/>
+
+            <ImageView
+
+
+                android:layout_margin="3dp"
+                android:id="@+id/othersSuperCat"
+
+                android:background="@drawable/shadowbag"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/othercat"/>
+
+            <ImageView
+
+                android:layout_margin="3dp"
+                android:id="@+id/apparelSuperCat"
+
+                android:background="@drawable/shadowbag"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/apparelcat"/>
+
+            <ImageView
+
+
+                android:layout_margin="3dp"
+                android:id="@+id/accessoriesSuperCat"
+
+                android:background="@drawable/shadowbag"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:src="@drawable/accescat"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </HorizontalScrollView>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

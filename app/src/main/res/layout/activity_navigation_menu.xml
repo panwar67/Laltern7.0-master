@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    tools:openDrawer="start">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme"
+        android:background="@android:color/transparent">
+
+
+
+
+
+
+
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            >
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_gravity="left"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+
+  />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1222">
+
+                </View>
+
+                <ImageView
+
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:text="Scaned Card"
+                    android:layout_gravity="right"
+
+
+                    android:id="@+id/toolsearch"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+
+                    android:layout_weight="1"
+                    android:src="@drawable/searchnew"
+                    />
+
+
+                <ImageView
+
+
+                    android:id="@+id/viewrequest"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:text="Scaned Card"
+                    android:layout_gravity="right"
+                    android:layout_weight="12"
+                    android:src="@drawable/reqnew"
+                    />
+
+
+                <ImageView
+
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="25dp"
+                    android:id="@+id/viewcart"
+                    android:layout_height="25dp"
+                    android:text="Scaned Card"
+                    android:layout_gravity="right"
+                    android:layout_weight="12"
+                    android:src="@drawable/shop"
+                    />
+
+                <ImageView
+
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:text="Scaned Card"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+
+
+                    android:id="@+id/viewprofile"
+                    android:src="@drawable/pro"
+                    />
+          </LinearLayout>
+
+
+
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+
+
+
+    <include
+        layout="@layout/app_bar_navigation_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+
+        android:fitsSystemWindows="true"
+        >
+
+
+
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+
+            >
+
+        <ExpandableListView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expandedlist"
+
+            >
+
+
+
+        </ExpandableListView>
+
+        </LinearLayout>
+
+
+
+
+        </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>
