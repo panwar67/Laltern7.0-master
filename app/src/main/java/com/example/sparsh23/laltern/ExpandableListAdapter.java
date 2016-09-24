@@ -1,6 +1,9 @@
 package com.example.sparsh23.laltern;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Build;
@@ -88,12 +91,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView category = (TextView)rowView.findViewById(R.id.list_header_text);
         ImageView iconheader = (ImageView)rowView.findViewById(R.id.list_header_icon);
-
-        category.setText(headers.get(groupPosition));
+        iconheader.setMaxWidth(24);
+        iconheader.setMaxHeight(24);
+        Typeface tf = Typeface.createFromAsset(context.getAssets(),
+                "ostrich-regular.ttf");
+        category.setTypeface(tf);
+        category.setText(headers.get(groupPosition).toUpperCase());
         if(headers.get(groupPosition).equals("Home"))
         {
 
-            iconheader.setImageResource(R.drawable.home);
+            iconheader.setImageResource(R.drawable.homered);
+
 
 
         }
@@ -101,60 +109,61 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (headers.get(groupPosition).equals("Chat")){
 
             iconheader.setImageResource(R.drawable.chat);
+
         }
         if (headers.get(groupPosition).equals("Contact Us"))
         {
 
-            iconheader.setImageResource(R.drawable.contactusnav);
+            iconheader.setImageResource(R.drawable.contactusnavred);
         }
         if(headers.get(groupPosition).equals("Policies"))
         {
-            iconheader.setImageResource(R.drawable.policies);
+            iconheader.setImageResource(R.drawable.policyred);
         }
         if (headers.get(groupPosition).equals("About Us")){
-            iconheader.setImageResource(R.drawable.info);
+            iconheader.setImageResource(R.drawable.infored);
         }
         if (headers.get(groupPosition).equals("Shop From Us")){
             iconheader.setImageResource(R.drawable.shoppingicon);
         }
         if(headers.get(groupPosition).equals("jewellery"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.jewelleryred);
         }
 
         if(headers.get(groupPosition).equals("Accessories"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.accessoriesred);
         }
 
         if(headers.get(groupPosition).equals("Sarees"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.sareesred);
         }
 
         if(headers.get(groupPosition).equals("Apparel"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.apparelred);
         }
 
         if(headers.get(groupPosition).equals("Home Textile"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.hometexred);
         }
 
         if(headers.get(groupPosition).equals("Home Decor"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.homedecorred);
         }
 
         if(headers.get(groupPosition).equals("Paintings"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.paintingred);
         }
 
         if(headers.get(groupPosition).equals("Others"))
         {
-            iconheader.setImageResource(R.drawable.expand);
+            iconheader.setImageResource(R.drawable.othersred);
         }
 
 
@@ -175,7 +184,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView category = (TextView)rowView.findViewById(R.id.list_child_text);
         ImageView iconchild = (ImageView)rowView.findViewById(R.id.list_child_icon);
         category.setText(child.get(headers.get(groupPosition)).get(childPosition));
-        iconchild.setImageResource(R.drawable.child);
+        iconchild.setImageResource(R.drawable.chakra);
 
         return rowView;
     }

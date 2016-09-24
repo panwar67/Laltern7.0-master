@@ -13,21 +13,7 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-    <TextView
 
-
-
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="EXPLORE CATEGORIES"
-        android:textColor="#5a595b"
-        android:paddingLeft="5dp"
-
-
-        android:background="@color/white"
-        android:textStyle="bold"/>
 
     <HorizontalScrollView
 
@@ -57,7 +43,6 @@
                 android:id="@+id/hometextsupercat"
                 android:layout_width="100dp"
 
-                android:background="@drawable/shadowbag"
                 android:layout_height="80dp"
 
 
@@ -67,7 +52,6 @@
             <ImageView
 
                 android:layout_margin="3dp"
-                android:background="@drawable/shadowbag"
                 android:id="@+id/JwlSuperCat"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
@@ -79,12 +63,10 @@
                 android:layout_margin="3dp"
                 android:id="@+id/sareeSuperCat"
                 android:layout_width="100dp"
-                android:background="@drawable/shadowbag"
                 android:src="@drawable/sareecat"
                 android:layout_height="80dp" />
 
             <ImageView
-                android:background="@drawable/shadowbag"
                 android:id="@+id/paintingsSuperCat"
 
 
@@ -96,7 +78,6 @@
             <ImageView
 
                 android:layout_margin="3dp"
-                android:background="@drawable/shadowbag"
                 android:id="@+id/homecatSuperCat"
 
                 android:layout_width="100dp"
@@ -109,7 +90,6 @@
                 android:layout_margin="3dp"
                 android:id="@+id/othersSuperCat"
 
-                android:background="@drawable/shadowbag"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:src="@drawable/othercat"/>
@@ -119,7 +99,6 @@
                 android:layout_margin="3dp"
                 android:id="@+id/apparelSuperCat"
 
-                android:background="@drawable/shadowbag"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:src="@drawable/apparelcat"/>
@@ -130,7 +109,6 @@
                 android:layout_margin="3dp"
                 android:id="@+id/accessoriesSuperCat"
 
-                android:background="@drawable/shadowbag"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:src="@drawable/accescat"/>

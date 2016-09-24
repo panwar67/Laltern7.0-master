@@ -666,7 +666,8 @@ public class Update extends AppCompatActivity {
                                 JSONObject profile = new JSONObject(s);
                                 JSONArray data = profile.getJSONArray("FilterSearch");
 
-                                dbHelper.InitArtisian();
+                               // dbHelper.InitArtisian();
+                                dbHelper.InitFilter();
 
                                 for(int i=0;i<data.length();i++)
                                 {

@@ -4,6 +4,7 @@ package com.example.sparsh23.laltern;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sparsh23.laltern.dummy.DummyContent;
@@ -71,6 +73,19 @@ public class NavigationMenu extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         prepareListData();
+
+        Typeface tf = Typeface.createFromAsset(getAssets(),
+                "KaushanScript-Regular.otf");
+        TextView tv = (TextView) findViewById(R.id.trend);
+        TextView tv1 = (TextView) findViewById(R.id.craft);
+        TextView tv2 = (TextView) findViewById(R.id.artist);
+        TextView tv3 = (TextView)findViewById(R.id.toptext);
+
+
+        tv.setTypeface(tf);
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+        tv3.setTypeface(tf);
         //listView = (ListView)findViewById(R.id.listviewmenu);
         dbHelper = new DBHelper(getApplicationContext());
 
@@ -202,6 +217,8 @@ public class NavigationMenu extends AppCompatActivity
 
 
         expandableListView.setGroupIndicator(null);
+        expandableListView.setDivider(null);
+        expandableListView.setDividerHeight(0);
 
 
 
@@ -250,7 +267,7 @@ public class NavigationMenu extends AppCompatActivity
 
         View header = getLayoutInflater().inflate(R.layout.nav_header_navigation_menu, expandableListView, false);
 
-        expandableListView.addHeaderView(header, null, false);
+     //   expandableListView.addHeaderView(header, null, false);
 
 
 

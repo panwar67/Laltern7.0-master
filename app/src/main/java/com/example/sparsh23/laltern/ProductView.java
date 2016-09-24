@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.design.widget.FloatingActionButton;
@@ -200,6 +201,9 @@ public class ProductView extends Activity {
       //  expandableListView.setAdapter(new ExpandableArtistAdapter(data,"Show Artist",getApplicationContext()));
 
 
+        Log.d("art_data_authen", ""+artdata.get("authentic"));
+
+
         authen.setRating(Float.parseFloat(artdata.get("authentic")));
         prices.setRating(Float.parseFloat(artdata.get("price")));
         overall.setRating(Float.parseFloat(artdata.get("rating")));
@@ -246,12 +250,18 @@ public class ProductView extends Activity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+        Typeface tf = Typeface.createFromAsset(getAssets(),
+                "Aller_Rg.ttf");
+
+
         title = (TextView)findViewById(R.id.titlepro);
         des = (TextView)findViewById(R.id.descriptionpartpro);
         quan = (TextView)findViewById(R.id.quantitypro);
         price = (TextView)findViewById(R.id.pricepro);
         craft = (TextView)findViewById(R.id.typepro);
 
+        title.setTypeface(tf);
 
         TextView textView = (TextView) findViewById(R.id.showart);
 
@@ -298,8 +308,7 @@ public class ProductView extends Activity {
         });
 
         Log.d("craft used",""+data.get("craft"));
-        Log.d("artist data",""+artdata.get("name")+"  "+Float.parseFloat(artdata.get("authentic")));
-
+//
         price.setText( "PRICE : "+string+""+data.get("price"));
         des.setText(data.get("des"));
         quan.setText("M.O.Q : "+data.get("quantity"));

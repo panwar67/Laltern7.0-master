@@ -388,7 +388,7 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
      SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData where CRAFT like '%"+map1.get("craft")+"%' and PROTYPE like '%"+map1.get("protype")+"%' and PRICE < "+map1.get("less")+" order by RATING DESC ",null);
+        Cursor res = db.rawQuery("select * from ImageData where CRAFT like '%"+map1.get("craft")+"%' and PROTYPE like '%"+map1.get("protype")+"%' or CATEGORY like '%"+map1.get("protype")+"%' or SUBCAT like '%"+map1.get("protype")+"%' and PRICE < "+map1.get("less")+" order by RATING DESC ",null);
 
         res.moveToFirst();
         while (!res.isAfterLast())
@@ -459,18 +459,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<HashMap<String,String>> filtercraftprotype()
-    {
-        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData where PRICE",null);
-
-
-
-
-
-        return null;
-    }
 
 
 
@@ -774,8 +762,8 @@ public class DBHelper extends SQLiteOpenHelper {
         HashMap<String,String> map = new HashMap<String, String>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from "+Artisian_Struct.Table_Name+" where "+Artisian_Struct.uid+"='"+uid+"';",null);
-//        Log.d("uid artist",uid);
+        Cursor res = db.rawQuery("select * from "+Artisian_Struct.Table_Name+" where "+Artisian_Struct.uid+"= "+uid+";",null);
+        Log.d("uid artist",uid);
         res.moveToFirst();
         while (!res.isAfterLast())
         {
@@ -802,6 +790,7 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("noimg",noimg);
             map.put("artuid",ArtUid);
             map.put("authentic",authentic);
+            Log.d("artisian_authentic",authentic);
             map.put("price",price);
             map.put("rating",rating);
 

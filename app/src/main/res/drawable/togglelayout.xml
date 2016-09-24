@@ -5,6 +5,7 @@
         android:state_checked="true" />
     <!-- When not selected, use white-->
     <item android:drawable="@drawable/gridsearch"
+
         android:state_checked="false"/>
 
 </selector>

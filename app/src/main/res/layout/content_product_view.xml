@@ -35,11 +35,11 @@
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:background="@color/white"
-            android:fitsSystemWindows="true"
-            android:scaleType="fitXY"
+
+
             android:layout_marginTop="50dp"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             >
 
 
@@ -58,7 +58,7 @@
             android:layout_marginLeft="8dp"
             android:textColor="@color/black"
 
-            android:textSize="30sp"/>
+            android:textSize="20dp"/>
 
 
 
@@ -125,6 +125,7 @@
 
 
                     <TextView
+                        android:paddingLeft="10dp"
                         android:layout_margin="8dp"
                         android:textColor="@android:color/darker_gray"
                         android:layout_width="wrap_content"
@@ -151,6 +152,9 @@
 android:background="@color/white"
                         android:layout_marginLeft="5dp"
                         android:layout_marginBottom="10dp"
+                        android:paddingLeft="10dp"
+
+                        android:paddingRight="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"/>
 
@@ -160,6 +164,40 @@ android:background="@color/white"
 
 
             </LinearLayout>
+
+
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DESCRIPTION : "
+
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test Description"
+                android:id="@+id/descriptionpartpro"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" CRAFT USED"
+                android:layout_margin="8dp"
+
+                android:paddingLeft="10dp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/typepro"
+
+                />
 
 
             <LinearLayout
@@ -176,15 +214,19 @@ android:background="@color/white"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:layout_marginBottom="10dp"
+
+                    android:layout_marginRight="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="ABOUT ARTIST"
-                    android:textAlignment="center"
-                    android:drawableLeft="@drawable/expand"
+                    android:layout_gravity="start"
+                    android:textAlignment="textStart"
+                    android:drawableRight="@drawable/expand"
                     android:id="@+id/showart"
                     android:textSize="20dp"
                     android:textStyle="bold"
 
+                    android:paddingLeft="20dp"
                     android:background="@android:color/transparent"
                     android:layout_margin="3dp"/>
 
@@ -338,36 +380,7 @@ android:background="@color/white"
 
 
 
-            <TextView
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DESCRIPTION : "
 
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_margin="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Test Description"
-                android:id="@+id/descriptionpartpro"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=" CRAFT USED"
-                android:layout_margin="8dp"
-
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_margin="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/typepro"
-
-                />
 
 
 

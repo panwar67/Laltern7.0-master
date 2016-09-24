@@ -122,7 +122,7 @@ public class TrendingProAdapter extends BaseAdapter {
 
         holder.price = (TextView)rowView.findViewById(R.id.trendingproprice);
 
-        holder.moq = (TextView)rowView.findViewById(R.id.trendingpromoq);
+        //holder.moq = (TextView)rowView.findViewById(R.id.trendingpromoq);
 
         holder.ratingBar = (RatingBar)rowView.findViewById(R.id.productratingtrending);
 
@@ -149,7 +149,7 @@ public class TrendingProAdapter extends BaseAdapter {
         holder.price.setTypeface(null,Typeface.BOLD);
         holder.price.setText(string+" "+result.get(position).get("price"));
        // holder.moq.setTextColor(#ff000000);
-        holder.moq.setText("M.O.Q - "+result.get(position).get("quantity"));
+       // holder.moq.setText("M.O.Q - "+result.get(position).get("quantity"));
         holder.ratingBar.setRating(Float.parseFloat(result.get(position).get("rating")));
 
         imageLoader.displayImage(result.get(position).get("path"), holder.deals);

@@ -83,7 +83,7 @@ public class FilterableActivity extends AppCompatActivity {
 
         }
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,catitems);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_style,catitems);
         craftspin.setAdapter(arrayAdapter);
         craftspin.setSelection(0);
         craftspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -100,7 +100,7 @@ public class FilterableActivity extends AppCompatActivity {
                     {
 
 
-                        protypespin.setAdapter(new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,spinnerdata.get(i).get(catitems.get(position))));
+                        protypespin.setAdapter(new ArrayAdapter(getApplicationContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
                         protypespin.setSelection(0);
 
 

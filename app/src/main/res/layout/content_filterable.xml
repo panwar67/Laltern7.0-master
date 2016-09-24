@@ -193,11 +193,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:spinnerMode="dialog">
+                    android:spinnerMode="dialog"
+                    android:background="@color/white">
 
                 </Spinner>
 
                 <Spinner
+
+
 
                     android:id="@+id/typefilter"
                     android:layout_width="match_parent"

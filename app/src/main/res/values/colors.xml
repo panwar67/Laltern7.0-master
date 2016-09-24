@@ -4,9 +4,9 @@
     <color name="colorPrimaryDark">#ff000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
-    <color name="black">#ff000000</color>
+    <color name="black">#000000</color>
     <color name="maintheme">#37474f</color>
-    <color name="backgroundoff">#d6d7d7</color>
+    <color name="backgroundoff">#e0e0e0</color>
     <color name="green">#669900</color>
     <color name="backoffoff">#bebebe</color>
     <color name="teal">#008080</color>

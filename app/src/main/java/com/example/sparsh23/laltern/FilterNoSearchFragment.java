@@ -119,10 +119,10 @@ public class FilterNoSearchFragment extends Fragment {
 
 
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,catspinitem);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.spinner_style,catspinitem);
         cat.setAdapter(arrayAdapter);
         cat.setSelection(0);
-        subcat.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,subcatspinitem));
+        subcat.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,subcatspinitem));
         subcat.setSelection(0);
 
         seekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
@@ -145,11 +145,11 @@ public class FilterNoSearchFragment extends Fragment {
 
                 Log.d("subcatselect",""+subcat.getSelectedItem());
 
-                sizeall.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetSizes(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString())));
-                color.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetColor(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
+                sizeall.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetSizes(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString())));
+                color.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetColor(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
 
 
-                producttype.setAdapter( new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetProType(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
+                producttype.setAdapter( new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetProType(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
             }
 
             @Override

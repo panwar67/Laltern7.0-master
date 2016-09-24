@@ -34,6 +34,35 @@
             android:layout_height="match_parent">
 
 
+            <TextView
+
+
+                android:textColor="#827717"
+                android:textAlignment="center"
+
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SHOP BY CATEGORY"
+
+
+
+                android:id="@+id/toptext"
+                android:paddingLeft="5dp"
+                android:layout_marginBottom="5dp"
+
+
+                android:textStyle="bold"/>
+
+
+            <include
+                layout="@layout/nav_menu"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                />
+
 
 
                 <EditText
@@ -43,18 +72,18 @@
                     android:hint="Search for crafts, Artist and Products"
 
 
+                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:paddingTop="2dp"
                     android:paddingLeft="5dp"
                     android:paddingBottom="5dp"
                     android:textSize="13dp"
-                    android:drawableLeft="@drawable/searchnew"
                     android:focusable="false"
                     android:id="@+id/searchviewrealid"
 
-                    android:drawableRight="@drawable/filter"
+                    android:drawableRight="@drawable/filterred"
 
 
                     android:layout_width="match_parent"
@@ -73,44 +102,46 @@
 
 
 
-            <include
-                layout="@layout/nav_menu"
-                android:layout_width="match_parent"
 
-                android:layout_height="wrap_content"
-                />
 
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
 
 
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                >
 
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+
+
+                    android:scaleType="fitXY"
+                    android:src="@drawable/borthree"/>
+
+
             <TextView
-
-
-
-
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
-                android:paddingBottom="5dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" VIEW TRENDING PRODUCTS"
-                android:textColor="#5a595b"
+                android:text=" Trending Products"
+                android:textColor="#827717"
                 android:textStyle="bold"
-
+                android:id="@+id/trend"
                 android:layout_marginRight="10dp"
                 android:paddingRight="10dp"
-                android:background="@color/white"
+                android:textAlignment="center"
+                android:background="@android:color/transparent"
                 android:paddingLeft="5dp"
 
-                android:textSize="15dp"/>
+                android:textSize="25dp"/>
 
 
 
@@ -125,43 +156,43 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/horizontallist"
 
-
-
-
-
-
-
-
-
-
-
-                android:paddingTop="-5dp"
                 android:background="@android:color/transparent"
-
                 android:orientation="horizontal"
-                android:paddingBottom="10dp"/>
-
-            </LinearLayout>
+                android:paddingBottom="5dp"/>
+           </LinearLayout>
 
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shadowbag"
+                android:background="@color/backgroundoff"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:background="@color/backgroundoff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+
+                    android:src="@drawable/bortwo"/>
+
+
             <TextView
 
+                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" VIEW CRAFTS"
-                android:textColor="#5a595b"
+                android:text=" View Crafts"
 
+
+                android:textColor="#827717"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:textStyle="bold"
                 android:paddingLeft="5dp"
-                android:textSize="15dp"/>
+                android:id="@+id/craft"
+                android:textSize="25dp"/>
 
 
 
@@ -182,31 +213,41 @@
 
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+
+                android:background="@color/backgroundoff"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/shadowbag">
-            <TextView
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:src="@drawable/bortwo"/>
+
+                <TextView
+
+                    android:textColor="#827717"
+                    android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" VIEW ARTIST"
+                android:text=" View Artist"
 
                 android:layout_marginLeft="10dp"
-                android:background="@color/white"
-                android:textColor="#5a595b"
+                android:background="@color/backgroundoff"
 
+                    android:id="@+id/artist"
                 android:textStyle="bold"
                 android:paddingLeft="5dp"
-                android:textSize="15dp"/>
+                android:textSize="25dp"/>
 
             <org.lucasr.twowayview.TwoWayView
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/horizontallist2"
-                android:background="@color/white"
+
+                android:background="@color/backgroundoff"
                 android:orientation="horizontal"
 
                 android:paddingBottom="10dp">

@@ -121,7 +121,7 @@ public class FilterFragment extends Fragment {
 
 
         }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,catitems);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.spinner_style,catitems);
         cat.setAdapter(arrayAdapter);
         cat.setSelection(0);
         cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -138,7 +138,7 @@ public class FilterFragment extends Fragment {
 
                     if(spinnerdata.get(i).entrySet().iterator().next().getKey().equals(catitems.get(position)))
                     {
-                        subcat.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,spinnerdata.get(i).get(catitems.get(position))));
+                        subcat.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
 
                       }
 
@@ -205,15 +205,16 @@ public class FilterFragment extends Fragment {
 
                 Log.d("subcatselect",""+subcat.getSelectedItem());
 
-                sizeall.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetSizes(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString())));
-                color.setAdapter(new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetColor(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
+                sizeall.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetSizes(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString())));
+                color.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetColor(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
 
 
-                producttype.setAdapter( new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,dbHelper.GetProType(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
+                producttype.setAdapter( new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetProType(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
             }
         });

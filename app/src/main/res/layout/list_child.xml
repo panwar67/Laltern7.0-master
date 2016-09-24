@@ -10,12 +10,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/list_child_icon"
         android:gravity="center_vertical"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
         />
 
 
@@ -23,18 +17,15 @@
 
 
     <TextView
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_child_text"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
+        android:layout_margin="3dp"
 
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:gravity="center_vertical"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
 
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"/>
-
+        android:text="test"
+        ></TextView>
 </LinearLayout>
