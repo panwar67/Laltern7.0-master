@@ -20,7 +20,6 @@ import java.util.HashMap;
 public class ArtisianPageShow extends AppCompatActivity {
 
     HashMap<String,String> data = new HashMap<String, String>();
-    TextView names, tob, state, craft, awards;
     ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,55 +35,6 @@ public class ArtisianPageShow extends AppCompatActivity {
                 finish();
             }
         });
-        names = (TextView)findViewById(R.id.artname);
-        tob = (TextView)findViewById(R.id.arttob);
-        state = (TextView)findViewById(R.id.artstate);
-        craft = (TextView)findViewById(R.id.artcarft);
-        awards = (TextView)findViewById(R.id.artaward);
-        SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
-
-
-        Intent intent = getIntent();
-        data = (HashMap<String,String>)intent.getSerializableExtra("artmap");
-
-        int noimg = Integer.parseInt(data.get("noimg"));
-
-
-        names.setText("Name : "+data.get("name"));
-        tob.setText("Type Of Buisiness "+data.get("tob"));
-        state.setText("State : "+data.get("state"));
-        craft.setText(data.get("craft"));
-        awards.setText(data.get("awards"));
-
-
-
-
-
-
-        Log.d("No Images in art", ""+noimg);
-
-
-
-
-        if(noimg>0){
-
-            sliderShow.addSlider(new TextSliderView(this).image( "http://www.whydoweplay.com/lalten/Images/"+data.get("artuid")+".jpg"));
-
-
-            for(int i=1;i<noimg;i++){
-
-
-                String n =  "http://www.whydoweplay.com/lalten/Images/"+data.get("artuid")+"_"+i+".jpg";
-
-                Log.d("path", n);
-
-                sliderShow.addSlider(new TextSliderView(this).image(n));
-
-
-            }
-
-
-        }
 
 
 

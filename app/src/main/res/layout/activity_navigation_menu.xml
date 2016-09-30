@@ -6,13 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/white"
+    android:background="@android:color/transparent"
     tools:openDrawer="start">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme"
+
         android:background="@android:color/transparent">
 
 
@@ -28,7 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
 
-            android:background="#ffc107"
+
+            android:navigationIcon="@color/red"
+            android:background="@color/maintheme"
             >
 
             <LinearLayout
@@ -56,21 +59,6 @@
 
                 </View>
 
-                <ImageView
-
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:text="Scaned Card"
-                    android:layout_gravity="right"
-
-
-                    android:id="@+id/toolsearch"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-
-                    android:layout_weight="1"
-                    android:src="@drawable/searchred"
-                    />
 
 
                 <ImageView
@@ -142,31 +130,43 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
+        android:paddingTop="75dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
+        android:background="@android:color/transparent"
 
-        android:fitsSystemWindows="true"
         >
 
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/maintheme"
+            android:layout_height="match_parent">
 
 
 
         <ExpandableListView
-            android:paddingTop="40dp"
+
+
             android:dividerHeight="0dp"
             android:divider="@null"
-            android:background="#fbc02d"
+            android:background="@color/maintheme"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/expandedlist"
             >
 
 
 
+
         </ExpandableListView>
+
+
+
+
+        </LinearLayout>
 
 
 

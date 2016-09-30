@@ -98,33 +98,13 @@ public class newHome extends Fragment {
 
         sessionManager = new SessionManager(getContext());
 
-        name=(TextView)root.findViewById(R.id.reg_name);
-        company=(TextView)root.findViewById(R.id.reg_comp);
-        desig=(TextView)root.findViewById(R.id.reg_desg);
-        tob=(TextView)root.findViewById(R.id.reg_bustype);
-        addr=(TextView)root.findViewById(R.id.reg_addr);
-        cont=(TextView)root.findViewById(R.id.reg_cont);
-        pan=(TextView)root.findViewById(R.id.reg_pan);
-        email=(TextView)root.findViewById(R.id.reg_email);
-        webs=(TextView)root.findViewById(R.id.reg_webs);
-        state=(TextView)root.findViewById(R.id.reg_state);
-        city=(TextView)root.findViewById(R.id.reg_city);
 
 
 
         data  = dbHelper.GetProfile(sessionManager.getUserDetails().get("uid"));
 
 //        webs.setText(data.get("web").toString());
-        name.setText(data.get("name").toString());
-        company.setText(data.get("comp").toString());
-        desig.setText(data.get("design").toString());
-        tob.setText(data.get("tob").toString());
-        cont.setText(data.get("cont").toString());
-        email.setText(data.get("email").toString());
-        addr.setText(data.get("addr").toString());
-        city.setText(data.get("city").toString());
-        state.setText(data.get("state").toString());
-        pan.setText(data.get("pan").toString());
+
 
 
 

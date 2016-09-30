@@ -39,7 +39,7 @@ public class TrendingProAdapter extends BaseAdapter {
 
     ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
 
-    public TrendingProAdapter(NavigationMenu landingHome, ArrayList<HashMap<String,String>> data){
+    public TrendingProAdapter(Context landingHome, ArrayList<HashMap<String,String>> data){
 
         result=data;
         context = landingHome;
@@ -145,7 +145,11 @@ public class TrendingProAdapter extends BaseAdapter {
 
         Log.d(" list trendingproduct", result.get(position).toString());
 
-        holder.title.setText(""+result.get(position).get("title").toUpperCase());
+
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Arsenal-Regular.otf");
+
+        holder.title.setTypeface(typeface);
+        holder.title.setText(""+result.get(position).get("title"));
         holder.price.setTypeface(null,Typeface.BOLD);
         holder.price.setText(string+" "+result.get(position).get("price"));
        // holder.moq.setTextColor(#ff000000);

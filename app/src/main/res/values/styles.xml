@@ -4,25 +4,47 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@android:color/black</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/maintheme</item>
+        <item name="colorAccent">@color/red</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar"
+    <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar">
 
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        />
+        </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@android:color/holo_red_dark</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@android:color/holo_red_dark</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/red</item>
     </style>
 
 

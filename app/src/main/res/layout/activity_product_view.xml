@@ -2,35 +2,40 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.sparsh23.laltern.ProductView">
+    tools:context="com.example.sparsh23.laltern.ProductView"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme"
-        android:background="#40FFffff">
+        android:background="@color/white"
+
+        >
+
+
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#40FFffff"
+            android:background="@color/maintheme"
             >
 
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@android:color/transparent">
                 <LinearLayout
+                    android:paddingTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="#40FFffff">
+                    android:background="@android:color/transparent">
 
                     <ImageView
                         android:id="@+id/backpro"
@@ -65,7 +70,7 @@
                         android:text="Scaned Card"
                         android:layout_gravity="right"
                         android:layout_weight="12"
-                        android:src="@drawable/shop"
+                        android:src="@drawable/cartred"
                         />
 
                     <ImageView
@@ -80,74 +85,57 @@
                         android:layout_weight="1"
 
 
-                        android:src="@drawable/pro"
+                        android:src="@drawable/prored"
                         />
                 </LinearLayout>
 
 
+                <android.support.design.widget.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginRight="13dp"
+                    android:id="@+id/tablayout"
+                    android:layout_height="35dp"
+
+                    style="@style/MyCustomTabLayout"
+
+                    app:tabMode="fixed">
+                </android.support.design.widget.TabLayout>
+
 
             </LinearLayout>
+
         </android.support.v7.widget.Toolbar>
+
+
+
+
+        <android.support.v4.view.ViewPager
+
+            android:id="@+id/viewpager"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+        </android.support.v4.view.ViewPager>
+
+
+
+
+
+
 
 
 
     </android.support.design.widget.AppBarLayout>
 
 
-    <include layout="@layout/content_product_view" />
 
 
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/multiple_actions_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="bottom|end"
 
 
-        fab:menu_labels_style="@style/menu_labels_style"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/reqpro"
-
-
-
-            fab:fab_label=" Send Request "
-
-            android:id="@+id/fabreq"
-            fab:fab_colorNormal="@android:color/transparent"
-            fab:fab_colorPressed="@color/green"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            fab:fab_colorNormal="@android:color/transparent"
-
-
-            fab:fab_label=" Add To Cart "
-            android:id="@+id/fabcart"
-            android:src="@drawable/cartproo"
-            fab:fab_colorPressed="@color/green"
-            />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-
-
-            android:src="@drawable/checkout"
-            fab:fab_colorNormal="@android:color/transparent"
-            fab:fab_colorPressed="@color/green"
-            />
-
-    </com.github.clans.fab.FloatingActionMenu>
 
 
 

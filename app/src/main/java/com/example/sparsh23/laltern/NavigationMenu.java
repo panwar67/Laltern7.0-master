@@ -1,6 +1,7 @@
 package com.example.sparsh23.laltern;
 
 //import android.app.Fragment;
+import android.animation.ObjectAnimator;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 //import android.support.v4.app.Fragment;
@@ -31,6 +33,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -59,11 +62,14 @@ public class NavigationMenu extends AppCompatActivity
     ListView listView;
 
     ImageView jewel, homedecor, hometext, saree, painting,access, others,apparel, cart, request, profile;
+    TextView home, aboutus, contactus, policies;
+
 
 
 
     categoryFragment categoryFragment;
     newHome newhom;
+    HorizontalScrollView horizontalScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,33 @@ public class NavigationMenu extends AppCompatActivity
         setContentView(R.layout.activity_navigation_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+         horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontallistauto);
+
+
+        //sendScroll();
+
+        horizontalScrollView.post(new Runnable() {
+            public void run() {
+                horizontalScrollView.smoothScrollTo(0, horizontalScrollView.getRight());
+                Log.d("scroll amount",""+horizontalScrollView.getMaxScrollAmount());
+            }
+        });
+
+        horizontalScrollView.post(new Runnable() {
+            public void run() {
+
+
+                horizontalScrollView.fullScroll(horizontalScrollView.FOCUS_RIGHT);
+            }
+        });
+
+        ObjectAnimator animator=ObjectAnimator.ofInt(horizontalScrollView, "scrollX", 7 );
+        animator.setDuration(800);
+        animator.start();
+
+        autoSmoothScroll();
 
         prepareListData();
 
@@ -106,7 +139,7 @@ public class NavigationMenu extends AppCompatActivity
             public void onClick(View v) {
 
 
-                startActivity(new Intent(NavigationMenu.this,ProfileDrawer.class));
+                startActivity(new Intent(NavigationMenu.this,Profile.class));
 
             }
         });
@@ -536,12 +569,26 @@ public class NavigationMenu extends AppCompatActivity
 
     }
 
+    public void autoSmoothScroll() {
+
+    //    final HorizontalScrollView hsv = (HorizontalScrollView) view.findViewById(R.id.horiscroll);
+        horizontalScrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //hsv.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                horizontalScrollView.smoothScrollBy(500, 0);
+            }
+        },100);
+    }
+
+
+
     private void prepareListData() {
 
 
-        listDataHeader.add("Home");
-        listDataHeader.add("Shop From Us");
         // Adding data header
+
+        listDataHeader.add("home");
         listDataHeader.add("jewellery");
 
         listDataHeader.add("Accessories");
@@ -557,11 +604,9 @@ public class NavigationMenu extends AppCompatActivity
         listDataHeader.add("Paintings");
 
         listDataHeader.add("Others");
-
-        listDataHeader.add("About Us");
-        listDataHeader.add("Contact Us");
-        listDataHeader.add("Policies");
-        listDataHeader.add("Chat");
+        listDataHeader.add("contact us");
+        listDataHeader.add("about us");
+        listDataHeader.add("policies");
 
 
 
@@ -640,23 +685,18 @@ public class NavigationMenu extends AppCompatActivity
 
 
 
-        listDataChild.put("Home", heading9 );
-        listDataChild.put("Shop From Us", heading9);
-        listDataChild.put(listDataHeader.get(2), heading1);// Header, Child data
-        listDataChild.put(listDataHeader.get(3), heading2);
-        listDataChild.put(listDataHeader.get(4),heading3);
-        listDataChild.put(listDataHeader.get(5),heading4);
-        listDataChild.put(listDataHeader.get(6),heading5);
-        listDataChild.put(listDataHeader.get(7),heading6);
-        listDataChild.put(listDataHeader.get(8),heading7);
-        listDataChild.put(listDataHeader.get(9),heading8);
+        listDataChild.put(listDataHeader.get(0),heading9);
+        listDataChild.put(listDataHeader.get(1), heading1);// Header, Child data
+        listDataChild.put(listDataHeader.get(2), heading2);
+        listDataChild.put(listDataHeader.get(3),heading3);
+        listDataChild.put(listDataHeader.get(4),heading4);
+        listDataChild.put(listDataHeader.get(5),heading5);
+        listDataChild.put(listDataHeader.get(6),heading6);
+        listDataChild.put(listDataHeader.get(7),heading7);
+        listDataChild.put(listDataHeader.get(8),heading8);
+        listDataChild.put(listDataHeader.get(9),heading9);
         listDataChild.put(listDataHeader.get(10),heading9);
         listDataChild.put(listDataHeader.get(11),heading9);
-        listDataChild.put(listDataHeader.get(12),heading9);
-        listDataChild.put("About Us",heading9);
-        listDataChild.put("Contact Us", heading9);
-        listDataChild.put("Policies",heading9);
-        listDataChild.put("Chat",heading9);
 
 
 
@@ -769,6 +809,25 @@ public class NavigationMenu extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+
+    private void sendScroll(){
+        final Handler handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {Thread.sleep(100);} catch (InterruptedException e) {}
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        horizontalScrollView.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override

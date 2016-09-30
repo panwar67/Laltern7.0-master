@@ -17,58 +17,47 @@
             android:id="@+id/toolbar1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#37474f"
+            android:background="@color/maintheme"
             >
 
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="35dp"
 
+                android:layout_weight="1"
+                android:src="@drawable/ic_arrow_back"
+                android:id="@+id/backprofile"/>
+
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/cartred"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="end"
+
+
+                />
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:src="@android:drawable/ic_lock_lock"
+
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@android:color/transparent">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"                    android:text="Log Out"
-                    android:id="@+id/logout"
-                    android:textColor="@color/white"
-                    android:layout_gravity="left"
-                    android:background="#37474f"
-                    />
-
-                <Button
-                    android:layout_gravity="top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your Orders"
-                    android:id="@+id/orderscust"
-                    android:background="#37474f"
-                    android:layout_weight="1"
-                    android:textColor="@color/white"
-                    />
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:text="Scaned Card"
-                    android:layout_gravity="right"
-                    android:src="@drawable/logo"
-                    android:gravity="top"
-
-                    />
+                android:layout_height="wrap_content">
+</LinearLayout>
 
 
 
 
-
-
-
-
-
-
-
-            </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
 

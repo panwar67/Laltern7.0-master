@@ -37,7 +37,7 @@
             <TextView
 
 
-                android:textColor="#827717"
+                android:textColor="#3e2723"
                 android:textAlignment="center"
 
                 android:layout_marginLeft="10dp"
@@ -88,7 +88,7 @@
 
                     android:layout_width="match_parent"
                     android:background="@drawable/shadowbag"
-                    android:layout_height="wrap_content">
+                    android:layout_height="55dp">
 
                 </EditText>
 
@@ -118,7 +118,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
 
 
                     android:scaleType="fitXY"
@@ -126,13 +126,13 @@
 
 
             <TextView
-                android:layout_marginTop="5dp"
+
                 android:layout_marginLeft="10dp"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" Trending Products"
-                android:textColor="#827717"
+                android:textColor="#3e2723"
                 android:textStyle="bold"
                 android:id="@+id/trend"
                 android:layout_marginRight="10dp"
@@ -172,7 +172,7 @@
                 <ImageView
                     android:background="@color/backgroundoff"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
 
                     android:src="@drawable/bortwo"/>
 
@@ -185,8 +185,8 @@
                 android:text=" View Crafts"
 
 
-                android:textColor="#827717"
-                android:layout_marginTop="5dp"
+                android:textColor="#3e2723"
+
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:textStyle="bold"
@@ -227,7 +227,7 @@
 
                 <TextView
 
-                    android:textColor="#827717"
+                    android:textColor="#3e2723"
                     android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
