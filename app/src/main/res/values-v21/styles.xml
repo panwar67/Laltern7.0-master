@@ -8,7 +8,8 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
     </style>
+
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/red</item>
+        <item name="color">@color/ivory</item>
     </style>
 </resources>

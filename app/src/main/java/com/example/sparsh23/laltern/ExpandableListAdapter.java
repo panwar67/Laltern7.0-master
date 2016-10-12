@@ -97,15 +97,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         iconheader.setMaxWidth(24);
         iconheader.setMaxHeight(24);
         Typeface tf = Typeface.createFromAsset(context.getAssets(),
-                "ostrich-regular.ttf");
+                "Roboto-Regular.ttf");
         category.setTypeface(tf);
-        category.setText(headers.get(groupPosition).toUpperCase());
-        if(headers.get(groupPosition).equals("home"))
+
+        category.setText(headers.get(groupPosition));
+        if(headers.get(groupPosition).equals("Home"))
         {
 
-            iconheader.setImageResource(R.drawable.homered);
+            iconheader.setImageResource(R.drawable.home2);
 
-            divier.setBackgroundResource(R.color.red);
+            divier.setBackgroundResource(R.color.maintheme);
 
 
 
@@ -116,28 +117,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             iconheader.setImageResource(R.drawable.chat);
 
         }
-        if (headers.get(groupPosition).equals("contact us"))
+        if (headers.get(groupPosition).equals("Contact us"))
         {
 
             iconheader.setImageResource(R.drawable.contactusnavred);
 
            // divier.setBackgroundResource(R.color.red);
         }
-        if(headers.get(groupPosition).equals("policies"))
+        if(headers.get(groupPosition).equals("Policies"))
         {
             iconheader.setImageResource(R.drawable.policyred);
 
            // divier.setBackgroundResource(R.color.red);
         }
-        if (headers.get(groupPosition).equals("about us")){
+        if (headers.get(groupPosition).equals("About us")){
             iconheader.setImageResource(R.drawable.infored);
 
            // divier.setBackgroundResource(R.color.red);
         }
         if (headers.get(groupPosition).equals("Shop From Us")){
-            iconheader.setImageResource(R.color.red);
+            iconheader.setImageResource(R.color.maintheme);
         }
-        if(headers.get(groupPosition).equals("jewellery"))
+        if(headers.get(groupPosition).equals("Jewellery"))
         {
             iconheader.setImageResource(R.drawable.jewelleryred);
         }
@@ -176,7 +177,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         {
             iconheader.setImageResource(R.drawable.othersred);
 
-            divier.setBackgroundResource(R.color.red);
+            divier.setBackgroundResource(R.color.maintheme);
         }
 
 
@@ -193,8 +194,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         View rowView;
         rowView = inflater.inflate(R.layout.list_child, null);
+        Typeface tf = Typeface.createFromAsset(context.getAssets(),
+                "Montserrat-Regular.otf");
 
         TextView category = (TextView)rowView.findViewById(R.id.list_child_text);
+        category.setTypeface(tf);
        // ImageView iconchild = (ImageView)rowView.findViewById(R.id.list_child_icon);
         category.setText(child.get(headers.get(groupPosition)).get(childPosition));
         //iconchild.setImageResource(R.drawable.chakra);

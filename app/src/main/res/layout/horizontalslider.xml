@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#f5f5f5"
     android:paddingLeft="2dp"
     android:paddingRight="2dp"
 
@@ -24,17 +24,20 @@
         android:background="@drawable/shadowbag">
 
 
-    <ImageView
+     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:id="@+id/trendingproimg"
         android:scaleType="fitXY"
-        android:background="@drawable/shadowbag"
         />
 
+        <View
+            android:layout_width="150dp"
+            android:layout_height="0.5dp"
+            android:background="@color/backshadow"></View>
     <TextView
 
-        android:fontFamily="cursive"
+
         android:typeface="monospace"
         android:paddingLeft="5dp"
         android:layout_width="150dp"
@@ -43,24 +46,38 @@
         android:singleLine="true"
         android:maxLines="1"
         android:ellipsize="end"
-        android:textColor="@color/black"
+        android:textColor="#424242"
         android:id="@+id/trendingprotit"/>
 
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <TextView
         android:layout_weight="1"
         android:textStyle="bold"
-        android:textSize="20dp"
-        android:textColor="@color/black"
+        android:textSize="15dp"
+
+        android:textColor="@color/green"
         android:layout_width="match_parent"
         android:id="@+id/trendingproprice"
         android:layout_height="wrap_content"
         android:text="price"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:text="moq"
+        android:id="@+id/promoqtrending"
+        android:textColor="@color/red"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
         <RatingBar
-
-
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:numStars="5"

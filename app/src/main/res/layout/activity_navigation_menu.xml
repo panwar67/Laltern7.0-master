@@ -30,7 +30,7 @@
             android:layout_height="50dp"
 
 
-            android:navigationIcon="@color/red"
+            android:navigationIcon="@color/ivory"
             android:background="@color/maintheme"
             >
 
@@ -46,9 +46,11 @@
                 android:background="@android:color/transparent">
 
                 <ImageView
+                    android:src="@drawable/logolal"
                     android:layout_gravity="left"
-                    android:layout_width="50dp"
+                    android:layout_width="30dp"
                     android:layout_height="30dp"
+
                     />
 
 
@@ -72,7 +74,7 @@
                     android:text="Scaned Card"
                     android:layout_gravity="right"
                     android:layout_weight="12"
-                    android:src="@drawable/reqred"
+                    android:src="@drawable/requestmenu"
                     />
 
 
@@ -86,7 +88,7 @@
                     android:text="Scaned Card"
                     android:layout_gravity="right"
                     android:layout_weight="12"
-                    android:src="@drawable/cartred"
+                    android:src="@drawable/cartmenu"
                     />
 
                 <ImageView
@@ -102,7 +104,7 @@
 
 
                     android:id="@+id/viewprofile"
-                    android:src="@drawable/prored"
+                    android:src="@drawable/profilemenu"
                     />
           </LinearLayout>
 
@@ -142,7 +144,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:background="@color/maintheme"
+            android:background="@color/ivory"
             android:layout_height="match_parent">
 
 
@@ -152,16 +154,13 @@
 
             android:dividerHeight="0dp"
             android:divider="@null"
-            android:background="@color/maintheme"
+            android:background="@color/ivory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expandedlist"
             >
+     </ExpandableListView>
 
-
-
-
-        </ExpandableListView>
 
 
 

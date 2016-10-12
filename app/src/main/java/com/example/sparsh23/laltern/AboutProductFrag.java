@@ -3,6 +3,7 @@ package com.example.sparsh23.laltern;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -68,8 +69,8 @@ public class AboutProductFrag extends Fragment {
     // TODO: Rename and change types of parameters
     private HashMap<String,String> mParam1;
     private String mParam2;
-    TextView title , quan, price, artistname, des, craftpro, deshead, crafthead, selectquantity, similarproductslabel;
-    RatingBar authen, prices, overall;
+    TextView title , quan, price, artistname, des, craftpro, deshead, crafthead, selectquantity, similarproductslabel, priceseek, finalrating;
+    RatingBar  overall;
     DBHelper dbHelper;
     Button button;
     TextView bar;
@@ -135,6 +136,7 @@ public class AboutProductFrag extends Fragment {
         seekBar = (BubbleThumbSeekbar) view.findViewById(R.id.quantity);
 
         bar = (TextView)view.findViewById(R.id.quantityseek);
+        priceseek = (TextView)view.findViewById(R.id.priceseek);
         des = (TextView)view.findViewById(R.id.descriptionpartpro);
         craftpro = (TextView) view.findViewById(R.id.typepro);
         crafthead = (TextView)view.findViewById(R.id.crafthead);
@@ -145,19 +147,54 @@ public class AboutProductFrag extends Fragment {
         seekBar.setMinValue(Float.parseFloat(data.get("quantity")));
         selectquantity = (TextView)view.findViewById(R.id.selectquantitylabel);
         similarproductslabel = (TextView)view.findViewById(R.id.similarproductslabel);
-
-
-
+        finalrating = (TextView)view.findViewById(R.id.finalratings);
+        overall = (RatingBar)view.findViewById(R.id.productrating);
+        String string = "\u20B9";
+        byte[] utf8 = null;
+        try {
+            utf8 = string.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        assert utf8 != null;
+        try {
+            string = new String(utf8, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         similar.setAdapter(new TrendingProAdapter(getContext(),dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"))));
 
+        seekBar.setBarHighlightColor(R.color.green);
 
-
-
+        final String finalString = string;
+        seekBar.setLeftThumbHighlightDrawable(R.drawable.seekbig);
         seekBar.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
 
                 bar.setText(value.toString());
+                if(value.intValue()<Integer.parseInt(data.get("revquantity") ))
+                {
+
+                    priceseek.setText(""+ finalString +""+data.get("price"));
+
+                    seekBar.setBarHighlightColor(Color.RED);
+                    //seekBar.col
+                    if(Integer.parseInt(data.get("revprice"))>0)
+                    {
+
+                    }
+
+
+                }
+                if(value.intValue()>Integer.parseInt(data.get("revquantity")))
+                {
+                    seekBar.setBarHighlightColor(Color.GREEN);
+                    priceseek.setText(""+ finalString +""+data.get("revprice"));
+
+
+                }
+
             }
         });
 
@@ -236,22 +273,10 @@ public class AboutProductFrag extends Fragment {
         }
 
 
-        String string = "\u20B9";
-        byte[] utf8 = null;
-        try {
-            utf8 = string.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        assert utf8 != null;
-        try {
-            string = new String(utf8, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),
-                "Arsenal-Regular.otf");
+                "Raleway-Regular.ttf");
 
         Typeface tf1 = Typeface.createFromAsset(getActivity().getAssets(),"Quicksand-Regular.otf");
         Typeface tf2    =   Typeface.createFromAsset(getActivity().getAssets(),"Montserrat-Regular.otf");
@@ -267,36 +292,21 @@ public class AboutProductFrag extends Fragment {
         //des = (TextView)findViewById(R.id.descriptionpartpro);
         quan = (TextView)view.findViewById(R.id.quantitypro);
         price = (TextView)view.findViewById(R.id.pricepro);
-
+        overall.setRating(Float.parseFloat(data.get("rating")));
+        finalrating.setText(data.get("rating")+"/5");
         title.setTypeface(tf);
         des.setTypeface(tf1);
         craftpro.setTypeface(tf1);
 
        // TextView textView = (TextView) view.findViewById(R.id.showart);
 
-        price.setText( " "+string+""+data.get("price"));
+        price.setText( ""+string+""+data.get("price")+" - "+data.get("revprice"));
         des.setText(data.get("des"));
         quan.setText("M.O.Q : "+data.get("quantity"));
         title.setText(data.get("title").toUpperCase());
         craftpro.setText(" "+data.get("craft"));
         Log.d("craft used",""+data.get("craft"));
         Toast.makeText(getContext(),""+data.get("craft"),Toast.LENGTH_SHORT).show();
-
-
-
-        // expandableLinearLayout = (ExpandableLinearLayout)findViewById(R.id.expandableLayout);
-
-        // expandableLinearLayout.toggle();
-        // expandableLinearLayout.expand();
-
-
-
-
-
-
-
-
-
 
         return view;
     }

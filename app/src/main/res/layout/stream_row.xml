@@ -1,99 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/ivory"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/header"
-        android:text="TITLE"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/imageView"
-        android:paddingTop="10dp"
-        android:scaleType="fitXY"
+    <RatingBar
+        android:layout_gravity="center"
 
 
-        android:adjustViewBounds="true"
-        android:layout_gravity="center_horizontal" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PRICE IN ₹ : "
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:paddingRight="20sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2000"
-                    android:id="@+id/price"
-                    android:paddingRight="20sp"/>
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="QUANTITY : "
-                    android:textStyle="bold"
-                    android:paddingLeft="40sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                   android:text="5"
-                    android:id="@+id/quantity"
-                    />
-
-
-
-
-
-            </LinearLayout>
-
-
-    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DESCRIPTION : "
-        android:paddingTop="10dp"
-        android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Test Description"
-                android:maxLines="2"
-                android:id="@+id/descriptionpart"
-            android:ellipsize="end"
-                android:singleLine="false"
-                />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+        android:numStars="5"
+        android:stepSize="0.1"
+        android:rating="2"
+        android:isIndicator="false"
+        android:layout_marginRight="5dp"
+        android:progressTint="@color/maintheme"
+        android:layout_height="60dp"
+        android:id="@+id/productrating"/>
 
 </LinearLayout>

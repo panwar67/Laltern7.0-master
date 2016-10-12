@@ -95,6 +95,7 @@
     <string name="title_activity_stream">Stream</string>
     <string name="lalternstream">Stream of Sellers</string>
     <string name="title_activity_search">Search</string>
+    <string name="fb_login_protocol_scheme">fb1761495477471790</string>
 
     <string-array name="categories">
 
@@ -164,5 +165,6 @@
     <string name="title_activity_submit__request__random">Submit_Request_Random</string>
     <string name="title_activity_profile_drawer">  MY PROFILE</string>
     <string name="title_activity_chat_us">ChatUs</string>
+    <string name="title_activity_banner_artist">BannerArtist</string>
 </resources>
 

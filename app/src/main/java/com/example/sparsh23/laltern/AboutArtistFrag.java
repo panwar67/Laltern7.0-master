@@ -104,7 +104,7 @@ public class AboutArtistFrag extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         //webView.getSettings().setLoadWithOverviewMode(true);
         ///webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+       // webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
       //  webView.clearCache(true);
         webView.clearView();
         webView.reload();
@@ -112,7 +112,7 @@ public class AboutArtistFrag extends Fragment {
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
         webView.loadUrl("about:blank");
-        webView.loadUrl("http://www.whydoweplay.com/lalten/index1.html");
+        webView.loadUrl("http://www.whydoweplay.com/lalten/no-jquery.html");
         webView.setWebChromeClient(new WebChromeClient());
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"BioRhyme-Regular.ttf");
         int noimg = Integer.parseInt(mParam1.get("noimg"));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -7,10 +7,10 @@
 
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
         android:background="@color/white">
 
 
@@ -42,7 +42,7 @@
 
                 android:layout_margin="3dp"
                 android:id="@+id/hometextsupercat"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
 
                 android:layout_height="80dp"
 
@@ -54,7 +54,7 @@
 
                 android:layout_margin="3dp"
                 android:id="@+id/JwlSuperCat"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/jewelcat"/>
 
@@ -63,7 +63,7 @@
 
                 android:layout_margin="3dp"
                 android:id="@+id/sareeSuperCat"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:src="@drawable/sareecat"
                 android:layout_height="80dp" />
 
@@ -72,7 +72,7 @@
 
 
                 android:layout_margin="3dp"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/paintingscat"/>
 
@@ -81,7 +81,7 @@
                 android:layout_margin="3dp"
                 android:id="@+id/homecatSuperCat"
 
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/homecat"/>
 
@@ -91,7 +91,7 @@
                 android:layout_margin="3dp"
                 android:id="@+id/othersSuperCat"
 
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/othercat"/>
 
@@ -100,7 +100,7 @@
                 android:layout_margin="3dp"
                 android:id="@+id/apparelSuperCat"
 
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:src="@drawable/apparelcat"/>
 
@@ -110,9 +110,22 @@
                 android:layout_margin="3dp"
                 android:id="@+id/accessoriesSuperCat"
 
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/accescat"/>
+                android:src="@drawable/accescat"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="20dp"/>
+
+
+            <ImageView
+
+
+                android:layout_margin="3dp"
+
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="20dp"/>
 
 
         </LinearLayout>
@@ -120,12 +133,23 @@
 
 
 
+
+
+
     </HorizontalScrollView>
 
-    </LinearLayout>
+
+
+        <ImageView
+            android:layout_gravity="right"
+            android:layout_width="20dp"
+            android:background="#E0FFFFFF"
+            android:src="@drawable/seemore"
+            android:layout_height="80dp" />
+    </FrameLayout>
 
 
 
 
 
-</LinearLayout>
+</FrameLayout>

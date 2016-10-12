@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/maintheme</item>
-        <item name="colorAccent">@color/red</item>
+        <item name="colorAccent">@color/ivory</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
@@ -21,7 +21,7 @@
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        </style>
+    </style>
 
     <style name="menu_labels_style">
         <item name="android:background">@color/white</item>
@@ -29,24 +29,24 @@
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">@android:color/holo_red_dark</item>
+        <item name="tabIndicatorColor">@color/ivory</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">12dp</item>
         <item name="tabPaddingEnd">12dp</item>
 
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
-        <item name="tabSelectedTextColor">@android:color/holo_red_dark</item>
+        <item name="tabSelectedTextColor">@color/ivory</item>
     </style>
+
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@android:color/holo_red_dark</item>
+        <item name="android:textColor">@color/ivory</item>
         <item name="textAllCaps">true</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/red</item>
+        <item name="color">@color/ivory</item>
     </style>
-
 
 
 </resources>

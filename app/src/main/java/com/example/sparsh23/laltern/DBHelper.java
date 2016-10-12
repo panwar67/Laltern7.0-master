@@ -25,7 +25,7 @@ import com.nostra13.universalimageloader.utils.L;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "lalterndData.db";
+    public static final String DATABASE_NAME = "lalterndData1.db";
     public static final  String reqdirect = "REQDIRECT";
     HashMap<String,String> mAliasMap = new HashMap<>();
 
@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         // TODO Auto-generated method stub
 
-        db.execSQL("CREATE TABLE ImageData (UID text, DES text, OWN text, PRICE float, PATH text, TYPE text, QUANTITY int, NOIMAGES int, OWNER text, TITLE text, CATEGORY text, SUBCAT text, META text, CRAFT text, PROTYPE text, RATING text, SIZE text, COLOR text);");
+        db.execSQL("CREATE TABLE ImageData (UID text, DES text, OWN text, PRICE float, PATH text, TYPE text, QUANTITY int, NOIMAGES int, OWNER text, TITLE text, CATEGORY text, SUBCAT text, META text, CRAFT text, PROTYPE text, RATING text, SIZE text, COLOR text, REVPRICE text, REVQUANTITY text);");
         db.execSQL("CREATE TABLE "+Profile_Strut.Table_Name+" ( "+Profile_Strut.Uid+" text, "+Profile_Strut.Name+" text, "+Profile_Strut.Comp_Name+" text, "+Profile_Strut.Designation+" text, "+Profile_Strut.Addr+" text, "+Profile_Strut.City+" text, "+Profile_Strut.Email+" text, "+Profile_Strut.Cont+" text, "+Profile_Strut.State+" text, "+Profile_Strut.ToB+" text, "+Profile_Strut.Pan+" text, "+Profile_Strut.Web+" text);");
         db.execSQL("CREATE TABLE "+Artisian_Struct.Table_Name+" ( "+Artisian_Struct.name+" text, "+Artisian_Struct.state+" text, "+Artisian_Struct.craft+" text, "+Artisian_Struct.awards+" text, "+Artisian_Struct.description+" text, "+Artisian_Struct.tob+" text, "+Artisian_Struct.pics+" text, "+Artisian_Struct.noimg+" text, "+Artisian_Struct.authentic+" text, "+Artisian_Struct.price+" text, "+Artisian_Struct.ratings+" text, "+Artisian_Struct.uid+" text);");
         db.execSQL("CREATE TABLE "+Request_Struct.table_name+" ( "+Request_Struct.ord_id+" text, "+Request_Struct.pro_id+" text, "+Request_Struct.buy_id+" text, "+Request_Struct.des+" text, "+Request_Struct.path+" text, "+Request_Struct.craft+" text, "+Request_Struct.status+" text, "+Request_Struct.quantity+" text);");
@@ -594,7 +594,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean InsertImageData  (String uid,String des, String own, String path, String price, String quantity, String title, String noimages, String type, String category,String subcat, String meta, String craft, String protype, String rating, String color, String size)
+    public boolean InsertImageData  (String uid,String des, String own, String path, String price, String quantity, String title, String noimages, String type, String category,String subcat, String meta, String craft, String protype, String rating, String color, String size, String revprice, String revquantity)
 
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -616,6 +616,8 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("SIZE",size);
         contentValues.put("PROTYPE",protype);
         contentValues.put("RATING",rating);
+        contentValues.put("REVPRICE",revprice);
+        contentValues.put("REVQUANTITY",revquantity);
         Log.d("craft", craft);
         Log.d("owner from network",""+own);
 
@@ -709,54 +711,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<HashMap<String,String>> getimageData()
-    {
 
-        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData", null);
-        res.moveToFirst();
-
-        while (!res.isAfterLast())
-        {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String path = res.getString(res.getColumnIndex("PATH"));
-            String uid = res.getString(res.getColumnIndex("UID"));
-            String own = res.getString(res.getColumnIndex("OWN"));
-            String des = res.getString(res.getColumnIndex("DES"));
-            String title = res.getString(res.getColumnIndex("TITLE"));
-            String category = res.getString(res.getColumnIndex("CATEGORY"));
-            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
-            String price = res.getString(res.getColumnIndex("PRICE"));
-            String noimages = res.getString(res.getColumnIndex("NOIMAGES"));
-            String type = res.getString(res.getColumnIndex("TYPE"));
-            String subcat = res.getString(res.getColumnIndex("SUBCAT"));
-            String meta = res.getString(res.getColumnIndex("META"));
-            String craft = res.getString(res.getColumnIndex("CRAFT"));
-            String rating = res.getString(res.getColumnIndex("RATING"));
-
-            Log.d("SUBCAT Data", ""+path);
-
-            map.put("uid",uid);
-            map.put("path",path);
-            map.put("own",own);
-            map.put("des",des);
-            map.put("title",title);
-            map.put("category", category);
-            map.put("quantity", quantity);
-            map.put("price", price);
-            map.put("noimages",noimages);
-            map.put("type",type);
-            map.put("subcat",subcat);
-            map.put("meta",meta);
-            map.put("craft",craft);
-            map.put("rating",rating);
-
-            data.add(map);
-            res.moveToNext();
-        }
-        return data;
-    }
 
     public HashMap<String, String> getArtisian(String uid)
     {
@@ -829,6 +784,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String meta = res.getString(res.getColumnIndex("META"));
             String rating = res.getString(res.getColumnIndex("RATING"));
 
+
             Log.d("type Data", ""+type);
             Log.d("quantity",""+quantity);
 
@@ -848,6 +804,8 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("craft",craft);
             map.put("rating",rating);
             map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
+            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
 
             data.add(map);
 
@@ -858,50 +816,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public ArrayList<HashMap<String,String>> getSearchimageDatatype( )
-    {
-
-        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData", null);
-        res.moveToFirst();
-
-        while (!res.isAfterLast())
-        {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String path = res.getString(res.getColumnIndex("PATH"));
-            String uid = res.getString(res.getColumnIndex("UID"));
-            String own = res.getString(res.getColumnIndex("OWN"));
-            String des = res.getString(res.getColumnIndex("DES"));
-            String title = res.getString(res.getColumnIndex("TITLE"));
-            String category = res.getString(res.getColumnIndex("CATEGORY"));
-            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
-            String price = res.getString(res.getColumnIndex("PRICE"));
-            String noimages = res.getString(res.getColumnIndex("NOIMAGES"));
-            String type = res.getString(res.getColumnIndex("TYPE"));
-            String subcat = res.getString(res.getColumnIndex("SUBCAT"));
-            String meta = res.getString(res.getColumnIndex("META"));
-
-            Log.d("type Data", ""+type);
-            Log.d("quantity",""+quantity);
-
-            map.put("uid",uid);
-            map.put("path",path);
-            map.put("own",own);
-            map.put("des",des);
-            map.put("title",title);
-            map.put("category", category);
-            map.put("quantity", quantity);
-            map.put("price", price);
-            map.put("noimages",noimages);
-            map.put("type",type);
-            map.put("subcat",subcat);
-            map.put("meta",meta);
-            data.add(map);
-            res.moveToNext();
-        }
-        return data;
-    }
 
 
 
@@ -953,43 +867,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<HashMap<String,String>> GetCategoryImageData(String selectedItem) {
-
-
-        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData where SUBCAT like '"+selectedItem+"';", null);
-
-        res.moveToFirst();
-        Log.d("cursor count",""+res.getCount());
-        while (res.isAfterLast() == false)
-        {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String path = res.getString(res.getColumnIndex("PATH"));
-            String uid = res.getString(res.getColumnIndex("UID"));
-            String des = res.getString(res.getColumnIndex("DES"));
-            String title = res.getString(res.getColumnIndex("TITLE"));
-            String price = res.getString(res.getColumnIndex("PRICE"));
-            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
-            int nopic = res.getInt(res.getColumnIndex("NOIMAGES"));
-            map.put("uid",uid);
-            map.put("path",path);
-            map.put("des",des);
-            map.put("title", title);
-            map.put("price",price);
-            map.put("quantity",quantity);
-            map.put("noimages", String.valueOf(nopic));
-
-
-
-            data.add(map);
-            res.moveToNext();
-        }
-
-
-        return data;
-
-    }
 
     public ArrayList<HashMap<String,String>> GetSubCategoryImageData(HashMap<String,String> selected) {
 
@@ -1016,6 +893,8 @@ public class DBHelper extends SQLiteOpenHelper {
             int nopic = res1.getInt(res1.getColumnIndex("NOIMAGES"));
             String type = res1.getString(res1.getColumnIndex("TYPE"));
             String owner = res1.getString(res1.getColumnIndex("OWNER"));
+            String revquantity = res1.getString(res1.getColumnIndex("REVQUANTITY"));
+            String revprice = res1.getString(res1.getColumnIndex("REVPRICE"));
 
             String rating = res1.getString(res1.getColumnIndex("RATING"));
             Log.d("artist uid dbhelper",""+owner);
@@ -1037,7 +916,8 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("meta",meta);
             map.put("rating",rating);
             map.put("protype",res1.getString(res1.getColumnIndex("PROTYPE")));
-
+            map.put("revquantity",revquantity);
+            map.put("revprice",revprice);
             data.add(map);
             res1.moveToNext();
         }
@@ -1076,6 +956,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 map.put("meta", res.getString(res.getColumnIndex("META")));
                 map.put("craft", res.getString(res.getColumnIndex("CRAFT")));
                 map.put("rating", res.getString(res.getColumnIndex("RATING")));
+                map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+                map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
                 data.add(map);
 
             }
@@ -1192,7 +1074,8 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("meta",meta);
             map.put("rating",rating);
             map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
-
+            map.put("revquanity",res.getString(res.getColumnIndex("REVQUANTITY")));
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
             data.add(map);
             res.moveToNext();
 
@@ -1302,6 +1185,8 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("meta",meta);
             map.put("rating",rating);
             map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
 
             data.add(map);
             res.moveToNext();

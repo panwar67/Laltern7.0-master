@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- When selected, use grey -->
-    <item android:drawable="@drawable/listsearch"
+    <item android:drawable="@drawable/listnew"
         android:state_checked="true" />
     <!-- When not selected, use white-->
-    <item android:drawable="@drawable/gridsearch"
-
+    <item android:drawable="@drawable/gridnew"
         android:state_checked="false"/>
 
 </selector>

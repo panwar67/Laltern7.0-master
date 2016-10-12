@@ -58,6 +58,11 @@
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="Title"/>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
 
                 android:background="@color/white"
@@ -67,24 +72,28 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pricegrid"
 
-                android:paddingTop="5dp"
+                android:layout_weight="1"
+
                 android:textColor="@color/green"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="price"/>
-            <TextView
+                <TextView
 
-                android:background="@color/white"
+                    android:background="@color/white"
 
-                android:textSize="13dp"
-                android:textColor="@android:color/holo_red_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/moqgrid"
-                android:paddingTop="3dp"
+                    android:layout_weight="1"
+                    android:textSize="13dp"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/moqgrid"
+                    android:paddingTop="3dp"
 
 
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:text="MOQ"/>
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="MOQ"/>
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,6 +111,7 @@
 
                 android:stepSize="0.1"
                 android:rating="1"
+                android:progressBackgroundTint="@android:color/holo_red_light"
                 android:id="@+id/productratingview"
                 style="?android:attr/ratingBarStyleSmall"
 

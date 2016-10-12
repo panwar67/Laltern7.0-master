@@ -3,7 +3,9 @@ package com.example.sparsh23.laltern;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.backup.FileBackupHelper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -11,6 +13,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
+import com.facebook.*;
+import com.facebook.Profile;
+import com.google.android.gms.auth.api.Auth;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -42,13 +47,31 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,25 +81,56 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>,GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
     private static final int REQUEST_READ_CONTACTS = 0;
 
     public String DOWN_URL = "http://www.whydoweplay.com/lalten/CheckLogin.php";
+//    LoginActivity loginActivity;
 
 
-  
+
+
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private FirebaseAuth mAuth;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
 
     SessionManager sessionManager;
+    CallbackManager callbackManager;
+    private int RC_SIGN_IN = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        mAuth = FirebaseAuth.getInstance();
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this ,(GoogleApiClient.OnConnectionFailedListener) this )
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+
         setContentView(R.layout.activity_login);
+
+        findViewById(R.id.sign_in_button).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -123,7 +177,144 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        mAuthListener = new FirebaseAuth.AuthStateListener()
+        {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                if (user != null)
+                {
+                    Log.d("firebaselogin", "onAuthStateChanged:signed_in:" + user.getUid() +""+user.getEmail()+"");
+                } else {
+                    // User is signed out
+                    Log.d("firebaselogout", "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                //updateUI(user);
+                // [END_EXCLUDE]
+            }
+        };
+
+
+
+
+        loginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                loginButton.setReadPermissions("public_profile");
+                //LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, );
+                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+
+                        ProfileTracker profileTracker;
+
+                        if (Profile.getCurrentProfile()==null)
+                        {
+                            profileTracker = new ProfileTracker() {
+                                @Override
+                                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
+                                    this.stopTracking();
+                                    Profile.setCurrentProfile(currentProfile);
+                                    com.facebook.Profile profile = Profile.getCurrentProfile();
+                                    Log.d("facebook_details",""+profile.getFirstName().toString());
+                                    Log.d("facebook_details",""+profile.getProfilePictureUri(400,400).toString());
+
+
+
+
+                                }
+
+
+                            };
+
+                            profileTracker.startTracking();
+
+
+                        }
+                        else {
+
+
+                            Profile pro = Profile.getCurrentProfile();
+
+                            loginResult.getRecentlyGrantedPermissions();
+                            AccessToken accessToken = loginResult.getAccessToken();
+                            Log.d("facebook_details", "" + loginResult.getRecentlyGrantedPermissions().toString());
+                            Log.d("facebook_details",""+pro.getFirstName().toString());
+                            Log.d("facebook_details",""+pro.getProfilePictureUri(400,400).toString());
+
+                            Log.d("facebook_details", "" + accessToken.getUserId().toString());
+                        }
+
+
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+
+
+            }
+        });
+
+
     }
+
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d("firebase_token", "handleFacebookAccessToken:" + token);
+        // [START_EXCLUDE silent]
+        //showProgressDialog();
+        // [END_EXCLUDE]
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        Log.d("firebase_signin", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("firebase handle", "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // [START_EXCLUDE]
+                        //hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+
+    }
+
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -219,6 +410,65 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                Log.d("data google",""+account.getDisplayName());
+                Log.d("data google",""+account.getPhotoUrl());
+
+                firebaseAuthWithGoogle(account);
+            } else {
+                // Google Sign In failed, update UI appropriately
+                // [START_EXCLUDE]
+         //       updateUI(null);
+                // [END_EXCLUDE]
+            }
+        }
+    }
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("google signin", "firebaseAuthWithGoogle:" + acct.getId());
+        // [START_EXCLUDE silent]
+       // showProgressDialog();
+        // [END_EXCLUDE]
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("google signin", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("google signin", "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [START_EXCLUDE]
+                        //hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -275,6 +525,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -297,7 +557,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-    public boolean LogInUser(final String email, final String pass){
+    public boolean LogInUser(final String email, final String pass)
+    {
 
         //Showing the progress dialog
         final ProgressDialog loading = ProgressDialog.show(this,"Logging In User...","Please wait...",false,false);
@@ -321,10 +582,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 Toast.makeText(getApplicationContext(),""+s,Toast.LENGTH_SHORT).show();
 
-
-
-                            }
-else
+                                 }
+                        else
                             {
                                 sessionManager.createLoginSession(email,pass,s);
                                 startActivity(new Intent(LoginActivity.this,Update.class));

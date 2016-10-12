@@ -27,9 +27,9 @@ public class ChatUs extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
 
 
 

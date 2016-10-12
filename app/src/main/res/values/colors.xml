@@ -2,10 +2,10 @@
 <resources>
     <color name="colorPrimary">#ec1515</color>
     <color name="colorPrimaryDark">#ed1111</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#fffff0</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="maintheme">#FFCB18</color>
+    <color name="maintheme">#971825</color>
     <color name="backgroundoff">#fafaf6</color>
     <color name="green">#669900</color>
     <color name="backoffoff">#bebebe</color>
@@ -13,6 +13,9 @@
     <color name="trans">#40FFffff</color>
     <color name="red">#d50000</color>
     <color name="yellow">#FFFFC107</color>
+    <color name="backshadow">#FFD4D2D2</color>
+    <color name="ivory">#fffff0</color>
+
 
 
 

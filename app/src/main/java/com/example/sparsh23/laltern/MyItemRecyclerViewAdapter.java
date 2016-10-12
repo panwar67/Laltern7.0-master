@@ -86,9 +86,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
        // holder.mItem = mValues.get(position);
        // holder.mIdView.setText();
         holder.mContentView.setText(mValues.get(position).get("title"));
-        holder.gridprice.setText("PRICE RS - "+mValues.get(position).get("price"));
+        holder.gridprice.setText(""+mValues.get(position).get("price"));
         holder.moq.setText("M.O.Q - "+mValues.get(position).get("quantity"));
-        holder.artist.setText("Artisian - "+mValues.get(position).get("artuid"));
+        holder.artist.setText("By - "+mValues.get(position).get("artuid"));
 
 
         holder.ratingBar.setRating(Float.parseFloat(mValues.get(position).get("rating")));

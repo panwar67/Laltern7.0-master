@@ -194,7 +194,7 @@ android:background="@color/maintheme"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/profilewhite"/>
+                android:background="@drawable/profilemenu"/>
 
             <TextView
                 android:id="@+id/pro"

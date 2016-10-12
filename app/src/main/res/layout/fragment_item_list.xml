@@ -55,7 +55,7 @@
 
             android:id="@+id/searchpagesort"
             android:layout_weight="1"
-            android:src="@drawable/sortsearch"/>
+            android:src="@drawable/ic_import_export_black_24dp"/>
 
 
 

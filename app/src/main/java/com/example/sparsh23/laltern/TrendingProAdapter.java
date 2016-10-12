@@ -122,7 +122,7 @@ public class TrendingProAdapter extends BaseAdapter {
 
         holder.price = (TextView)rowView.findViewById(R.id.trendingproprice);
 
-        //holder.moq = (TextView)rowView.findViewById(R.id.trendingpromoq);
+        holder.moq = (TextView)rowView.findViewById(R.id.promoqtrending);
 
         holder.ratingBar = (RatingBar)rowView.findViewById(R.id.productratingtrending);
 
@@ -146,14 +146,17 @@ public class TrendingProAdapter extends BaseAdapter {
         Log.d(" list trendingproduct", result.get(position).toString());
 
 
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Arsenal-Regular.otf");
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-Regular.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Roboto-Regular.ttf");
 
         holder.title.setTypeface(typeface);
         holder.title.setText(""+result.get(position).get("title"));
-        holder.price.setTypeface(null,Typeface.BOLD);
+        holder.price.setTypeface(typeface1,Typeface.BOLD);
         holder.price.setText(string+" "+result.get(position).get("price"));
        // holder.moq.setTextColor(#ff000000);
-       // holder.moq.setText("M.O.Q - "+result.get(position).get("quantity"));
+
+        holder.moq.setText("MOQ - "+result.get(position).get("quantity"));
+        holder.moq.setTypeface(typeface1,Typeface.BOLD);
         holder.ratingBar.setRating(Float.parseFloat(result.get(position).get("rating")));
 
         imageLoader.displayImage(result.get(position).get("path"), holder.deals);

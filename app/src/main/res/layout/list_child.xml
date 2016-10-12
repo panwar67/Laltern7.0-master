@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/maintheme"
+    android:background="@color/ivory"
     >
 
 
@@ -13,13 +13,16 @@
 
 
     <TextView
+        android:layout_marginTop="8dp"
+
+        android:layout_marginBottom="10dp"
         android:drawableLeft="@drawable/chakra"
-        android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:id="@+id/list_child_text"
-        android:paddingLeft="3dp"
-        android:textColor="@android:color/holo_red_dark"
+        android:paddingLeft="20dp"
+        android:typeface="monospace"
+        android:textColor="@color/maintheme"
         android:layout_margin="3dp"
 
         android:gravity="center_vertical"

@@ -3,15 +3,16 @@
 
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="24dp"
 
-    android:background="@color/maintheme"
+    android:background="@color/ivory"
     >
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginBottom="15dp"
 
         >
 
@@ -34,11 +35,11 @@
         />
     <TextView
 
-        android:textColor="#b71c1c"
+        android:textColor="@color/maintheme"
         android:id="@+id/list_header_text"
         android:textStyle="bold"
         android:text="test"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -50,10 +51,14 @@
 
         </LinearLayout>
     <View
+
+
         android:id="@+id/dividerview"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/maintheme"/>
+
+        android:layout_marginBottom="8dp"
+        android:background="@color/ivory"/>
 
 
 

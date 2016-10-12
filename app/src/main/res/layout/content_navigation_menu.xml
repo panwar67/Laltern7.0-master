@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
 
-    android:background="@color/backgroundoff"
+    android:background="#f5f5f5"
 
 
 
@@ -34,26 +34,7 @@
             android:layout_height="match_parent">
 
 
-            <TextView
 
-
-                android:textColor="#3e2723"
-                android:textAlignment="center"
-
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SHOP BY CATEGORY"
-
-
-
-                android:id="@+id/toptext"
-                android:paddingLeft="5dp"
-                android:layout_marginBottom="5dp"
-
-
-                android:textStyle="bold"/>
 
 
             <include
@@ -69,7 +50,7 @@
 
 
 
-                    android:hint="Search for crafts, Artist and Products"
+                    android:hint="Search for Crafts, Artist and Products...."
 
 
                     android:layout_marginTop="5dp"
@@ -83,12 +64,13 @@
                     android:focusable="false"
                     android:id="@+id/searchviewrealid"
 
-                    android:drawableRight="@drawable/filterred"
+                    android:drawableLeft="@drawable/seafil"
+                    android:drawableRight="@drawable/filgre"
 
 
                     android:layout_width="match_parent"
                     android:background="@drawable/shadowbag"
-                    android:layout_height="55dp">
+                    android:layout_height="45dp">
 
                 </EditText>
 
@@ -106,23 +88,24 @@
 
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
 
 
-                android:background="@android:color/transparent"
+                android:background="#f5f5f5"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                >
 
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-
-
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
                     android:scaleType="fitXY"
-                    android:src="@drawable/borthree"/>
+
+
+
+                    android:src="@drawable/bornew"/>
 
 
             <TextView
@@ -132,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" Trending Products"
-                android:textColor="#3e2723"
+                android:textColor="#444444"
                 android:textStyle="bold"
                 android:id="@+id/trend"
                 android:layout_marginRight="10dp"
@@ -141,7 +124,7 @@
                 android:background="@android:color/transparent"
                 android:paddingLeft="5dp"
 
-                android:textSize="25dp"/>
+                android:textSize="20dp"/>
 
 
 
@@ -156,105 +139,108 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/horizontallist"
 
-                android:background="@android:color/transparent"
+
                 android:orientation="horizontal"
                 android:paddingBottom="5dp"/>
            </LinearLayout>
-
 
             <LinearLayout
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/backgroundoff"
+                android:background="@drawable/emptyimg"
+
                 android:orientation="vertical">
 
                 <ImageView
-                    android:background="@color/backgroundoff"
+                    android:background="#f5f5f5"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
 
                     android:src="@drawable/bortwo"/>
 
 
-            <TextView
+                <TextView
 
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=" View Crafts"
-
-
-                android:textColor="#3e2723"
-
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textStyle="bold"
-                android:paddingLeft="5dp"
-                android:id="@+id/craft"
-                android:textSize="25dp"/>
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" View Crafts"
 
 
+                    android:background="#f5f5f5"
+                    android:textColor="#444444"
 
-            <org.lucasr.twowayview.TwoWayView
-                android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:id="@+id/craft"
+                    android:textSize="20dp"/>
 
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/horizontallist1"
-                android:orientation="horizontal"
-                android:background="@android:color/transparent"
-                android:paddingBottom="10dp">
 
-            </org.lucasr.twowayview.TwoWayView>
+                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                    android:layout_width="match_parent"
+                    android:id="@+id/expandgrid"
+                    android:background="#f5f5f5"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2">
+
+                </com.example.sparsh23.laltern.ExpandableHeightGridView>
 
             </LinearLayout>
+
+
 
 
             <LinearLayout
                 android:layout_marginBottom="5dp"
 
-                android:background="@color/backgroundoff"
+                android:background="#f5f5f5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:background="#f5f5f5"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="20dp"
+
                     android:src="@drawable/bortwo"/>
+
 
                 <TextView
 
-                    android:textColor="#3e2723"
+                    android:textColor="#444444"
                     android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=" View Artist"
 
                 android:layout_marginLeft="10dp"
-                android:background="@color/backgroundoff"
+                android:background="#f5f5f5"
 
                     android:id="@+id/artist"
                 android:textStyle="bold"
                 android:paddingLeft="5dp"
-                android:textSize="25dp"/>
+                android:textSize="20dp"/>
 
-            <org.lucasr.twowayview.TwoWayView
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/horizontallist2"
+              <com.example.sparsh23.laltern.ExpandableHeightGridView
+                    android:layout_width="match_parent"
+                    android:id="@+id/expandgridone"
+                    android:background="#f5f5f5"
+                    android:layout_height="wrap_content"
+                    android:numColumns="2">
 
-                android:background="@color/backgroundoff"
-                android:orientation="horizontal"
+                </com.example.sparsh23.laltern.ExpandableHeightGridView>
 
-                android:paddingBottom="10dp">
-            </org.lucasr.twowayview.TwoWayView>
+
+
+
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
+
 
 </FrameLayout>

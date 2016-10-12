@@ -41,12 +41,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sparsh23.laltern.dummy.DummyContent;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
 
 import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class NavigationMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,   ItemFragment.OnListFragmentInteractionListener, categoryFragment.OnListFragmentInteractionListener, newHome.OnFragmentInteractionListener, SubCatItemsFragment.OnListFragmentInteractionListener, FilterFragment.OnFragmentInteractionListener, FilterNoSearchFragment.OnFragmentInteractionListener{
@@ -108,17 +111,17 @@ public class NavigationMenu extends AppCompatActivity
         prepareListData();
 
         Typeface tf = Typeface.createFromAsset(getAssets(),
-                "KaushanScript-Regular.otf");
+                "Raleway-SemiBold.ttf");
         TextView tv = (TextView) findViewById(R.id.trend);
         TextView tv1 = (TextView) findViewById(R.id.craft);
         TextView tv2 = (TextView) findViewById(R.id.artist);
-        TextView tv3 = (TextView)findViewById(R.id.toptext);
+       // TextView tv3 = (TextView)findViewById(R.id.toptext);
 
 
         tv.setTypeface(tf);
         tv1.setTypeface(tf);
         tv2.setTypeface(tf);
-        tv3.setTypeface(tf);
+      //  tv3.setTypeface(tf);
         //listView = (ListView)findViewById(R.id.listviewmenu);
         dbHelper = new DBHelper(getApplicationContext());
 
@@ -127,8 +130,9 @@ public class NavigationMenu extends AppCompatActivity
         request = (ImageView)findViewById(R.id.viewrequest);
         profile = (ImageView)findViewById(R.id.viewprofile);
         TwoWayView lvTest = (TwoWayView)findViewById(R.id.horizontallist);
-        TwoWayView lvTest2 = (TwoWayView) findViewById(R.id.horizontallist2);
-        TwoWayView lvTest1 = (TwoWayView)findViewById(R.id.horizontallist1);
+       // TwoWayView lvTest2 = (TwoWayView) findViewById(R.id.horizontallist2);
+       // GridViewWithHeaderAndFooter lvTest1 = (GridViewWithHeaderAndFooter)findViewById(R.id.horizontallist1);
+       // TwoWayView lvTest1 = (TwoWayView)findViewById(R.id.horizontallist1);
 
         lvTest.refreshDrawableState();
 
@@ -173,9 +177,22 @@ public class NavigationMenu extends AppCompatActivity
         ArrayList<HashMap<String,String>> trendingmap = new ArrayList<HashMap<String, String>>();
         trendingmap = dbHelper.getimageDatatype("trending");
 
-        lvTest.setAdapter(new TrendingProAdapter(NavigationMenu.this,trendingmap));
-        lvTest1.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
-        lvTest2.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
+       lvTest.setAdapter(new TrendingProAdapter(NavigationMenu.this,trendingmap));
+        //,category)
+       // lvTest1.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
+       // lvTest2.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
+
+        ExpandableHeightGridView gridView = new ExpandableHeightGridView(this);
+        gridView = (ExpandableHeightGridView)findViewById(R.id.expandgrid);
+        ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
+        //ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
+        gridView1.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
+        gridView1.setNumColumns(2);
+        gridView1.setExpanded(true);
+        gridView.setNumColumns(2);
+        gridView.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
+        gridView.setExpanded(true);
+
         final EditText searchView = (EditText) findViewById(R.id.searchviewrealid);
 
         final ArrayList<HashMap<String, String>> finalTrendingmap = trendingmap;
@@ -298,11 +315,18 @@ public class NavigationMenu extends AppCompatActivity
 
         expandableListView.setAdapter(expandableListAdapter);
 
-        View header = getLayoutInflater().inflate(R.layout.nav_header_navigation_menu, expandableListView, false);
+        View header = getLayoutInflater().inflate(R.layout.stream_row, expandableListView, false);
 
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"rating",Toast.LENGTH_SHORT).show();
+            }
+        });
      //   expandableListView.addHeaderView(header, null, false);
 
 
+        expandableListView.addFooterView(header,null,false);
 
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -588,8 +612,8 @@ public class NavigationMenu extends AppCompatActivity
 
         // Adding data header
 
-        listDataHeader.add("home");
-        listDataHeader.add("jewellery");
+        listDataHeader.add("Home");
+        listDataHeader.add("Jewellery");
 
         listDataHeader.add("Accessories");
 
@@ -604,9 +628,9 @@ public class NavigationMenu extends AppCompatActivity
         listDataHeader.add("Paintings");
 
         listDataHeader.add("Others");
-        listDataHeader.add("contact us");
-        listDataHeader.add("about us");
-        listDataHeader.add("policies");
+        listDataHeader.add("Contact us");
+        listDataHeader.add("About us");
+        listDataHeader.add("Policies");
 
 
 

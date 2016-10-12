@@ -59,7 +59,6 @@ public class FilterFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public FilterFragment()
-
     {
         // Required empty public constructor
     }
@@ -131,60 +130,20 @@ public class FilterFragment extends Fragment {
                 ArrayList<String> subcatslist = new ArrayList<String>();
                 for(int i = 0;i<spinnerdata.size();i++)
                 {
-
                     Log.d("spinner size",""+spinnerdata.size());
-
-
 
                     if(spinnerdata.get(i).entrySet().iterator().next().getKey().equals(catitems.get(position)))
                     {
                         subcat.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
 
                       }
-
-
-
-
-
-                }
-
-
-
-
+                      }
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         seekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
             public void valueChanged(Number minValue, Number maxValue) {

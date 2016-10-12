@@ -49,13 +49,18 @@ public class Update extends AppCompatActivity {
 
         dbHelper.InitSearchData();
 
-        LongOperation.execute(new Runnable() {
-            @Override
-            public void run() {
-                LongOperation longOperation = new LongOperation();
-                longOperation.execute();
-            }
-        });
+        ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
+        setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+        // Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+        ArtisianSetup();
+
+
+        SearchFilterSetup();
+        setUpStream();
+
+        InsertCart(sessionManager.getUserDetails().get("uid"));
+
+
     }
 
 
@@ -232,7 +237,7 @@ public class Update extends AppCompatActivity {
 
 
 
-                                    dbHelper.InsertImageData(uid,des,own,path,price,quantity,title,noimage,type,category,subcat,meta,craft,protype,rating,color,size);
+                                    dbHelper.InsertImageData(uid,des,own,path,price,quantity,title,noimage,type,category,subcat,meta,craft,protype,rating,color,size,details.getString("REVPRICE"),details.getString("REVQUANTITY"));
 
                                     dbHelper.InsertFilterData(category,subcat,color,protype,size);
                                 }
@@ -753,17 +758,6 @@ public class Update extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-            ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
-            setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
-           // Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
-            ArtisianSetup();
-
-
-            SearchFilterSetup();
-            setUpStream();
-
-            InsertCart(sessionManager.getUserDetails().get("uid"));
 
 
 
