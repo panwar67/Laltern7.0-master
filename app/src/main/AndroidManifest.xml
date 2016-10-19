@@ -32,7 +32,7 @@
 
         <activity
             android:name=".Update"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ProductView"
             android:label="@string/title_activity_product_view"
@@ -101,7 +101,8 @@
         <activity
             android:name=".SearchInflated"
             android:label="@string/title_activity_search_inflated"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop"/>
 
         <provider
             android:name=".CountryContentProvider"

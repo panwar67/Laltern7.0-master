@@ -15,10 +15,10 @@
     <TextView
         android:layout_marginTop="8dp"
 
-        android:layout_marginBottom="10dp"
-        android:drawableLeft="@drawable/chakra"
+        android:paddingBottom="15dp"
+        android:drawableLeft="@drawable/ic_fiber_manual_record_black_24dp"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:id="@+id/list_child_text"
         android:paddingLeft="20dp"
         android:typeface="monospace"

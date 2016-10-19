@@ -15,6 +15,8 @@ import java.util.logging.Filter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -118,6 +120,14 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("filter ","deleted");
         return true;
     }
+    public boolean InitSearchFilter()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM SearchFilter");
+        Log.d("filter_search","deleted");
+        return  true;
+
+    }
 
     public boolean InsertCartData(String cartuid, String prouid, String useruid, String quantity){
 
@@ -193,23 +203,50 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean InsertFilterData(String cat, String subcat, String color, String protype, String size)
+
+
+    public boolean InsertFilterData(   ArrayList<HashMap<String,String>> data)
     {
 
         SQLiteDatabase db  = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Filter_Struct.cat,cat);
-        contentValues.put(Filter_Struct.subcat,subcat);
-        contentValues.put(Filter_Struct.colorfil,color);
-        contentValues.put(Filter_Struct.sizefil,size);
-        contentValues.put(Filter_Struct.producttype,protype);
 
-        long row = db.insertWithOnConflict(Filter_Struct.table_name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
-        Log.d(" filter inserted",""+row);
+        try {
+
+
+            db.beginTransaction();
+
+            for(int i =0;i<data.size();i++)
+
+            {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(Filter_Struct.cat, data.get(i).get("category"));
+                contentValues.put(Filter_Struct.subcat, data.get(i).get("subcat"));
+                contentValues.put(Filter_Struct.colorfil, data.get(i).get("color"));
+                contentValues.put(Filter_Struct.sizefil, data.get(i).get("size"));
+                contentValues.put(Filter_Struct.producttype, data.get(i).get("protype"));
+
+                long row = db.insertWithOnConflict(Filter_Struct.table_name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
+                Log.d(" filter inserted",""+row);
+
+
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+
+//
+
+        }
+        catch (SQLiteException e)
+        {
+            Log.d("error",e.toString());
+        }
         return  true;
 
 
     }
+
+
 
     public boolean InsertRequestData(String prouid, String buyuid, String orduid, String des, String path, String status, String reply, String craft, String quantity)
 
@@ -473,7 +510,7 @@ public class DBHelper extends SQLiteOpenHelper {
     {
         ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from "+Cart_Struct.Table_Name, null);
+        Cursor res = db.rawQuery("select * from "+Cart_Struct.Table_Name+" group by "+Cart_Struct.prouid, null);
         res.moveToFirst();
         while (res.isAfterLast()==false)
         {
@@ -594,59 +631,106 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean InsertImageData  (String uid,String des, String own, String path, String price, String quantity, String title, String noimages, String type, String category,String subcat, String meta, String craft, String protype, String rating, String color, String size, String revprice, String revquantity)
-
+    public boolean InsertImageData  (ArrayList<HashMap<String,String>> data)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("UID", uid);
-        Log.d("category", subcat);
-        contentValues.put("PRICE",price);
-        contentValues.put("QUANTITY", quantity);
-        contentValues.put("NOIMAGES", noimages);
-        contentValues.put("TITLE", title);
-        contentValues.put("TYPE",type);
-        contentValues.put("CATEGORY",category);
-        contentValues.put("SUBCAT",subcat);
-        contentValues.put("META",meta);
-        contentValues.put("DES", des);
-        contentValues.put("OWNER", own);
-        contentValues.put("CRAFT", craft);
-        contentValues.put("COLOR",color);
-        contentValues.put("SIZE",size);
-        contentValues.put("PROTYPE",protype);
-        contentValues.put("RATING",rating);
-        contentValues.put("REVPRICE",revprice);
-        contentValues.put("REVQUANTITY",revquantity);
-        Log.d("craft", craft);
-        Log.d("owner from network",""+own);
 
-        contentValues.put("PATH", path);
-        long row = db.insertWithOnConflict("ImageData", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-        Log.d("ImageData", String.valueOf(row)+"inserted");
+
+
+        try {
+
+
+            db.beginTransaction();
+            for(int i =0 ; i<data.size();i++)
+            {
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("UID", data.get(i).get("uid"));
+                Log.d("category", data.get(i).get("category"));
+                contentValues.put("PRICE",data.get(i).get("price"));
+                contentValues.put("QUANTITY", data.get(i).get("quantity"));
+                contentValues.put("NOIMAGES", data.get(i).get("noimg"));
+                contentValues.put("TITLE", data.get(i).get("title"));
+                contentValues.put("TYPE",data.get(i).get("type"));
+                contentValues.put("CATEGORY",data.get(i).get("category"));
+                contentValues.put("SUBCAT",data.get(i).get("subcat"));
+                contentValues.put("META",data.get(i).get("meta"));
+                contentValues.put("DES", data.get(i).get("des"));
+                contentValues.put("OWNER", data.get(i).get("own"));
+                contentValues.put("CRAFT", data.get(i).get("craft"));
+                contentValues.put("COLOR",data.get(i).get("color"));
+                contentValues.put("SIZE",data.get(i).get("size"));
+                contentValues.put("PROTYPE",data.get(i).get("protype"));
+                contentValues.put("RATING",data.get(i).get("rating"));
+                contentValues.put("REVPRICE",data.get(i).get("revprice"));
+                contentValues.put("REVQUANTITY",data.get(i).get("revquantity"));
+               // Log.d("craft", );
+//                Log.d("owner from network",""+own);
+
+                contentValues.put("PATH", data.get(i).get("path"));
+                long row = db.insertWithOnConflict("ImageData", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+                Log.d("ImageData", String.valueOf(row)+"inserted");
+
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+          //  db.setTransactionSuccessful();
+
+        }catch (SQLiteException e)
+        {
+         Log.d("error",e.toString());
+
+        }
+
         return true;
     }
 
 
-    public boolean InsertSearchTag(String tag, String suggest, String type)
+    public boolean InsertSearchTag(ArrayList<HashMap<String,String>> data)
 
     {
 
 
+
+
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("TAG", tag);
-        //Log.d("TAG", tag);
-       contentValues.put("SUGGEST",suggest);
-      //  Log.d("suggest", suggest);
-        contentValues.put("TYPE",type);
-        //Log.d("type",type);
 
-        long row = db.insertWithOnConflict("SearchData", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
-        Log.d("Search data", String.valueOf(row)+"inserted");
+        try {
+
+            db.beginTransaction();
 
 
+            for(int i=0;i<data.size();i++)
+            {
 
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("TAG", data.get(i).get("tag"));
+                //Log.d("TAG", tag);
+                contentValues.put("SUGGEST",data.get(i).get("suggest"));
+                //  Log.d("suggest", suggest);
+                contentValues.put("TYPE",data.get(i).get("type"));
+                //Log.d("type",type);
+
+                long row = db.insertWithOnConflict("SearchData", null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+                Log.d("Search data", String.valueOf(row)+"inserted");
+
+
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+
+           // db.setTransactionSuccessful();
+
+
+
+
+        }catch (SQLiteException e)
+        {
+            Log.d("error",e.toString());
+        }
 
 
         return true;

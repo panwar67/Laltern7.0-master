@@ -164,7 +164,7 @@ public class AboutProductFrag extends Fragment {
         }
         similar.setAdapter(new TrendingProAdapter(getContext(),dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"))));
 
-        seekBar.setBarHighlightColor(R.color.green);
+        seekBar.setBarHighlightColor(R.color.seekbar);
 
         final String finalString = string;
         seekBar.setLeftThumbHighlightDrawable(R.drawable.seekbig);
@@ -178,7 +178,7 @@ public class AboutProductFrag extends Fragment {
 
                     priceseek.setText(""+ finalString +""+data.get("price"));
 
-                    seekBar.setBarHighlightColor(Color.RED);
+                    seekBar.setBarHighlightColor(R.color.seekbarin);
                     //seekBar.col
                     if(Integer.parseInt(data.get("revprice"))>0)
                     {

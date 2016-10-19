@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,15 +25,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Panwar on 8/31/2016.
+ * Created by Panwar on 13/10/16.
  */
 
-public class CartItemAdapter extends BaseAdapter {
+
+public class Top_Pro_Adapter extends BaseAdapter {
 
 
 
-    CartActivity context;
-    DBHelper dbHelper;
+    Context context;
     private static LayoutInflater inflater=null;
 
     ImageLoader imageLoader;
@@ -42,7 +41,7 @@ public class CartItemAdapter extends BaseAdapter {
 
     ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
 
-    public CartItemAdapter(CartActivity landingHome, ArrayList<HashMap<String,String>> data){
+    public Top_Pro_Adapter(Context landingHome, ArrayList<HashMap<String,String>> data){
 
         result=data;
         context = landingHome;
@@ -66,12 +65,9 @@ public class CartItemAdapter extends BaseAdapter {
 
 
 
-
         imageLoader = ImageLoader.getInstance();
 //        imageLoader.destroy();
         imageLoader.init(config1.build());
-
-        dbHelper = new DBHelper(context);
 
 
 
@@ -103,11 +99,10 @@ public class CartItemAdapter extends BaseAdapter {
     public class Holder
     {
 
-        ImageView productimg;
-
-        TextView title, price, quantity, artist,totalprice,size,color;
-        Button remove;
-
+        ImageView deals,sponser, custom;
+        TextView title, price, moq;
+        SliderLayout sliderShow ;
+        RatingBar ratingBar;
 
 
     }
@@ -116,27 +111,22 @@ public class CartItemAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.cart_item, null);
+        rowView = inflater.inflate(R.layout.horizontalslidertop, null);
 
-        holder.productimg=(ImageView) rowView.findViewById(R.id.cartproductimg);
+        holder.deals=(ImageView) rowView.findViewById(R.id.trendingproimg);
         // holder.custom=(ImageView) rowView.findViewById(R.id.customlanding);
         //holder.sliderShow = (SliderLayout) rowView.findViewById(R.id.sliderlandingtrending);
 
-        holder.remove = (Button)rowView.findViewById(R.id.cartremovepro);
+        holder.title = (TextView)rowView.findViewById(R.id.trendingprotit);
 
-        holder.title = (TextView)rowView.findViewById(R.id.cartprotitle);
+        holder.price = (TextView)rowView.findViewById(R.id.trendingproprice);
 
-        holder.price = (TextView)rowView.findViewById(R.id.cartproprice);
+        holder.moq = (TextView)rowView.findViewById(R.id.promoqtrending);
 
-        holder.quantity = (TextView)rowView.findViewById(R.id.cartquantity);
-
-        holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-SemiBold.ttf");
-        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"HelveticaNeueLt.ttf");
-
+        holder.ratingBar = (RatingBar)rowView.findViewById(R.id.productratingtrending);
 
 
 
@@ -157,31 +147,21 @@ public class CartItemAdapter extends BaseAdapter {
 
         Log.d(" list trendingproduct", result.get(position).toString());
 
+
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-Regular.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Roboto-Regular.ttf");
+
         holder.title.setTypeface(typeface);
-
-        holder.title.setText(""+result.get(position).get("title").toUpperCase());
-        //holder.price.setTypeface(null, Typeface.BOLD);
-        holder.price.setText(string+" "+result.get(position).get("price")+"/Unit");
-        holder.price.setTypeface(typeface1);
+        holder.title.setText(""+result.get(position).get("title"));
+        holder.price.setTypeface(typeface1,Typeface.BOLD);
+        holder.price.setText(string+" "+result.get(position).get("price"));
         // holder.moq.setTextColor(#ff000000);
-        holder.quantity.setText("Qty - "+result.get(position).get("quantity"));
-        holder.quantity.setTypeface(typeface1);
 
-        imageLoader.displayImage(result.get(position).get("path"), holder.productimg);
+        holder.moq.setText("MOQ - "+result.get(position).get("quantity"));
+        holder.moq.setTypeface(typeface1,Typeface.BOLD);
+        holder.ratingBar.setRating(Float.parseFloat(result.get(position).get("rating")));
 
-        holder.remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHelper.RemoveFromCart(result.get(position).get("uid"));
-                context.Deletecart(result.get(position).get("cartuid"));
-
-                result.remove(position);
-
-                notifyDataSetChanged();
-
-
-            }
-        });
+        imageLoader.displayImage(result.get(position).get("path"), holder.deals);
 
 
 
@@ -190,3 +170,5 @@ public class CartItemAdapter extends BaseAdapter {
         return rowView;
     }
 }
+
+

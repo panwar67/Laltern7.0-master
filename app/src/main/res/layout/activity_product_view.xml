@@ -40,10 +40,10 @@
                     <ImageView
                         android:id="@+id/backpro"
                         android:layout_gravity="left"
-                        android:layout_width="30dp"
+                        android:layout_width="25dp"
                         android:scaleType="fitXY"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_arrow_back"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_arrow_back_black_24dp"
                         />
 
 

@@ -94,6 +94,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView category = (TextView)rowView.findViewById(R.id.list_header_text);
         ImageView iconheader = (ImageView)rowView.findViewById(R.id.list_header_icon);
+        ImageView imageView = (ImageView)rowView.findViewById(R.id.list_header_icon2);
         iconheader.setMaxWidth(24);
         iconheader.setMaxHeight(24);
         Typeface tf = Typeface.createFromAsset(context.getAssets(),
@@ -104,7 +105,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if(headers.get(groupPosition).equals("Home"))
         {
 
-            iconheader.setImageResource(R.drawable.home2);
+            iconheader.setImageResource(R.drawable.vector_drawable_home);
 
             divier.setBackgroundResource(R.color.maintheme);
 
@@ -120,18 +121,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (headers.get(groupPosition).equals("Contact us"))
         {
 
-            iconheader.setImageResource(R.drawable.contactusnavred);
+            iconheader.setImageResource(R.drawable.vector_drawable_contact);
 
            // divier.setBackgroundResource(R.color.red);
         }
         if(headers.get(groupPosition).equals("Policies"))
         {
-            iconheader.setImageResource(R.drawable.policyred);
+            iconheader.setImageResource(R.drawable.vector_drawable_policy);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
 
            // divier.setBackgroundResource(R.color.red);
         }
         if (headers.get(groupPosition).equals("About us")){
-            iconheader.setImageResource(R.drawable.infored);
+            iconheader.setImageResource(R.drawable.vector_drawable_check);
 
            // divier.setBackgroundResource(R.color.red);
         }
@@ -139,43 +142,62 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             iconheader.setImageResource(R.color.maintheme);
         }
         if(headers.get(groupPosition).equals("Jewellery"))
+
         {
-            iconheader.setImageResource(R.drawable.jewelleryred);
+
+
+            iconheader.setImageResource(R.drawable.vector_drawable_jewellery);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Accessories"))
         {
-            iconheader.setImageResource(R.drawable.accessoriesred);
+            iconheader.setImageResource(R.drawable.vector_drawable_accessories);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Sarees"))
         {
-            iconheader.setImageResource(R.drawable.sareesred);
+            iconheader.setImageResource(R.drawable.vector_drawable_saree);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Apparel"))
         {
-            iconheader.setImageResource(R.drawable.apparelred);
+            iconheader.setImageResource(R.drawable.vector_drawable_apparelapparel);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Home Textile"))
         {
-            iconheader.setImageResource(R.drawable.hometexred);
+            iconheader.setImageResource(R.drawable.vector_drawable_home_tex);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Home Decor"))
         {
-            iconheader.setImageResource(R.drawable.homedecorred);
+            iconheader.setImageResource(R.drawable.vector_drawable_home_dec);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Paintings"))
         {
-            iconheader.setImageResource(R.drawable.paintingred);
+            iconheader.setImageResource(R.drawable.vector_drawable_painting);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Others"))
         {
-            iconheader.setImageResource(R.drawable.othersred);
+            iconheader.setImageResource(R.drawable.vector_drawable_others);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
 
             divier.setBackgroundResource(R.color.maintheme);
         }
@@ -200,7 +222,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView category = (TextView)rowView.findViewById(R.id.list_child_text);
         category.setTypeface(tf);
        // ImageView iconchild = (ImageView)rowView.findViewById(R.id.list_child_icon);
-        category.setText(child.get(headers.get(groupPosition)).get(childPosition));
+        category.setText("    "+child.get(headers.get(groupPosition)).get(childPosition));
         //iconchild.setImageResource(R.drawable.chakra);
 
         return rowView;

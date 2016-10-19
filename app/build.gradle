@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'panwar'
+            keyPassword 'qwerty'
+            storeFile file('/Users/Panwar/Documents/Lal10release.jks')
+            storePassword 'qwerty'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
-
     defaultConfig {
         applicationId "com.example.sparsh23.laltern"
         minSdkVersion 15
@@ -20,12 +27,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     //compile 'com.commonsware.cwac:camera:0.6@arr'
-    
-
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile(name: 'material-search', ext: 'aar')
     compile 'com.android.support:design:23.4.0'
     compile 'com.github.nostra13:Android-Universal-Image-Loader:v1.9.5'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'

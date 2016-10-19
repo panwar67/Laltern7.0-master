@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
@@ -44,6 +46,7 @@ public class FilterNoSearchFragment extends Fragment {
     TextView min, max;
     Button apply;
     HashMap<String,String> filtermap = new HashMap<String, String>();
+    ExpandableHeightGridView optionslist, itemlist;
 
     HashMap<String,String> map = new HashMap<String, String>();
     CrystalRangeSeekbar seekbar;
@@ -102,7 +105,13 @@ public class FilterNoSearchFragment extends Fragment {
         producttype = (Spinner)root.findViewById(R.id.producttypespinner);
         sizeall = (Spinner)root.findViewById(R.id.sizespinner);
         color = (Spinner)root.findViewById(R.id.colorspinner);
+        optionslist = (ExpandableHeightGridView) root.findViewById(R.id.filteroptionlist);
+        itemlist = (ExpandableHeightGridView) root.findViewById(R.id.filteritemlist);
+        optionslist.setExpanded(true);
 
+        optionslist.setNumColumns(1);
+        itemlist.setExpanded(true);
+        itemlist.setNumColumns(1);
         seekbar = (CrystalRangeSeekbar)root.findViewById(R.id.rangeSeekbarprice);
         seekbar.setMaxStartValue(10000);
         seekbar.setMaxValue(10000);
@@ -111,6 +120,57 @@ public class FilterNoSearchFragment extends Fragment {
         min = (TextView)root.findViewById(R.id.filterpricemin);
         max = (TextView)root.findViewById(R.id.filterpricemax);
         apply = (Button)root.findViewById(R.id.applyfilter);
+
+        final ArrayList<String> options = new ArrayList<String>();
+        options.add("Category");
+        options.add("Sub Category");
+        options.add("Product type");
+        options.add("Color");
+        options.add("Size");
+
+        optionslist.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, options ));
+
+
+
+        optionslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Toast.makeText(getContext(),""+options.get(i)+""+i+"",Toast.LENGTH_SHORT).show();
+                if(options.get(i).equals("Color"))
+                {
+                    itemlist.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dbHelper.GetColor(filtermap.get("category").toString(),filtermap.get("subcat").toString())));
+
+
+
+                }
+                if(options.get(i).equals("Size"))
+                {
+                    itemlist.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dbHelper.GetSizes(filtermap.get("category").toString(),filtermap.get("subcat").toString())));
+
+                }
+                if(options.get(i).equals("Product type"))
+                {
+                    itemlist.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dbHelper.GetProType(filtermap.get("category").toString(),filtermap.get("subcat").toString())));
+
+                }
+                if (options.get(i).equals("Category"))
+                {
+                    ArrayList<String> opt = new ArrayList<String>();
+                    opt.add(filtermap.get("category"));
+
+                    itemlist.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,opt));
+                 }
+                if (options.get(i).equals("Sub Category"))
+                {   ArrayList<String> opt = new ArrayList<String>();
+                    opt.add(filtermap.get("subcat"));
+
+                    itemlist.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,opt));
+
+                }
+
+            }
+        });
 
 
 

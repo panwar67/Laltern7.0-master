@@ -3,6 +3,7 @@ package com.example.sparsh23.laltern;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,20 +41,28 @@ public class Update extends AppCompatActivity {
     String DOWN_URL5 = "http://www.whydoweplay.com/lalten/GetSearchFilter.php";
 
     SessionManager sessionManager;
+    HashMap<String,ArrayList<HashMap<String,String>>> masterdataa = new HashMap<String, ArrayList<HashMap<String,String>>>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_update);
         dbHelper = new DBHelper(getApplicationContext());
 
         sessionManager = new SessionManager(getApplicationContext());
 
-        dbHelper.InitSearchData();
+       // LongOperation longOperation = new LongOperation();
+       // longOperation.execute();
 
-        ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
+
+
+     //   dbHelper.InitSearchData();
+
+       // GetAllData();
         setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
-        // Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+        Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
         ArtisianSetup();
 
 
@@ -59,6 +70,16 @@ public class Update extends AppCompatActivity {
         setUpStream();
 
         InsertCart(sessionManager.getUserDetails().get("uid"));
+
+
+        startActivity(new Intent(Update.this,NavigationMenu.class));
+
+
+
+        finish();
+
+
+        //ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
 
 
     }
@@ -71,7 +92,7 @@ public class Update extends AppCompatActivity {
 
     {
 //        final ProgressDialog loading = ProgressDialog.show(this,"Getting Profile Data...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL1,
+        StringRequest stringRequest4 = new StringRequest(Request.Method.POST, DOWN_URL1,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -163,11 +184,11 @@ public class Update extends AppCompatActivity {
         };
 
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue4 = Volley.newRequestQueue(this);
+        stringRequest4.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         //Adding request to the queue
-        requestQueue.add(stringRequest);
+        requestQueue4.add(stringRequest4);
 
 
 
@@ -177,19 +198,27 @@ public class Update extends AppCompatActivity {
         return true;
     }
 
-    public boolean setUpStream()
+    public HashMap<String,ArrayList<HashMap<String,String>>> setUpStream()
 
     {
+        final HashMap<String,ArrayList<HashMap<String,String>>> masterdata = new HashMap<String, ArrayList<HashMap<String,String>>>();
+
+
+        final        ArrayList<HashMap<String,String>> imgdata = new ArrayList<HashMap<String, String>>();
+    final     ArrayList<HashMap<String,String>> filterdata = new ArrayList<HashMap<String,String>>();
+      final  ArrayList<HashMap<String,String>> SearchData = new ArrayList<HashMap<String, String>>();
 
         //Showing the progress dialog
       //  final ProgressDialog loading = ProgressDialog.show(this,"Getting Image Data...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
+        StringRequest stringRequest5 = new StringRequest(Request.Method.POST, DOWN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
 
 
                  //       loading.dismiss();
+
+                        //       loading.dismiss();
                         if (s!=null)
                         {
 
@@ -200,48 +229,100 @@ public class Update extends AppCompatActivity {
                                 JSONArray data = profile.getJSONArray("ImageData");
 
                                 dbHelper.InitSearchData();
+                                dbHelper.InitFilter();
+
+
 
                                 dbHelper.InitImg();
                                 for(int i=0;i<data.length();i++)
                                 {
+                                    HashMap<String,String> map = new HashMap<String, String>();
+                                    HashMap<String,String> filmap = new HashMap<String, String>();
+                                    HashMap<String,String> searchmapown = new HashMap<String, String>();
+                                    HashMap<String,String> searchmapcraft = new HashMap<String, String>();
+                                    HashMap<String,String> searchmapprotype = new HashMap<String, String>();
+                                    HashMap<String,String> searchmaptitle = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
-
                                     String uid = details.getString("UID");
                                     String des = details.getString("DESCRIPTION");
                                     String path = details.getString("PATH");
                                     String own = details.getString("OWNER");
-                                    dbHelper.InsertSearchTag(own," In Artist", "OWNER");
+                                    searchmapown.put("tag",own);
+                                    searchmapown.put("suggest","In artist");
+                                    searchmapown.put("type","OWNER");
+                                    SearchData.add(searchmapown);
+                                    //searchmap.put("")
+                                    //     dbHelper.InsertSearchTag(own," In Artist", "OWNER");
+
                                     String price = details.getString("PRICE");
                                     String quantity = details.getString("QUANTITY");
                                     String title = details.getString("TITLE");
-                                    dbHelper.InsertSearchTag(title," In Products", "TITLE");
+                                    //   dbHelper.InsertSearchTag(title," In Products", "TITLE");
+                                    searchmaptitle.put("tag",title);
+                                    searchmaptitle.put("suggest","In Products");
+                                    searchmaptitle.put("type","TITLE");
+                                    SearchData.add(searchmaptitle);
                                     String noimage = details.getString("NOIMAGE");
                                     String type = details.getString("TYPE");
                                     String protype = details.getString("PROTYPE");
-                                    dbHelper.InsertSearchTag(protype," In Product Type", "PROTYPE");
+                                    searchmapprotype.put("tag",protype);
+                                    searchmapprotype.put("suggest","In Product Type");
+                                    searchmapprotype.put("type","PROTYPE");
+                                    SearchData.add(searchmapprotype);
+                                    // dbHelper.InsertSearchTag(protype," In Product Type", "PROTYPE");
                                     String category = details.getString("CATEGORY");
                                     String color = details.getString("COLOR");
                                     String size = details.getString("SIZE");
-
-
-
-
                                     String subcat = details.getString("SUBCAT");
-
-                                    
-
                                     String meta = details.getString("META");
                                     String craft = details.getString("CRAFT");
                                     String rating = details.getString("RATING");
-                                    dbHelper.InsertSearchTag(craft,"In Craft","CRAFT");
+                                    // dbHelper.InsertSearchTag(craft,"In Craft","CRAFT");
+                                    searchmapcraft.put("tag",craft);
+                                    searchmapcraft.put("suggest","In Crafts");
+                                    searchmapcraft.put("type","CRAFT");
+                                    SearchData.add(searchmapcraft);
+                                    //  dbHelper.InsertImageData(uid,des,own,path,price,quantity,title,noimage,type,category,subcat,meta,craft,protype,rating,color,size,details.getString("REVPRICE"),details.getString("REVQUANTITY"));
+                                    //dbHelper.InsertFilterData(category,subcat,color,protype,size);
+                                    map.put("uid",uid);
+                                    map.put("des",des);
+                                    map.put("path",path);
+                                    map.put("own",own);
+                                    map.put("price",price);
+                                    map.put("quantity",quantity);
+                                    map.put("title",title);
+                                    map.put("noimg",noimage);
+                                    map.put("type",type);
+                                    map.put("protype",protype);
+                                    map.put("category",category);
+                                    map.put("color",color);
+                                    map.put("size",size);
+                                    map.put("subcat",subcat);
+                                    map.put("meta",meta);
+                                    map.put("craft",craft);
+                                    map.put("rating",rating);
+                                    map.put("revprice",details.getString("REVPRICE"));
+                                    map.put("revquantity",details.getString("REVQUANTITY"));
+                                    //,details.getString("REVQUANTITY")
 
+                                    imgdata.add(map);
 
+                                    filmap.put("category",category);
+                                    filmap.put("subcat",subcat);
+                                    filmap.put("color",color);
+                                    filmap.put("protype",protype);
+                                    filmap.put("size",size);
 
-                                    dbHelper.InsertImageData(uid,des,own,path,price,quantity,title,noimage,type,category,subcat,meta,craft,protype,rating,color,size,details.getString("REVPRICE"),details.getString("REVQUANTITY"));
+                                    filterdata.add(filmap);
 
-                                    dbHelper.InsertFilterData(category,subcat,color,protype,size);
                                 }
                                 Log.d("Image data", s);
+
+
+                                dbHelper.InsertSearchTag(SearchData);
+                                dbHelper.InsertImageData(imgdata);
+                                dbHelper.InsertFilterData(filterdata);
+                                Log.d("data_img_size",""+imgdata.size());
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -249,14 +330,7 @@ public class Update extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
                         }
-
 
 
 
@@ -290,19 +364,21 @@ public class Update extends AppCompatActivity {
         };
 
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue5 = Volley.newRequestQueue(this);
+        stringRequest5.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         //Adding request to the queue
-        requestQueue.add(stringRequest);
-        return false;
+        requestQueue5.add(stringRequest5);
+        return masterdata;
     }
 
 
-    public boolean setOrders(final String buyerid)
+    public ArrayList<HashMap<String,String>> setOrders(final String buyerid)
     {
-       // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
+        final ArrayList<HashMap<String,String>> buyreq = new ArrayList<HashMap<String, String>>();
+
+        // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
+        StringRequest stringRequest3 = new StringRequest(Request.Method.POST, DOWN_URL2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -315,6 +391,7 @@ public class Update extends AppCompatActivity {
                         if (s!=null)
                         {
 
+                            //loading.dismiss();
 
 
                             try {
@@ -324,10 +401,9 @@ public class Update extends AppCompatActivity {
 
                                 for(int i=0;i<data.length();i++)
                                 {
+
+                                    HashMap<String,String> map = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
-
-
-
                                     String requid = details.getString("REQUID");
                                     String prouid = details.getString("PROUID");
                                     String quantity = details.getString("QUANTITY");
@@ -337,25 +413,26 @@ public class Update extends AppCompatActivity {
                                     String status = details.getString("STATUS");
                                     String path = details.getString("PATH");
                                     String reply = details.getString("REPLY");
-
-
-
-
-
-
-
                                     dbHelper.InsertRequestData(prouid,buyuid,requid,description,path,status,reply,crafts,quantity);
-
-
+                                    /*map.put("requid",requid);
+                                    map.put("prouid",prouid);
+                                    map.put("quantity",quantity);
+                                    map.put("craft",crafts);
+                                    map.put("buyuid",buyuid);
+                                    map.put("des",description);
+                                    map.put("status",status);
+                                    map.put("path",path);
+                                    map.put("reply",reply);
+                                    buyreq.add(map);
+                                    //Log.d("check","for data");*/
                                 }
                                 Log.d("Profile fetched", s);
-                               // loading.dismiss();
+                                // loading.dismiss();
+//                                masterdata.put("buy_request",buyreq);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
 
 
 
@@ -396,29 +473,32 @@ public class Update extends AppCompatActivity {
             }
         };
 
+
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue3 = Volley.newRequestQueue(this);
+        stringRequest3.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         //Adding request to the queue
-        requestQueue.add(stringRequest);
+        requestQueue3.add(stringRequest3);
 
 
 
 
 
 
-        return true;
+        return buyreq;
 
      //   return  true;
     }
 
 
 
-    public boolean InsertCart(final String buyerid)
+    public ArrayList<HashMap<String,String>> InsertCart(final String buyerid)
     {
+        final ArrayList<HashMap<String,String>> cartdata = new ArrayList<HashMap<String, String>>();
+
         // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL4,
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, DOWN_URL4,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -429,35 +509,42 @@ public class Update extends AppCompatActivity {
                         if (s!=null)
                         {
 
-                            dbHelper.InitCart();
+
+                            // HashMap<String,String> map = new HashMap<String, String>();
+
 
 
                             try {
                                 JSONObject profile = new JSONObject(s);
                                 JSONArray data = profile.getJSONArray("CartData");
-                                dbHelper.InitOrd();
+                               // dbHelper.InitOrd();
+                                dbHelper.InitCart();
 
                                 for(int i=0;i<data.length();i++)
                                 {
+
+                                    HashMap<String,String> map = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
-
-
-
                                     String requid = details.getString("CARTUID");
                                     String prouid = details.getString("PROUID");
                                     String quantity = details.getString("QUANTITY");
                                     String buyuid = details.getString("USERUID");
-
-
-
-
-
-
-
                                     dbHelper.InsertCartData(requid,prouid,buyuid,quantity);
 
+                                    /*map.put("cartuid",requid);
+                                    map.put("prouid",prouid);
+                                    map.put("quantity",quantity);
+                                    map.put("useruid",buyuid);
 
+                                    cartdata.add(map);
+
+                                    Log.d("check","for data");
+                                    //masterdata.put("cart_data",cartdata);
+                                   // Log.d("master_data_cart",""+masterdata.size());
+                                    GetAllDataReloaded("cart_data",cartdata);
+                                    */
                                 }
+
                                 Log.d("Profile fetched", s);
                                 // loading.dismiss();
 
@@ -465,16 +552,9 @@ public class Update extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            startActivity(new Intent( Update.this,NavigationMenu.class));
-                            finish();
-
-
-
 
 
                         }
-
-
 
 
 
@@ -510,18 +590,18 @@ public class Update extends AppCompatActivity {
         };
 
         //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+        stringRequest2.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         //Adding request to the queue
-        requestQueue.add(stringRequest);
+        requestQueue2.add(stringRequest2);
 
 
 
 
 
 
-        return true;
+        return cartdata;
 
         //   return  true;
     }
@@ -531,10 +611,13 @@ public class Update extends AppCompatActivity {
 
 
 
-    public boolean ArtisianSetup()
+    public ArrayList<HashMap<String,String>> ArtisianSetup()
 
     {
-       // final ProgressDialog loading = ProgressDialog.show(this,"Getting Artisian Data...","Please wait...",false,false);
+
+        final        ArrayList<HashMap<String,String>> artistdata = new ArrayList<HashMap<String, String>>();
+
+        // final ProgressDialog loading = ProgressDialog.show(this,"Getting Artisian Data...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL3,
                 new Response.Listener<String>() {
                     @Override
@@ -543,10 +626,9 @@ public class Update extends AppCompatActivity {
 
 
 
+
                         if (s!=null)
                         {
-
-
 
                             try {
                                 JSONObject profile = new JSONObject(s);
@@ -556,6 +638,7 @@ public class Update extends AppCompatActivity {
 
                                 for(int i=0;i<data.length();i++)
                                 {
+                                    HashMap<String, String> map = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
 
                                     String uid = details.getString("ART_UID");
@@ -571,25 +654,30 @@ public class Update extends AppCompatActivity {
                                     String price = details.getString("PRICE");
                                     String ratings = details.getString("RATING");
 
-
-
                                     dbHelper.InsertArtisian(authenticity,awards,craft,description,name,noimg,pic,price,ratings,state,tob,uid);
 
-
-
-
-
+                                    /*map.put("uid",uid);
+                                    map.put("name",name);
+                                    map.put("craft",craft);
+                                    map.put("tob",tob);
+                                    map.put("awards",awards);
+                                    map.put("state",state);
+                                    map.put("pic",pic);
+                                    map.put("noimg",noimg);
+                                    map.put("des",description);
+                                    map.put("authen",authenticity);
+                                    map.put("price",price);
+                                    map.put("ratings",ratings);
+                                    artistdata.add(map);
+                                    */
 
                                 }
                                 Log.d("artisit fetched", s);
 
-                            } catch (JSONException e) {
+                               // masterdata.put("artist_data",artistdata);
+                                 } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
-
-
 
                         }
                         else
@@ -647,13 +735,16 @@ public class Update extends AppCompatActivity {
 
 
 
-        return true;
+        return artistdata;
     }
 
 
-    public boolean SearchFilterSetup()
+    public ArrayList<HashMap<String,String>> SearchFilterSetup()
     {
-        // final ProgressDialog loading = ProgressDialog.show(this,"Getting Artisian Data...","Please wait...",false,false);
+        final        ArrayList<HashMap<String,String>> filtersearch = new ArrayList<HashMap<String, String>>();
+
+        // final ProgressDia
+        // log loading = ProgressDialog.show(this,"Getting Artisian Data...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL5,
                 new Response.Listener<String>() {
                     @Override
@@ -667,15 +758,18 @@ public class Update extends AppCompatActivity {
 
 
 
+                            dbHelper.InitSearchFilter();
+
+
                             try {
                                 JSONObject profile = new JSONObject(s);
                                 JSONArray data = profile.getJSONArray("FilterSearch");
 
-                               // dbHelper.InitArtisian();
-                                dbHelper.InitFilter();
+                                // dbHelper.InitArtisian();
 
                                 for(int i=0;i<data.length();i++)
                                 {
+                                    HashMap<String,String> map = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
 
                                     String craft = details.getString("CRAFT");
@@ -683,19 +777,26 @@ public class Update extends AppCompatActivity {
 
                                     dbHelper.InsertSearchFilter(craft,protype);
 
+                                   /* map.put("craft",craft);
+                                    map.put("protype",protype);
+                                    filtersearch.add(map);
+
+                                   // Log.d("check","for data");
+                                   */
+
                                 }
                                 Log.d("search filter fetched", s);
+                               // masterdata.put("filter_search",filtersearch);
+                                //GetAllDataReloaded("filter_search",filtersearch);
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
+
                             }
 
 
-
-
-
-                        }
-                        else
+                        }                        else
                         {
 
                             Toast.makeText(getApplicationContext(),"Error Occured",Toast.LENGTH_SHORT).show();
@@ -750,43 +851,148 @@ public class Update extends AppCompatActivity {
 
 
 
-        return true;
+        return filtersearch;
     }
 
 
-    private class LongOperation extends AsyncTask<String, Void, String> {
+  public void Update_Database( HashMap<String,ArrayList<HashMap<String,String>>> data)
+    {
+        if (data!=null)
+        {
+            ArrayList<HashMap<String,String>> imgdata = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> filter_search_data = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> cart_data = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> request_data = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> artist_data = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> filter_data = new ArrayList<HashMap<String, String>>();
+            ArrayList<HashMap<String,String>> Search_data = new ArrayList<HashMap<String, String>>();
+            imgdata= data.get("img_data");
+            filter_data = data.get("filter_data");
+            cart_data = data.get("cart_data");
+            request_data = data.get("buy_request");
+            artist_data = data.get("artist_data");
+            filter_search_data = data.get("filter_search");
+            Search_data = data.get("search_data");
 
-        @Override
-        protected String doInBackground(String... params) {
+            if(Search_data!=null)
+            {
+                dbHelper.InsertSearchTag(Search_data);
+
+                    }
 
 
 
-            return "Executed";
-        }
+            if(imgdata!=null)
+            {
+                dbHelper.InsertImageData(imgdata);
 
-        @Override
-        protected void onPostExecute(String result) {
+            }
 
-            if (result.equals("Executed"))
+            if(filter_data!=null)
             {
 
+            dbHelper.InsertFilterData(filter_data);
+
+            }
+
+
+            if(request_data!=null)
+            {
+
+                for (int i=0;i<request_data.size();i++)
+                {
+
+                    dbHelper.InsertRequestData(request_data.get(i).get("prouid"),request_data.get(i).get("buyuid"),
+                            request_data.get(i).get("requid"),request_data.get(i).get("des"),request_data.get(i).get("path"),request_data.get(i).get("status"),request_data.get(i).get("reply"),request_data.get(i).get("craft"),request_data.get(i).get("quantity"));
+                }
 
 
             }
 
+            if(cart_data!=null)
+            {
+
+                Log.d("cartsize_getall",""+cart_data.size());
+                for (int i=0;i<cart_data.size();i++)
+                {
+                    dbHelper.InsertCartData(cart_data.get(i).get("cartuid"),cart_data.get(i).get("prouid"),cart_data.get(i).get("useruid"),cart_data.get(i).get("quantity"));
+                }
+            }
+
+            if(filter_search_data!=null)
+            {
+                for (int i=0;i<filter_search_data.size();i++)
+                {
+                    dbHelper.InsertSearchFilter(filter_search_data.get(i).get("craft"),filter_search_data.get(i).get("protype"));
+
+                }
+            }
+
+            if(artist_data!=null)
+            {
+
+                for (int i=0;i<artist_data.size();i++)
+                {
+                        dbHelper.InsertArtisian(artist_data.get(i).get("authen"),artist_data.get(i).get("awards"),
+                        artist_data.get(i).get("craft"),artist_data.get(i).get("des"),artist_data.get(i).get("name"),
+                        artist_data.get(i).get("noimg"),artist_data.get(i).get("pic"),
+                        artist_data.get(i).get("price"),artist_data.get(i).get("ratings"),
+                        artist_data.get(i).get("state"),artist_data.get(i).get("tob"),artist_data.get(i).get("uid"));
+                    Log.d("check_noimg",""+artist_data.get(i).get("noimg").toString());
+                                                                                                                                                   // dbHelper.InsertArtisian();
+                }
+
+            }
+
+
+
         }
 
-        @Override
-        protected void onPreExecute()
-        {
 
-        }
 
-        @Override
-        protected void onProgressUpdate(Void... values)
-        {
-            
+
+
+    }
+
+    public void GetAllData()
+    {
+
+        HashMap<String,ArrayList<HashMap<String,String>>> masterdataall = new HashMap<String, ArrayList<HashMap<String,String>>>();
+
+        setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+        Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+        ArtisianSetup();
+
+
+        SearchFilterSetup();
+        setUpStream();
+
+        InsertCart(sessionManager.getUserDetails().get("uid"));
+
+        startActivity(new Intent(Update.this,NavigationMenu.class));
+
+
+
+        //Update_Database(GetAllDataReloaded(null,null));
+
+      //  Log.d("masterdata_size_all",""+ArtisianSetup().size()+" "+SearchFilterSetup().size()+" "+setUpStream().size());
+       // Toast.makeText(getApplicationContext(),""+masterdata.size(),Toast.LENGTH_SHORT).show();
+
+
+
+    }
+
+    public HashMap<String, ArrayList<HashMap<String, String>>> GetAllDataReloaded(String tag, ArrayList<HashMap<String,String>> data)
+    {
+        if(tag!=null&data!=null) {
+
+
+            masterdataa.put(tag, data);
+            Log.d("size_reloaded", "" + masterdataa.size());
         }
+        //Update_Database(masterdataa);
+
+        return masterdataa;
     }
 
 

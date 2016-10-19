@@ -108,7 +108,7 @@ public class ProfileForm extends AppCompatActivity {
                             {
 
 
-                                sessionManager.createLoginSession(email,pass,uid);
+                               // sessionManager.createLoginSession(email,pass,uid);
                                 startActivity(new Intent(ProfileForm.this,Update.class));
                                 finish();
 

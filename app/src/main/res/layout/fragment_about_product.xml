@@ -283,18 +283,6 @@
                         android:orientation="vertical"
                         android:background="@color/white">
 
-
-
-
-
-
-
-
-
-
-
-
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -343,6 +331,34 @@
                             android:id="@+id/typepro"
 
                             />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Available in color  "/>
+                            <ImageView
+                                android:layout_marginLeft="5dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@color/red"/>
+
+                             </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sizes Available"/>
+
+
+
+
+
+
+
 
 
                         <LinearLayout

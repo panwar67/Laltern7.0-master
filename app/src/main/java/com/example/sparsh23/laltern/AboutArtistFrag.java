@@ -115,8 +115,8 @@ public class AboutArtistFrag extends Fragment {
         webView.loadUrl("http://www.whydoweplay.com/lalten/no-jquery.html");
         webView.setWebChromeClient(new WebChromeClient());
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"BioRhyme-Regular.ttf");
-        int noimg = Integer.parseInt(mParam1.get("noimg"));
-        Log.d("No Images in art", ""+noimg);
+//        int noimg = Integer.parseInt(mParam1.get("noimg"));
+  //      Log.d("No Images in art", ""+noimg);
         return view;
     }
 

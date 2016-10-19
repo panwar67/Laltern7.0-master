@@ -5,9 +5,54 @@
     tools:context="com.example.sparsh23.laltern.MyntraFilter">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ListView
+            android:background="#f5f5f5"
+            android:id="@+id/list1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="2"
+            android:fadingEdge="vertical"
+            android:scrollbars="none"
+            android:smoothScrollbar="true"
+            android:soundEffectsEnabled="true" />
+
+        <ListView
+            android:id="@+id/list2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:dividerHeight="1px"
+            android:drawSelectorOnTop="false"
+            android:fadingEdge="vertical"
+            android:padding="0dip"
+            android:scrollbars="none"
+            android:smoothScrollbar="true"/>
+
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="APPLY"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white"
+        android:background="@color/maintheme"
+        android:id="@+id/applyfilternew"
+        />
 
 </FrameLayout>

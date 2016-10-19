@@ -100,6 +100,9 @@
 
                 android:stepSize="0.1"
                 android:rating="1"
+
+                android:progressBackgroundTint="@android:color/holo_red_light"
+                android:progressTint="@color/maintheme"
                 android:id="@+id/productratingview"
                 style="?android:attr/ratingBarStyleSmall"
 

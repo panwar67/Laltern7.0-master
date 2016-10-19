@@ -3,17 +3,19 @@
 
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="24dp"
+    android:layout_height="wrap_content"
 
     >
 
     <LinearLayout
 
+
+        android:paddingTop="5dp"
         android:background="@color/ivory"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginBottom="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
 
         >
 
@@ -41,12 +43,29 @@
         android:textStyle="bold"
         android:text="test"
         android:textSize="15dp"
-        android:layout_width="match_parent"
+        android:layout_weight="2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingRight="?android:attr/listPreferredItemPaddingRight" />
+
+
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_header_icon2"
+            android:gravity="center_vertical"
+            android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+            android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+
+            android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+            android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+            />
 
 
 
@@ -58,7 +77,7 @@
         android:layout_height="1dp"
         android:background="@color/ivory"
         android:id="@+id/dividerview"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="1dp"/>
 
 
     

@@ -101,7 +101,7 @@ public class RequestExpandableAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         View rowView;
-        rowView = inflater.inflate(R.layout.list_header, null);
+        rowView = inflater.inflate(R.layout.listheadpro, null);
 
         TextView group = (TextView)rowView.findViewById(R.id.list_header_text);
         group.setText(headers.toString());

@@ -56,23 +56,28 @@
     android:orientation="horizontal">
 
     <TextView
+        android:paddingLeft="3dp"
         android:layout_weight="1"
         android:textStyle="bold"
         android:textSize="15dp"
 
-        android:textColor="@color/green"
+        android:textColor="#151414"
         android:layout_width="match_parent"
         android:id="@+id/trendingproprice"
         android:layout_height="wrap_content"
         android:text="price"/>
 
     <TextView
+        android:layout_gravity="end"
+        android:gravity="end"
+        android:paddingRight="8dp"
+        android:textColor="#151414"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:text="moq"
         android:id="@+id/promoqtrending"
-        android:textColor="@color/red"
+
         android:layout_height="wrap_content" />
 
 </LinearLayout>

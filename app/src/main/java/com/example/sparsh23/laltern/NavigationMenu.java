@@ -36,6 +36,7 @@ import android.widget.ExpandableListView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,6 +84,8 @@ public class NavigationMenu extends AppCompatActivity
 
 
          horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontallistauto);
+        final ScrollView scrollView = (ScrollView)findViewById(R.id.scrollviewnav);
+
 
 
         //sendScroll();
@@ -113,6 +116,7 @@ public class NavigationMenu extends AppCompatActivity
         Typeface tf = Typeface.createFromAsset(getAssets(),
                 "Raleway-SemiBold.ttf");
         TextView tv = (TextView) findViewById(R.id.trend);
+        TextView textView = (TextView)findViewById(R.id.topproducts);
         TextView tv1 = (TextView) findViewById(R.id.craft);
         TextView tv2 = (TextView) findViewById(R.id.artist);
        // TextView tv3 = (TextView)findViewById(R.id.toptext);
@@ -121,6 +125,7 @@ public class NavigationMenu extends AppCompatActivity
         tv.setTypeface(tf);
         tv1.setTypeface(tf);
         tv2.setTypeface(tf);
+        textView.setTypeface(tf);
       //  tv3.setTypeface(tf);
         //listView = (ListView)findViewById(R.id.listviewmenu);
         dbHelper = new DBHelper(getApplicationContext());
@@ -130,6 +135,8 @@ public class NavigationMenu extends AppCompatActivity
         request = (ImageView)findViewById(R.id.viewrequest);
         profile = (ImageView)findViewById(R.id.viewprofile);
         TwoWayView lvTest = (TwoWayView)findViewById(R.id.horizontallist);
+        TwoWayView topproducts = (TwoWayView)findViewById(R.id.horizontallisttop);
+
        // TwoWayView lvTest2 = (TwoWayView) findViewById(R.id.horizontallist2);
        // GridViewWithHeaderAndFooter lvTest1 = (GridViewWithHeaderAndFooter)findViewById(R.id.horizontallist1);
        // TwoWayView lvTest1 = (TwoWayView)findViewById(R.id.horizontallist1);
@@ -177,7 +184,10 @@ public class NavigationMenu extends AppCompatActivity
         ArrayList<HashMap<String,String>> trendingmap = new ArrayList<HashMap<String, String>>();
         trendingmap = dbHelper.getimageDatatype("trending");
 
+
+
        lvTest.setAdapter(new TrendingProAdapter(NavigationMenu.this,trendingmap));
+        topproducts.setAdapter(new Top_Pro_Adapter(NavigationMenu.this,trendingmap));
         //,category)
        // lvTest1.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
        // lvTest2.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
@@ -210,9 +220,19 @@ public class NavigationMenu extends AppCompatActivity
         //searchView.setQueryHint("Search for crafts, products and artists");
 
         if (searchView != null) {
+
+
+            //scrollView.fullScroll(View.FOCUS_DOWN);
             searchView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
                     onSearchRequested();
                 }
             });
