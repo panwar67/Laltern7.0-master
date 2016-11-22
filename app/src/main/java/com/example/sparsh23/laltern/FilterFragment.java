@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
@@ -37,13 +39,30 @@ public class FilterFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Spinner cat, subcat, sizeall, color, producttype;
+    //Spinner cat, subcat, sizeall, color, producttype;
     DBHelper dbHelper;
-    ArrayList<String> catspinitem = new ArrayList<String>();
-    ArrayList<String> subcatspinitem = new ArrayList<String>();
-    ArrayList<String> catitems = new ArrayList<String>();
+    //TextView min, max;
+    //Button apply;
+   // Spinner cat, subcat, sizeall, color, producttype;
+    //DBHelper dbHelper;
     TextView min, max;
+    ArrayList<HashMap<String ,String>> Check_Color, Check_Size, Check_Protype = new ArrayList<HashMap<String, String>>();
     Button apply;
+    ArrayList<HashMap<String,String>> Selected_Options = new ArrayList<HashMap<String, String>>();
+    //HashMap<String, ArrayList<HashMap<String, String>>> filtermap = new HashMap<>();
+    ExpandableHeightGridView optionslist, itemlist;
+
+   // HashMap<String,String> map = new HashMap<String, String>();
+   // CrystalRangeSeekbar seekbar;
+    View root;
+    HashMap<String,String> cat_subcat = new HashMap<String, String>();
+    ArrayList< HashMap<String,ArrayList<String>>> sizedata = new ArrayList<HashMap<String, ArrayList<String>>>();
+
+    ArrayList< HashMap<String,ArrayList<String>>> colordata = new ArrayList<HashMap<String, ArrayList<String>>>();
+
+    ArrayList< HashMap<String,ArrayList<String>>> prodata = new ArrayList<HashMap<String, ArrayList<String>>>();
+
+
     HashMap<String,String> filtermap = new HashMap<String, String>();
 
     HashMap<String,String> map = new HashMap<String, String>();
@@ -84,11 +103,16 @@ public class FilterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dbHelper = new DBHelper(getContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             filtermap = (HashMap<String, String>) getArguments().getSerializable("filter");
         }
+        Check_Color = dbHelper.GetColor_Search();
+        Check_Protype = dbHelper.GetProType_Search();
+        Check_Size = dbHelper.GetSizes_Search();
     }
 
     @Override
@@ -96,132 +120,188 @@ public class FilterFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_filter, container, false);
-        producttype = (Spinner)root.findViewById(R.id.producttypespinner);
-        sizeall = (Spinner)root.findViewById(R.id.sizespinner);
-        color = (Spinner)root.findViewById(R.id.colorspinner);
 
+        optionslist = (ExpandableHeightGridView) root.findViewById(R.id.filteroptionlist);
+        itemlist = (ExpandableHeightGridView) root.findViewById(R.id.filteritemlist);
+        optionslist.setExpanded(true);
+
+        optionslist.setNumColumns(1);
+        itemlist.setExpanded(true);
+        itemlist.setNumColumns(1);
+        itemlist.setChoiceMode(ExpandableHeightGridView.CHOICE_MODE_MULTIPLE);
         seekbar = (CrystalRangeSeekbar)root.findViewById(R.id.rangeSeekbarprice);
         seekbar.setMaxStartValue(10000);
         seekbar.setMaxValue(10000);
-        cat = (Spinner)root.findViewById(R.id.catspin);
-        subcat = (Spinner)root.findViewById(R.id.subcatspin);
         min = (TextView)root.findViewById(R.id.filterpricemin);
         max = (TextView)root.findViewById(R.id.filterpricemax);
         apply = (Button)root.findViewById(R.id.applyfilter);
 
 
+        final ArrayList<String> options = new ArrayList<String>();
+        options.add("PRODUCT TYPE");
+        options.add("COLOR");
+        options.add("SIZE");
 
-        dbHelper = new DBHelper(getContext());
-        spinnerdata = dbHelper.GetCategories();
-        for (int i = 0;i<spinnerdata.size();i++)
-        {
-            catitems.add(String.valueOf(spinnerdata.get(i).entrySet().iterator().next().getKey()));
-            Log.d("cat spin item",""+spinnerdata.get(i).entrySet().iterator().next().getKey());
+        optionslist.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, options ));
 
 
-        }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),R.layout.spinner_style,catitems);
-        cat.setAdapter(arrayAdapter);
-        cat.setSelection(0);
-        cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+        optionslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                ArrayList<String> subcatslist = new ArrayList<String>();
-                for(int i = 0;i<spinnerdata.size();i++)
+
+                Toast.makeText(getContext(),""+options.get(i)+""+i+"",Toast.LENGTH_SHORT).show();
+                if(options.get(i).equals("COLOR"))
                 {
-                    Log.d("spinner size",""+spinnerdata.size());
+                    itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),Check_Color));
 
-                    if(spinnerdata.get(i).entrySet().iterator().next().getKey().equals(catitems.get(position)))
-                    {
-                        subcat.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
+                }
+                if(options.get(i).equals("SIZE"))
+                {
+                    itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),Check_Size));
 
-                      }
-                      }
+                }
+                if(options.get(i).equals("PRODUCT TYPE"))
+                {
+                    itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),Check_Protype));
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                }
+                if (options.get(i).equals("Category"))
+                {
+                    ArrayList<String> opt = new ArrayList<String>();
+//                    opt.add(filtermap.get("category"));
+
+                    //                  itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),opt));
+                }
+                if (options.get(i).equals("Sub Category"))
+                {   ArrayList<String> opt = new ArrayList<String>();
+                    //                  opt.add(filtermap.get("subcat"));
+
+//                    itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),opt));
+
+                }
+
+                itemlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        CheckedTextView checkedTextView = (CheckedTextView)view.findViewById(R.id.filter_item_textchecked);
+                        if(checkedTextView.isChecked())
+                        {
+
+
+                            Log.d("item_dechecked",""+itemlist.getItemAtPosition(i));
+                            HashMap<String,String> map = new HashMap<String, String>();
+                            map = (HashMap<String, String>)itemlist.getItemAtPosition(i);
+                            if (map.get("col").equals("COLOR"))
+                            {
+                                Change_Color_Adapter("false",i);
+                            }
+                            if(map.get("col").equals("SIZE"))
+                            {
+                                Change_Size_Adapter("false",i);
+                            }
+                            if (map.get("col").equals("PROTYPE"))
+                            {
+                                Change_Protype_Adapter("false",i);
+                            }
+
+
+                            // itemlist.getItemAtPosition(i);
+                            checkedTextView.setChecked(false);
+                            Log.d("decheckeditem",""+i+"");
+
+                            Selected_Options.remove(map);
+                            Log.d("selected_item_size",""+Selected_Options.size());
+
+                        }
+                        else {
+
+
+                            HashMap<String,String> map = new HashMap<String, String>();
+                            map = (HashMap<String, String>)itemlist.getItemAtPosition(i);
+
+                            Selected_Options.add(map);
+
+                            //Selected_Options.remove(map);
+                            Log.d("selected_item_size",""+Selected_Options.size());
+                            checkedTextView.setChecked(true);
+                            Log.d("checked item", "" + i + "");
+                            Log.d("item_checked",""+itemlist.getItemAtPosition(i));
+                            if (map.get("col").equals("COLOR"))
+                            {
+                                Change_Color_Adapter("true",i);
+                            }
+                            if(map.get("col").equals("SIZE"))
+                            {
+                                Change_Size_Adapter("true",i);
+                            }
+                            if (map.get("col").equals("PROTYPE"))
+                            {
+                                Change_Protype_Adapter("true",i);
+                            }
+
+                        }
+                    }
+                });
+
+                apply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ArrayList<HashMap<String, String>> filter_col = new ArrayList<HashMap<String, String>>();
+
+                        for (int i = 0; i < Check_Color.size(); i++) {
+                            if (Check_Color.get(i).get("status").equals("true"))
+                            {
+                                filter_col.add(Check_Color.get(i));
+                            }
+                        }
+                        for (int i = 0; i < Check_Size.size(); i++) {
+                            if (Check_Size.get(i).get("status").equals("true"))
+                            {
+                                filter_col.add(Check_Size.get(i));
+                            }
+
+                        }
+                        for (int i = 0; i < Check_Protype.size(); i++) {
+
+                            if (Check_Protype.get(i).get("status").equals("true"))
+                            {
+                                filter_col.add(Check_Protype.get(i));
+                            }
+
+                        }
+
+
+
+                        ArrayList<HashMap<String,String>> filteredData = new ArrayList<HashMap<String, String>>();
+
+                        Bundle bundle = new Bundle();
+
+                        Log.d("check_forall_filtersize",""+filter_col.size());
+                        filteredData = dbHelper.Get_Product_All_Search(filter_col);
+
+                        HashMap<String,ArrayList<HashMap<String,String>>> filterdata = new HashMap<String, ArrayList<HashMap<String, String>>>();
+                        filterdata.put("size",Check_Size);
+                        filterdata.put("color",Check_Color);
+                        filterdata.put("protype",Check_Protype);
+                        bundle.putSerializable("data",filteredData);
+                        ItemFragment itemFragment = new ItemFragment();
+                        itemFragment.setArguments(bundle);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.navrep, itemFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+
+          }
+                });
+
             }
         });
-        seekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
-            @Override
-            public void valueChanged(Number minValue, Number maxValue) {
-
-                min.setText(minValue.toString());
-                max.setText( maxValue.toString());
-
-            }
-        });
-
-
-
-
-        subcat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
-                Log.d("subcatselect",""+subcat.getSelectedItem());
-
-                sizeall.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetSizes(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString())));
-                color.setAdapter(new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetColor(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
-
-
-                producttype.setAdapter( new ArrayAdapter(getContext(),R.layout.spinner_style,dbHelper.GetProType(String.valueOf(cat.getSelectedItem()),String.valueOf(subcat.getSelectedItem()))));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
-        });
-
-
-        for(int k =0;k<subcat.getCount();k++)
-        {
-
-
-
-        }
-
-
-        apply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                ArrayList<HashMap<String,String>> filteredData = new ArrayList<HashMap<String, String>>();
-
-                Bundle bundle = new Bundle();
-
-
-                filteredData = dbHelper.GetFilteredData(cat.getSelectedItem().toString(),subcat.getSelectedItem().toString(),color.getSelectedItem().toString(),sizeall.getSelectedItem().toString(),min.getText().toString(),max.getText().toString(),producttype.getSelectedItem().toString());
-
-                bundle.putSerializable("data",filteredData);
-
-                ItemFragment itemFragment = new ItemFragment();
-
-                itemFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.navrep, itemFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-
-
-            }
-        });
-
-
-
-
-
-
-
-
+       // dbHelper = new DBHelper(getContext());
 
 
         // Inflate the layout for this fragment
@@ -265,5 +345,23 @@ public class FilterFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void Change_Color_Adapter(String status, int i)
+    {
+
+        Check_Color.get(i).put("status",status);
+        Log.d("changed_item_color",""+Check_Color.get(i));
+    }
+    public void Change_Size_Adapter(String status,int i)
+    {
+        Check_Size.get(i).put("status",status);
+        Log.d("changed_item_size",""+Check_Size.get(i));
+    }
+    public void Change_Protype_Adapter(String status, int i)
+    {
+        Check_Protype.get(i).put("status",status);
+        Log.d("changed_item_protype",""+Check_Protype.get(i));
+
     }
 }

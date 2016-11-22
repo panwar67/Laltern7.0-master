@@ -26,19 +26,21 @@
 
                 android:layout_weight="1"
                 android:src="@drawable/ic_arrow_back_black_24dp"
-                android:id="@+id/backprofile"/>
+                android:id="@+id/backprofile"
+                tools:ignore="ContentDescription" />
 
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:id="@+id/requestprofile"
                 android:src="@drawable/requestmenu"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="end"
 
 
-                />
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/logout"
@@ -49,7 +51,7 @@
                 android:layout_marginRight="9dp"
                 android:src="@drawable/ic_input_black_24dp"
 
-                />
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="match_parent"

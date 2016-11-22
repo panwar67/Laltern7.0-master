@@ -205,7 +205,7 @@ public class categoryFragment extends Fragment {
             }
 
 
-            recyclerView.setAdapter(new MycategoryRecyclerViewAdapter(DummyContent.ITEMS, mListener1));
+          //  recyclerView.setAdapter(new MycategoryRecyclerViewAdapter(DummyContent.ITEMS, mListener1));
 
         }
 

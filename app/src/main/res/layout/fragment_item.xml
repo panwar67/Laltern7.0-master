@@ -66,6 +66,7 @@
 
                 android:background="@color/white"
 
+                android:textColor="@color/green"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pricegrid"
@@ -77,6 +78,7 @@
 
                 android:background="@color/white"
 
+                android:textColor="@android:color/holo_red_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/moqgrid"
@@ -90,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="Artist"
                 android:id="@+id/artgrid"
+                android:visibility="gone"
                 android:paddingTop="8dp"
                 android:textAppearance="?attr/textAppearanceListItem"/>
 

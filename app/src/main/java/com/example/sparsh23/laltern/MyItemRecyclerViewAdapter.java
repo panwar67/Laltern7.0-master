@@ -2,6 +2,7 @@ package com.example.sparsh23.laltern;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,10 +86,16 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
        // holder.mItem = mValues.get(position);
        // holder.mIdView.setText();
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-Regular.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Roboto-Regular.ttf");
+
         holder.mContentView.setText(mValues.get(position).get("title"));
+        holder.mContentView.setTypeface(typeface);
         holder.gridprice.setText(""+mValues.get(position).get("price"));
+        holder.gridprice.setTypeface(typeface1);
         holder.moq.setText("M.O.Q - "+mValues.get(position).get("quantity"));
-        holder.artist.setText("By - "+mValues.get(position).get("artuid"));
+        holder.moq.setTypeface(typeface1);
+      //  holder.artist.setText("By - "+mValues.get(position).get("artuid"));
 
 
         holder.ratingBar.setRating(Float.parseFloat(mValues.get(position).get("rating")));
@@ -116,7 +123,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
-        public final TextView artist, moq;
+        public final TextView  moq;
         public final ImageView gridproduct;
         public final RatingBar ratingBar;
 
@@ -131,7 +138,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             gridprice = (TextView)view.findViewById(R.id.pricegrid);
             mContentView = (TextView) view.findViewById(R.id.titlegrid);
             gridproduct = (ImageView)view.findViewById(R.id.gridimg1);
-            artist = (TextView)view.findViewById(R.id.artgrid);
+            //artist = (TextView)view.findViewById(R.id.artgrid);
             moq = (TextView)view.findViewById(R.id.moqgrid);
             ratingBar = (RatingBar)view.findViewById(R.id.productratingview);
 

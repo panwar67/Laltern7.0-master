@@ -5,9 +5,38 @@
 
 
     <LinearLayout
+        android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:buttonTint="@color/maintheme"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/filter_item_checkbox"/>
+
+        <TextView
+            android:paddingLeft="5dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:text="ddd"
+            android:id="@+id/filter_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <CheckedTextView
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:backgroundTint="@color/maintheme"
+            android:id="@+id/filter_item_textchecked"
+            android:checkMarkTint="@color/maintheme"/>
 
 
     </LinearLayout>

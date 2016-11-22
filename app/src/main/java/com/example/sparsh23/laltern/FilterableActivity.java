@@ -11,12 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class FilterableActivity extends AppCompatActivity {
 
@@ -30,6 +32,7 @@ public class FilterableActivity extends AppCompatActivity {
     DBHelper dbHelper;
     ArrayList<String> catitems = new ArrayList<String>();
     ArrayList<HashMap<String,String>> datafinal = new ArrayList<HashMap<String, String>>();
+    ExpandableHeightGridView craftlist, protypelist;
 
     ArrayList< HashMap<String,ArrayList<String>>> spinnerdata = new ArrayList<HashMap<String, ArrayList<String>>>();
     @Override
@@ -42,7 +45,15 @@ public class FilterableActivity extends AppCompatActivity {
         dbHelper = new DBHelper(getApplicationContext());
 
         button = (Button)findViewById(R.id.filterhomeapply);
-        button.setVisibility(View.GONE);
+
+        craftlist = (ExpandableHeightGridView)findViewById(R.id.craftlist);
+        craftlist.setExpanded(true);
+        craftlist.setNumColumns(1);
+        protypelist = (ExpandableHeightGridView)findViewById(R.id.protypelist);
+        protypelist.setExpanded(true);
+        protypelist.setNumColumns(1);
+        protypelist.setChoiceMode(ExpandableHeightGridView.CHOICE_MODE_MULTIPLE);
+
         price = (ToggleButton)findViewById(R.id.productrate);
         artist = (ToggleButton)findViewById(R.id.artistrate);
         priceL500 = (ToggleButton)findViewById(R.id.below500);
@@ -56,11 +67,10 @@ public class FilterableActivity extends AppCompatActivity {
         spinnerdata = dbHelper.GetSearchFilter();
 
 
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
                 Bundle bundle = new Bundle();
                 Intent intent = new Intent(FilterableActivity.this,NavigationMenu.class);
                 selections.put("craft",craftspin.getSelectedItem().toString());
@@ -70,8 +80,6 @@ public class FilterableActivity extends AppCompatActivity {
                 intent.putExtra("datas",bundle);
                 startActivity(intent);
                 finish();
-
-
             }
         });
 
@@ -79,11 +87,56 @@ public class FilterableActivity extends AppCompatActivity {
         {
             catitems.add(String.valueOf(spinnerdata.get(i).entrySet().iterator().next().getKey()));
             Log.d("craft spin item",""+spinnerdata.get(i).entrySet().iterator().next().getKey());
-
-
         }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_style,catitems);
+
+
+        craftlist.setAdapter(arrayAdapter);
+
+
+        craftlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                for(int j = 0;j<spinnerdata.size();j++)
+                {
+
+                    Log.d("spinner size",""+spinnerdata.size());
+
+                    if(spinnerdata.get(j).entrySet().iterator().next().getKey().equals(catitems.get(i)))
+                    {
+
+
+                        protypelist.setAdapter(new Search_Filter_Adapter(getApplicationContext(),spinnerdata.get(j).get(catitems.get(i))));
+//                        protypespin.setAdapter(new ArrayAdapter(getApplicationContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
+                //        protypespin.setSelection(0);
+
+
+                    }
+
+                }
+
+
+            }
+        });
+
+
+        craftlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                //protypelist.setAdapter(new Filter_Checkbox_Adapter(getApplicationContext(),spinnerdata.get(i).get(catitems.get(i))));
+               // protypespin.setSelection(0);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         craftspin.setAdapter(arrayAdapter);
         craftspin.setSelection(0);
         craftspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,13 +170,14 @@ public class FilterableActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-
+        protypelist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CheckedTextView checkedTextView = (CheckedTextView)view.findViewById(R.id.filter_item_textchecked);
+                checkedTextView.toggle();
+                Log.d("protype_checkbox_filter",""+checkedTextView.isChecked());
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,154 +188,7 @@ public class FilterableActivity extends AppCompatActivity {
         });
 
 
-        price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(artist.isChecked()){
 
-
-
-                    button.setVisibility(View.VISIBLE);
-
-
-                    artist.setChecked(false);
-
-                }
-                if(price.isChecked())
-                {
-                    selections.put("order", "PRICE");
-                }
-            }
-        });
-
-        artist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(price.isChecked()){
-                    button.setVisibility(View.VISIBLE);
-
-
-                    price.setChecked(false);
-
-                }
-                if (artist.isChecked())
-                {
-                    selections.put("order","PRICE");
-                }
-
-
-            }
-        });
-
-        priceL500.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button.setVisibility(View.VISIBLE);
-                if(priceL1500.isChecked())
-                {
-
-
-
-                    priceL1500.setChecked(false);
-                }
-
-                if(priceL5000.isChecked())
-                {
-
-                    priceL5000.setChecked(false);
-                }
-                if(priceA2000.isChecked())
-                {
-
-                    priceA2000.setChecked(false);
-                }
-                if(priceL500.isChecked())
-                {
-                    selections.put("less","500");
-
-                }
-
-            }
-        });
-
-        priceL1500.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button.setVisibility(View.VISIBLE);
-                if(priceL500.isChecked()){
-
-                    priceL500.setChecked(false);
-                }
-
-                if(priceL5000.isChecked()){
-
-                    priceL5000.setChecked(false);
-                }
-                if(priceA2000.isChecked()){
-
-                    priceA2000.setChecked(false);
-                }
-                if(priceL1500.isChecked())
-                {
-                    selections.put("less","1500");
-                }
-
-            }
-        });
-        priceL5000.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button.setVisibility(View.VISIBLE);
-                if(priceL1500.isChecked()){
-
-                    priceL1500.setChecked(false);
-                }
-
-                if(priceL500.isChecked()){
-
-                    priceL500.setChecked(false);
-                }
-                if(priceA2000.isChecked()){
-
-                    priceA2000.setChecked(false);
-                }
-                if (priceL5000.isChecked())
-                {
-                    selections.put("less","5000");
-                }
-
-            }
-        });
-        priceA2000.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button.setVisibility(View.VISIBLE);
-                if(priceL1500.isChecked()){
-
-                    priceL1500.setChecked(false);
-                }
-
-                if(priceL5000.isChecked()){
-
-                    priceL5000.setChecked(false);
-                }
-                if(priceL500.isChecked()){
-
-                    priceL500.setChecked(false);
-                }
-                if (priceA2000.isChecked())
-                {
-                    selections.put("less","2500");
-                }
-
-            }
-        });
-
-
-        if(!priceL5000.isChecked()&&!price.isChecked()&&!priceL500.isChecked()&&!priceL1500.isChecked()&&!priceA2000.isChecked()&&!artist.isChecked())
-        {
-            button.setVisibility(View.GONE);
-        }
 
 
 

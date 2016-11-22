@@ -36,21 +36,13 @@
 
         <ToggleButton
 
-
-
-
-            android:layout_width="wrap_content"
+            android:layout_width="38dp"
             android:layout_height="wrap_content"
-
-
             android:gravity="center"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical|center_horizontal|center"
-
             android:id="@+id/togglelayoutitem"
-
-
             android:layout_margin="7dp"
-
             android:background="@drawable/togglelayout"
 
             />
@@ -100,7 +92,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:clipToPadding="false"
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/white"
         android:name="com.example.sparsh23.laltern.ItemFragment"
         android:layout_width="match_parent"

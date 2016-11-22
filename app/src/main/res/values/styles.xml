@@ -1,21 +1,41 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/maintheme</item>
-        <item name="colorAccent">@color/ivory</item>
+        <item name="colorAccent">@color/maintheme</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewLight</item>
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
+
+
+    <style name="MySearchStyle" parent="Widget.AppCompat.SearchView">
+
+    </style>
+
+
+    <style name="AutoCompleteTextViewLight" parent="@android:style/Widget.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewLight</item>
+
         <item name="windowNoTitle">true</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:titleTextColor" tools:targetApi="m">@android:color/transparent</item>
+        <item name="android:title"></item>
+        <item name="android:windowNoTitle">true</item>
+
+
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar">
 

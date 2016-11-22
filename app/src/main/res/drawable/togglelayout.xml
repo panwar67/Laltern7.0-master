@@ -3,11 +3,10 @@
     <!-- When selected, use grey -->
 
     <item android:drawable="@drawable/listnew"
-        
-
-        android:state_checked="true" />
+          android:state_checked="true"
+        >
+    </item>
     <!-- When not selected, use white-->
     <item android:drawable="@drawable/gridnew"
         android:state_checked="false"/>
-
 </selector>

@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -32,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Profile extends AppCompatActivity {
-    ImageView dp, logout1, request;
+    ImageView dp, logout1,  back, request;
     DBHelper dbHelper;
 
     private FirebaseAuth mAuth;
@@ -40,11 +36,11 @@ public class Profile extends AppCompatActivity {
 
     HashMap<String,String> map = new HashMap<String, String>();
     HashMap<String,String> data = new HashMap<String, String>();
-    TextView name, company, desig, tob, addr, cont, pan, email, webs, state, city;
+    TextView name, company, desig, tob, addr, cont, pan, email, webs, state, city, requests;
     Button logout, orders;
     SessionManager sessionManager;
     ExpandableListView expandableListView, address, order, wishlist;
-
+    ExpandableHeightGridView real_addr_list;
     ImageLoader imageLoader;
     DisplayImageOptions options;
     @Override
@@ -67,6 +63,10 @@ public class Profile extends AppCompatActivity {
         config1.tasksProcessingOrder(QueueProcessingType.LIFO);
         config1.writeDebugLogs();
 
+        real_addr_list = (ExpandableHeightGridView)findViewById(R.id.real_user_addr);
+        real_addr_list.setExpanded(false);
+        real_addr_list.setNumColumns(1);
+
 
 
 
@@ -79,9 +79,27 @@ public class Profile extends AppCompatActivity {
         sessionManager=new SessionManager(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
         expandableListView = (ExpandableListView)findViewById(R.id.requests);
+
         order = (ExpandableListView)findViewById(R.id.orderlistpro);
         address = (ExpandableListView)findViewById(R.id.expandaddress);
         dp = (ImageView)findViewById(R.id.imageView1);
+        back = (ImageView)findViewById(R.id.backprofile);
+        request = (ImageView)findViewById(R.id.requestprofile);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Profile.this,SubmitRequest.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                finish();
+            }
+        });
 
         logout1 = (ImageView)findViewById(R.id.logout);
 
@@ -109,9 +127,38 @@ public class Profile extends AppCompatActivity {
         ArrayList<HashMap<String,String>> map = new ArrayList<HashMap<String, String>>();
         map = dbHelper.GetOrders(sessionManager.getUserDetails().get("uid"));
         Log.d("request_size",""+map.size());
-        expandableListView.setAdapter(new RequestExpandableAdapter(map,"My Requests",getApplicationContext()));
-        order.setAdapter(new RequestExpandableAdapter(map,"My Orders",getApplicationContext()));
-        address.setAdapter(new RequestExpandableAdapter(map,"My Addresses",getApplicationContext()));;
+
+
+       // expandableListView.setAdapter(new RequestExpandableAdapter(map,"My Requests",getApplicationContext()));
+        //order.setAdapter(new RequestExpandableAdapter(map,"My Orders",getApplicationContext()));
+        real_addr_list.setAdapter( new Checkout_Addr_Adapter(getApplicationContext(),dbHelper.GetAddresses()));
+        //address.setAdapter(new Address_ExpandableList_Adapter(dbHelper.GetAddresses(),"My Addresses",getApplicationContext()));
+
+final TextView textView = (TextView)findViewById(R.id.toggleaddr);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",textView.getText().toString()));
+
+            }
+        });
+
+        final TextView request = (TextView)findViewById(R.id.togglerequest);
+
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",request.getText().toString()));
+            }
+        });
+
+
+
+
+
+        Log.d("address_size",""+dbHelper.GetAddresses().size());
         name = (TextView)findViewById(R.id.nameprofile);
         cont = (TextView)findViewById(R.id.contactprofile);
 

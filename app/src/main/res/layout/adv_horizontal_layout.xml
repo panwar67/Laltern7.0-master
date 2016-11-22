@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+
+    android:layout_weight="3"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:layout_weight=".75">
+        <LinearLayout
+            android:background="@drawable/shadowbag_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+
+            <ImageView
+
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/trendingproimg"
+                android:scaleType="fitXY"
+                />
+
+            <TextView
+
+                android:textAlignment="center"
+                android:typeface="monospace"
+                android:paddingLeft="5dp"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="#424242"
+                android:id="@+id/trendingprotit"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textAlignment="center"
+                    android:paddingLeft="3dp"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+
+                    android:textColor="#151414"
+                    android:layout_width="match_parent"
+                    android:id="@+id/trendingproprice"
+                    android:layout_height="wrap_content"
+                    android:text="price"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:paddingRight="8dp"
+                    android:textColor="#151414"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:text="moq"
+                    android:id="@+id/promoqtrending"
+
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:numStars="5"
+                android:visibility="gone"
+                android:stepSize="0.1"
+                android:rating="2"
+                android:progressTint="#DAA520"
+                android:layout_height="wrap_content"
+                android:id="@+id/productratingtrending"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

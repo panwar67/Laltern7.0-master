@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="@drawable/bg"
-    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
     tools:context="com.example.sparsh23.laltern.Update">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/vid_lal"
+
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_gravity="right"
+        android:src="@drawable/lal_logo"/>
 
 
 
 
 
-</RelativeLayout>
+
+
+</FrameLayout>

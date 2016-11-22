@@ -98,7 +98,7 @@ public class AboutArtistFrag extends Fragment {
         //overall.setRating(Float.parseFloat(mParam1.get("rating")));
         artistproducts = (TwoWayView)view.findViewById(R.id.artistproducts);
         SliderLayout sliderShow = (SliderLayout) view.findViewById(R.id.slider);
-        artistproducts.setAdapter(new TrendingProAdapter(getContext(),dbHelper.GetArtistProducts(mParam1.get("artuid"))));
+        artistproducts.setAdapter(new Trending_Pro_Adapter_Product_Page(getContext(),dbHelper.GetArtistProducts(mParam1.get("artuid"))));
         WebView webView = (WebView)view.findViewById(R.id.webs);
         webView.getSettings().getJavaScriptCanOpenWindowsAutomatically();
         webView.getSettings().setJavaScriptEnabled(true);

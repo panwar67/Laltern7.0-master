@@ -169,15 +169,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
 
-        Button signup = (Button)findViewById(R.id.sign_up_button);
-        signup.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(LoginActivity.this,ProfileForm.class));
-                finish();
-            }
-        });
 
 
 
@@ -261,7 +252,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d("facebook_detailspid", "" +  pro.getId().toString());
                             Log.d("facebook_detailspl", "" +  pro.getLinkUri().toString());
                             Log.d("facebook_detailspn", "" +  pro.getName().toString());
-                            handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,pro.getName(),pro.getId(),pro.toString());
+                            handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,pro.getName(),pro.getId(),pro.getProfilePictureUri(400,400).toString());
                         }
                     }
 

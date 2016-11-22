@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/backgroundoff">
+                android:background="@color/white">
 
 
 
@@ -85,7 +85,7 @@
 
                         android:text="TITLE"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/black"
+
 
                         android:layout_weight="1"
                         android:textSize="18dp"/>
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:text="2000"
                         android:textSize="16dp"
-                        android:textColor="@color/green"
+                        android:textColor="@color/black"
                         android:layout_weight="1"
                         android:id="@+id/pricepro"
                         android:textStyle="bold"
@@ -169,7 +169,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/backgroundoff">
+                    android:background="@color/white">
 
 
 
@@ -181,6 +181,7 @@
                         android:orientation="vertical">
                     <TextView
                             android:layout_marginTop="8dp"
+
                             android:id="@+id/selectquantitylabel"
                             android:textStyle="bold"
                             android:paddingLeft="5dp"
@@ -303,10 +304,13 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_margin="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Test Description"
+
+                            android:paddingLeft="8dp"
+
+                            android:layout_marginBottom="3dp"
                             android:id="@+id/descriptionpartpro"
                             />
                         <View
@@ -324,53 +328,59 @@
 
                             android:textStyle="bold"/>
                         <TextView
-
-                            android:layout_margin="8dp"
+                            android:paddingLeft="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/typepro"
+                            android:layout_marginBottom="3dp"
+                       />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/backshadow"></View>
 
-                            />
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <TextView
+                                android:textStyle="bold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Available in color  "/>
-                            <ImageView
-                                android:layout_marginLeft="5dp"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:src="@color/red"/>
+                                android:layout_margin="8dp"
+                                android:id="@+id/coloravail"
+                                android:text="Available Sizes"/>
 
                              </LinearLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sizes Available"/>
 
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:id="@+id/sizehorizontalavail"
+                            android:orientation="horizontal"
 
+                            android:choiceMode="singleChoice"
+                            android:layout_height="wrap_content">
 
+                        </Spinner>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/backshadow">
 
-
-
+                        </View>
 
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/backgroundoff"
+                            android:background="@color/white"
                             android:orientation="vertical"
                             >
                             <RatingBar
                                 android:layout_gravity="center"
-
-
                                 android:layout_width="wrap_content"
                                 android:numStars="5"
                                 android:stepSize="0.1"
@@ -414,7 +424,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/similarproducts"
-                    android:background="@android:color/white"
+                    android:background="@color/white"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp"/>
             </LinearLayout>
@@ -426,6 +436,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_gravity="bottom|end"
+
         fab:menu_labels_style="@style/menu_labels_style"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
@@ -448,16 +459,7 @@
             android:src="@drawable/ic_add_shopping_cart_black_24dp"
             fab:fab_colorPressed="@color/green" />
 
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-
-
-            android:src="@drawable/checkout"
-            fab:fab_colorNormal="@android:color/transparent"
-            fab:fab_colorPressed="@color/green"
-            />
 
     </com.github.clans.fab.FloatingActionMenu>
 

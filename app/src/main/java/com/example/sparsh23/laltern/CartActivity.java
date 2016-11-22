@@ -1,15 +1,14 @@
 package com.example.sparsh23.laltern;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.nostra13.universalimageloader.utils.L;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +29,15 @@ public class CartActivity extends AppCompatActivity {
 
     DBHelper dbHelper;
     TextView carttotal;
+    ImageView back;
+    Button checkout;
+    double totals, tax, sub;
     ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
     ArrayList<HashMap<String,String>> cartpro = new ArrayList<HashMap<String, String>>();
     ExpandableHeightGridView listView;
     TextView subtotal, taxtotal, grandtotal;
     String DOWN_URL2 = "http://www.whydoweplay.com/lalten/DeleteFromCart.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +47,9 @@ public class CartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         carttotal = (TextView)findViewById(R.id.cartprototal);
+        back = (ImageView)findViewById(R.id.cartback);
+        checkout = (Button)findViewById(R.id.checkout);
+
         listView = (ExpandableHeightGridView)findViewById(R.id.cartproducts);
          dbHelper = new DBHelper(getApplicationContext());
         data = dbHelper.GetCartData();
@@ -64,27 +64,91 @@ public class CartActivity extends AppCompatActivity {
         taxtotal.setTypeface(typeface);
         grandtotal.setTypeface(typeface);
 
-        cartpro = GetcartData(data);
+        cartpro = GetcartData();
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        carttotal.setText("Total Items : "+cartpro.size());
+                if(data.size()>0) {
 
-        listView.setAdapter(new CartItemAdapter(CartActivity.this,cartpro));
-        listView.setExpanded(true);
-        listView.setNumColumns(1);
+
+
+                    startActivity(new Intent(CartActivity.this,
+                            Checkout_Page.class).putExtra("total",totals).putExtra("sub",sub).putExtra("tax",tax));
+                    finish();
+                }
+
+                if(data.size()==0)
+                {
+
+
+                    Toast.makeText(getApplicationContext(),"Cart is empty",Toast.LENGTH_SHORT);
+                }
+
+
+
+            }
+        });
+
+
+        Populate_Cart(cartpro);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+
+
     }
 
-    public ArrayList<HashMap<String,String>> GetcartData( ArrayList<HashMap<String,String>> prodata)
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+
+    }
+
+    public ArrayList<HashMap<String,String>> GetcartData()
     {
         ArrayList<HashMap<String,String>> temppro = new ArrayList<HashMap<String, String>>();
-
         for(int i = 0; i<data.size();i++)
         {
             HashMap<String,String> map = new HashMap<String, String>();
-            map = dbHelper.GetProMap(data.get(i).get("prouid"),data.get(i).get("quantity"));
+            map = dbHelper.GetProMap(data.get(i).get("prouid"),data.get(i).get("quantity"),data.get(i).get("size"));
             map.put("cartuid",data.get(i).get("cartuid"));
             temppro.add(map);
         }
+
         return temppro;
+
+    }
+
+
+    public boolean Calculate_Total_Price()
+    {
+        double total=0;
+        double taxes=0;
+        for(int i=0;i<cartpro.size();i++)
+        {
+            int qty = Integer.parseInt(cartpro.get(i).get("quantity"));
+            double rate = Float.parseFloat(cartpro.get(i).get("price"));
+            double aux_total = qty*rate;
+            total = aux_total+total;
+
+            sub = total;
+
+        }
+        subtotal.setText("Sub Total  :   "+total);
+        taxes = (total*13.5)/100;
+        tax=taxes;
+        taxtotal.setText("Total Taxes :     "+taxes);
+        double total_grand = total+taxes;
+        totals = total_grand;
+        grandtotal.setText("Total :     "+total_grand);
+        return true;
     }
 
 
@@ -105,11 +169,13 @@ public class CartActivity extends AppCompatActivity {
 
 
 
-                        carttotal.setText("Total Items : "+data.size());
+                        int total = data.size()-1;
+                        carttotal.setText("Total Items : "+total);
 
 
 
                         Toast.makeText(getApplicationContext(),""+s.toString(),Toast.LENGTH_SHORT).show();
+                        Calculate_Total_Price();
 
 
 
@@ -163,6 +229,25 @@ public class CartActivity extends AppCompatActivity {
         return true;
 
         //   return  true;
+    }
+
+    public boolean Populate_Cart(ArrayList<HashMap<String,String>> data)
+    {
+
+        CartItemAdapter cartItemAdapter = new CartItemAdapter(CartActivity.this,data);
+        listView.setAdapter(cartItemAdapter);
+        listView.setExpanded(true);
+        listView.setNumColumns(1);
+        cartItemAdapter.notifyDataSetChanged();
+
+        carttotal.setText("Total Items : "+cartpro.size());
+
+        Calculate_Total_Price();
+
+
+
+
+        return  true;
     }
 
 

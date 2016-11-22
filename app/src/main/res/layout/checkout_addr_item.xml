@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shadowbag">
+    <TextView
+        android:textColor="#696868"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addr_title"
+        android:text="title"
+        android:textSize="17dp"
+        android:paddingLeft="5dp"/>
+    <TextView
+
+        android:textColor="#696868"
+
+        android:textSize="20dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/addr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address"/>
+    <TextView
+
+        android:textColor="#696868"
+
+
+        android:textSize="17dp"
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Area,"
+        android:id="@+id/area"/>
+
+    <TextView
+
+
+        android:textColor="#696868"
+
+        android:textSize="17dp"
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="City,"
+        android:id="@+id/city"/>
+
+
+    <TextView
+
+
+        android:textColor="#696868"
+
+        android:textSize="17dp"
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dist"
+        android:text="District,"/>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+
+      <TextView
+
+
+          android:textColor="#696868"
+
+          android:textSize="17dp"
+          android:paddingLeft="5dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/addr_state"
+          android:text="State - "/>
+
+      <TextView
+
+
+          android:textColor="#696868"
+
+
+          android:textSize="17dp"
+          android:paddingLeft="5dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/addr_pin"
+          android:text="201310"/>
+
+
+
+
+  </LinearLayout>
+
+
+        <TextView
+
+            android:textColor="#696868"
+            android:textSize="17dp"
+            android:paddingLeft="5dp"
+            android:id="@+id/addr_cont"
+            android:layout_width="match_parent"
+            android:text="98172727"
+            android:layout_height="wrap_content"
+            />
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

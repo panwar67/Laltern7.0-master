@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shadowbag">
+    android:background="@drawable/shadowbag_new"
+    >
 
     <LinearLayout
+
         android:layout_margin="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,7 +56,8 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="Title"/>
 
@@ -99,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Artist"
+                android:visibility="gone"
                 android:textSize="10dp"
                 android:id="@+id/artgrid"
                 android:paddingTop="3dp"

@@ -4,6 +4,7 @@ package com.example.sparsh23.laltern;
 import android.animation.ObjectAnimator;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -43,6 +44,12 @@ import android.widget.Toast;
 
 import com.example.sparsh23.laltern.dummy.DummyContent;
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.lucasr.twowayview.TwoWayView;
 
@@ -50,10 +57,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
 
 public class NavigationMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,   ItemFragment.OnListFragmentInteractionListener, categoryFragment.OnListFragmentInteractionListener, newHome.OnFragmentInteractionListener, SubCatItemsFragment.OnListFragmentInteractionListener, FilterFragment.OnFragmentInteractionListener, FilterNoSearchFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,   ItemFragment.OnListFragmentInteractionListener, categoryFragment.OnListFragmentInteractionListener,  FilterFragment.OnFragmentInteractionListener, FilterNoSearchFragment.OnFragmentInteractionListener{
 
 
    // LandingHome landinghome;
@@ -65,14 +73,18 @@ public class NavigationMenu extends AppCompatActivity
      HashMap<String,List<String>> listDataChild = new HashMap<String, List<String>>();
     ListView listView;
 
-    ImageView jewel, homedecor, hometext, saree, painting,access, others,apparel, cart, request, profile;
+    ImageView jewel, homedecor, hometext, saree, painting,access, others,apparel, cart, request;
+    CircleImageView profile;
     TextView home, aboutus, contactus, policies;
+    ImageLoader imageLoader;
+    DisplayImageOptions options;
+    SessionManager sessionManager;
 
 
 
 
     categoryFragment categoryFragment;
-    newHome newhom;
+    //newHome newhom;
     HorizontalScrollView horizontalScrollView;
 
     @Override
@@ -81,9 +93,27 @@ public class NavigationMenu extends AppCompatActivity
         setContentView(R.layout.activity_navigation_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565).imageScaleType(ImageScaleType.EXACTLY).resetViewBeforeLoading(true).build();
+        ImageLoaderConfiguration.Builder config1 = new ImageLoaderConfiguration.Builder(getApplicationContext());
+        config1.defaultDisplayImageOptions(options);
+        config1.threadPriority(Thread.NORM_PRIORITY - 2);
+        config1.denyCacheImageMultipleSizesInMemory();
+        config1.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config1.diskCacheSize(100 * 1024 * 1024); // 50 MiB
+        config1.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config1.writeDebugLogs();
+        imageLoader = ImageLoader.getInstance();
+//        imageLoader.destroy();
+        imageLoader.init(config1.build());
+        sessionManager = new SessionManager(getApplicationContext());
 
 
-         horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontallistauto);
+
+
+        horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontallistauto);
         final ScrollView scrollView = (ScrollView)findViewById(R.id.scrollviewnav);
 
 
@@ -119,6 +149,7 @@ public class NavigationMenu extends AppCompatActivity
         TextView textView = (TextView)findViewById(R.id.topproducts);
         TextView tv1 = (TextView) findViewById(R.id.craft);
         TextView tv2 = (TextView) findViewById(R.id.artist);
+        TextView tv3 = (TextView)findViewById(R.id.testicals);
        // TextView tv3 = (TextView)findViewById(R.id.toptext);
 
 
@@ -126,6 +157,7 @@ public class NavigationMenu extends AppCompatActivity
         tv1.setTypeface(tf);
         tv2.setTypeface(tf);
         textView.setTypeface(tf);
+        tv3.setTypeface(tf);
       //  tv3.setTypeface(tf);
         //listView = (ListView)findViewById(R.id.listviewmenu);
         dbHelper = new DBHelper(getApplicationContext());
@@ -133,7 +165,7 @@ public class NavigationMenu extends AppCompatActivity
         //data = dbHelper.getimageData();
 
         request = (ImageView)findViewById(R.id.viewrequest);
-        profile = (ImageView)findViewById(R.id.viewprofile);
+        profile = (CircleImageView) findViewById(R.id.viewprofile);
         TwoWayView lvTest = (TwoWayView)findViewById(R.id.horizontallist);
         TwoWayView topproducts = (TwoWayView)findViewById(R.id.horizontallisttop);
 
@@ -142,9 +174,8 @@ public class NavigationMenu extends AppCompatActivity
        // TwoWayView lvTest1 = (TwoWayView)findViewById(R.id.horizontallist1);
 
         lvTest.refreshDrawableState();
-
-
-
+        imageLoader.displayImage(sessionManager.getUserDetails().get("dp"),profile);
+        Log.d("dp_profile",""+sessionManager.getUserDetails().get("dp"));
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,26 +213,66 @@ public class NavigationMenu extends AppCompatActivity
         
 
         ArrayList<HashMap<String,String>> trendingmap = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String,String>> top_products = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String,String>> testicals_list = new ArrayList<HashMap<String, String>>();
+
+        testicals_list = dbHelper.getimageDatatype("testimonials");
         trendingmap = dbHelper.getimageDatatype("trending");
+        top_products = dbHelper.getimageDatatype("top");
 
 
 
        lvTest.setAdapter(new TrendingProAdapter(NavigationMenu.this,trendingmap));
-        topproducts.setAdapter(new Top_Pro_Adapter(NavigationMenu.this,trendingmap));
+        topproducts.setAdapter(new Top_Pro_Adapter(NavigationMenu.this,top_products));
+        final ArrayList<HashMap<String, String>> finalTop_products = top_products;
+        topproducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+              Toast.makeText(getApplicationContext(),""+i+""+ finalTop_products.get(i).get("uid")+" "+finalTop_products.get(i).get("artuid"),Toast.LENGTH_SHORT).show();
+
+              Intent intent = new Intent(NavigationMenu.this,ProductView.class);
+              intent.putExtra("promap", finalTop_products.get(i));
+              startActivity(intent);
+          }
+      });
         //,category)
        // lvTest1.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
        // lvTest2.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
+        ExpandableHeightGridView testicals = (ExpandableHeightGridView)findViewById(R.id.expandtesticals);
+        testicals.setExpanded(true);
+        testicals.setNumColumns(1);
+        testicals.setAdapter(new LandingHomeListAdapter(getApplicationContext(),testicals_list));
+
+
+
+
 
         ExpandableHeightGridView gridView = new ExpandableHeightGridView(this);
+
         gridView = (ExpandableHeightGridView)findViewById(R.id.expandgrid);
-        ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
+        final ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
         //ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
         gridView1.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
-        gridView1.setNumColumns(2);
+        gridView1.setNumColumns(1);
         gridView1.setExpanded(true);
         gridView.setNumColumns(2);
         gridView.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
         gridView.setExpanded(true);
+
+        gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(NavigationMenu.this,New_Scrolling.class);
+                HashMap<String,String> map = new HashMap<String, String>();
+                map = (HashMap<String, String>) gridView1.getItemAtPosition(i);
+                intent.putExtra("uid",map.get("uid"));
+                Log.d("uid_meta",""+map.get("uid"));
+                startActivity(intent);
+
+
+            }
+        });
 
         final EditText searchView = (EditText) findViewById(R.id.searchviewrealid);
 
@@ -363,6 +434,13 @@ public class NavigationMenu extends AppCompatActivity
                 HashMap<String,String> aux = new HashMap<String, String>();
                 aux.put("category",cat);
                 aux.put("subcat",subcat);
+                HashMap<String,ArrayList<HashMap<String,String>>> filterdata = new HashMap<String, ArrayList<HashMap<String, String>>>();
+                filterdata.put("size",dbHelper.GetSizes(cat,subcat));
+                filterdata.put("color",dbHelper.GetColor(cat,subcat));
+                filterdata.put("protype",dbHelper.GetProType(cat,subcat));
+
+
+
 
 
 
@@ -370,7 +448,8 @@ public class NavigationMenu extends AppCompatActivity
                 Bundle bundle1 = new Bundle();
 
                 bundle1.putSerializable("data",data);
-                bundle1.putSerializable("filter",aux);
+                bundle1.putSerializable("filter",filterdata);
+                bundle1.putSerializable("selection",aux);
 
                ItemFragment newhom =  ItemFragment.newInstance(1);
 
@@ -603,6 +682,26 @@ public class NavigationMenu extends AppCompatActivity
             }
         });
 
+        ImageView missel = (ImageView)findViewById(R.id.miscelSuperCat);
+        missel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager transaction = getSupportFragmentManager();
+
+                categoryFragment = categoryFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "mislane");
+                categoryFragment.setArguments(bundle);
+                android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
+                //transaction.beginTransaction().replace()
+                frag.addToBackStack(null);
+                frag.commit();
+
+
+            }
+        });
+
 
 
 
@@ -648,6 +747,7 @@ public class NavigationMenu extends AppCompatActivity
         listDataHeader.add("Paintings");
 
         listDataHeader.add("Others");
+        listDataHeader.add("Miscellaneous");
         listDataHeader.add("Contact us");
         listDataHeader.add("About us");
         listDataHeader.add("Policies");
@@ -655,13 +755,11 @@ public class NavigationMenu extends AppCompatActivity
 
 
 
+
         // Adding child data
         List<String> heading1 = new ArrayList<String>();
         heading1.add("Terracotta");
-        heading1.add("silver");
-        heading1.add("Metal");
         heading1.add("Cane");
-        heading1.add("Contemporary");
         heading1.add("Jute");
         heading1.add("Dokra");
         heading1.add("Wooden");
@@ -669,46 +767,51 @@ public class NavigationMenu extends AppCompatActivity
 
         List<String> heading2 = new ArrayList<String>();
         heading2.add("Footwear");
-        heading2.add("Bag and Belts");
-        heading2.add("Tribal");
+        heading2.add("Bags");
+        heading2.add("Bamboo Craft");
+        heading2.add("Ceramic Accessories");
+        heading2.add("Wooden Accessories");
+        heading2.add("Jute Craft");
+
 
         List<String> heading3 = new ArrayList<String>();
-
-
-
-                heading3.add("Printed");
-        heading3.add("Woven");
-        heading3.add("Embroidery");
+        heading3.add("Kalamkari");
+        heading3.add("Bandhez");
+        heading3.add("Bagh");
+        heading3.add("Ajrakh");
+        heading3.add("Chikankari");
+        heading3.add("Bhagalpur Linen");
+        heading3.add("Chanderi/Maheshwari");
+        heading3.add("Banarasi");
+        heading3.add("Eri/Assam Silk");
 
 
         List<String> heading4 = new ArrayList<String>();
-        heading4.add("Kurta");
-        heading4.add("Shawls");
-        heading4.add("Stole");
-        heading4.add("Dupatta");
-        heading4.add("Fabrics");
-        heading4.add("Pants and Skirts");
+
+        heading4.add("Running Fabrics");
         heading4.add("Jackets");
-        heading4.add("Tops and Dresses");
+        heading4.add("Shawls");
+        heading4.add("Dupatta");
+        heading4.add("Stole");
 
 
         List<String> heading5 = new ArrayList<String>();
-                                heading5.add("Cushion Covers");
-                heading5.add("Rugs and Dhurries");
+        heading5.add("Dhurry/Carpet");
+        heading5.add("Bedsheet");
         heading5.add("Quilts");
-        heading5.add("Bed Linen");
-                heading5.add("Table Linen");
 
         List<String> heading6 = new ArrayList<String>();
         heading6.add("Lamps");
-        heading6.add("Wooden Decor");
-        heading6.add("Marble Decor");
-        heading6.add("Stone Decor");
-        heading6.add("Ceramic");
-        heading6.add("Bone and Horn Decor");
-        heading6.add("Paper and Horn Decor");
-        heading6.add("Paper Mache");
-        heading6.add("Decor MISC");
+        heading6.add("Iron Craft");
+        heading6.add("Wooden Craft");
+        heading6.add("Stone Craft");
+        heading6.add("Ceramic Craft");
+        heading6.add("Cane Craft");
+        heading6.add("Wooden Toys");
+        heading6.add("Wall Hangings");
+
+        heading6.add("Bone and Horn");
+        heading6.add("Papier Mache");
 
         List<String> heading7 = new ArrayList<String>();
         heading7.add("Murals and Paintings");
@@ -719,8 +822,16 @@ public class NavigationMenu extends AppCompatActivity
 
 
         List<String> heading8 = new ArrayList<String>();
-        heading8.add("Miscellaneous Crafts");
-        heading8.add("Waste paper products");
+        heading8.add("Contemporary Jewellery");
+        heading8.add("Waste Paper Products");
+        heading8.add("Educational Toys");
+
+        List<String> heading10 = new ArrayList<String>();
+        heading10.add("Grass Craft");
+        heading10.add("Copper Bells");
+        heading10.add("Metal Inlay Craft");
+
+
 
         List<String> heading9 = new ArrayList<String>();
 
@@ -738,9 +849,10 @@ public class NavigationMenu extends AppCompatActivity
         listDataChild.put(listDataHeader.get(6),heading6);
         listDataChild.put(listDataHeader.get(7),heading7);
         listDataChild.put(listDataHeader.get(8),heading8);
-        listDataChild.put(listDataHeader.get(9),heading9);
+        listDataChild.put(listDataHeader.get(9),heading10);
         listDataChild.put(listDataHeader.get(10),heading9);
         listDataChild.put(listDataHeader.get(11),heading9);
+        listDataChild.put(listDataHeader.get(12),heading9);
 
 
 
@@ -791,64 +903,6 @@ public class NavigationMenu extends AppCompatActivity
 
         Fragment fragment = null;
 
-
-        android.app.FragmentManager fra = getFragmentManager();
-        FragmentManager transaction = getSupportFragmentManager();
-
-
-        if (id == R.id.nav_camera) {
-
-
-
-
-            newhom =  newhom.newInstance("a","a");
-
-
-
-           // fra.beginTransaction().replace()
-            android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, newhom);
-            //transaction.beginTransaction().replace()
-            frag.addToBackStack(null);
-            frag.commit();
-           // break;
-
-
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-            categoryFragment = categoryFragment.newInstance();
-            Bundle bundle = new Bundle();
-            bundle.putString("type","jewel");
-            categoryFragment.setArguments(bundle);
-            android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
-            //transaction.beginTransaction().replace()
-            frag.addToBackStack(null);
-            frag.commit();
-
-        } else if (id == R.id.nav_slideshow)
-        {
-
-
-
-
-        } else if (id == R.id.nav_manage)
-        {
-
-            newhom = newHome.newInstance("","");
-            android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, newhom);
-            //transaction.beginTransaction().replace()
-            frag.addToBackStack(null);
-            frag.commit();
-
-
-        } else if (id == R.id.nav_share)
-        {
-
-        } else if (id == R.id.nav_send)
-        {
-
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

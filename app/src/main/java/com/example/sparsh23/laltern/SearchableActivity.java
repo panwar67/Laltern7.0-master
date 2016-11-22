@@ -44,12 +44,15 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
 
         setContentView(R.layout.activity_searchable);
 
-        SearchView searchView = (SearchView)findViewById(R.id.idsearch);
+        //SearchView searchView = (SearchView)findViewById(R.id.idsearch);
+        //searchView.requestFocusFromTouch();
+        //searchView.setFocusable(true);
+
 
         dbHelper = new DBHelper(getApplicationContext());
 
 
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+        /*searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
                 Toast.makeText(getApplicationContext()," "+position,Toast.LENGTH_SHORT).show();
@@ -62,6 +65,7 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
                 return false;
             }
         });
+        */
 
 
 

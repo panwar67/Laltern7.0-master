@@ -104,56 +104,27 @@ public class ProductView extends AppCompatActivity implements AboutArtistFrag.On
         Intent intent = getIntent();
          data = (HashMap<String,String>)intent.getSerializableExtra("promap");
         ImageView imageView = (ImageView)findViewById(R.id.backpro);
-
-
-
-
-
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-
        // expandableLinearLayout = (ExpandableLinearLayout)findViewById(R.id.expandableLayout);
-
        // expandableLinearLayout.toggle();
        // expandableLinearLayout.expand();
-
-
-
-
         artistname = (TextView)findViewById(R.id.artistname);
-
-
         dbHelper = new DBHelper(getApplicationContext());
-
-
-
-
-
-
        // ExpandableListView expandableListView = (ExpandableListView)findViewById(R.id.artistexpand);
         artdata = dbHelper.getArtisian(data.get("artuid"));
-
       //  expandableListView.setAdapter(new ExpandableArtistAdapter(data,"Show Artist",getApplicationContext()));
-
-
         Log.d("art_data_authen", ""+artdata.get("authentic"));
-
-
 //        authen.setRating(Float.parseFloat(artdata.get("authentic")));
   //      prices.setRating(Float.parseFloat(artdata.get("price")));
     //    overall.setRating(Float.parseFloat(artdata.get("rating")));
       //  artistname.setText(artdata.get("name").toString());
-
-
-
-
         Log.d("craft used",""+data.get("craft"));
 //
-
 /*        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,8 +136,6 @@ public class ProductView extends AppCompatActivity implements AboutArtistFrag.On
 
             }
         });*/
-
-
         tabLayout = (TabLayout)findViewById(R.id.tablayout);
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         setupViewPager(viewPager);

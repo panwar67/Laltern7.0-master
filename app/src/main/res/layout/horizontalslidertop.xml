@@ -25,10 +25,11 @@
 
 
             <ImageView
+
                 android:layout_width="220dp"
                 android:layout_height="250dp"
                 android:id="@+id/trendingproimg"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 />
 
             <View
@@ -41,7 +42,7 @@
 
                 android:typeface="monospace"
                 android:paddingLeft="5dp"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Title"
                 android:singleLine="true"

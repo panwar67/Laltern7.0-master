@@ -28,7 +28,9 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_arrow_back_black_24dp"/>
+                android:id="@+id/cartback"
+                android:src="@drawable/ic_arrow_back_black_24dp"
+                tools:ignore="ContentDescription" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,6 +60,7 @@
         android:textColor="@color/white"
         android:text="Proceed To CHECKOUT"
         android:background="#00a2e5"
+        android:id="@+id/checkout"
         android:textAlignment="center"
         android:drawableRight="@drawable/ic_exit_to_app_black_24dp"
         android:layout_width="match_parent"

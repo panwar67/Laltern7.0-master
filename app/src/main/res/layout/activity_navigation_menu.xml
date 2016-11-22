@@ -16,15 +16,7 @@
 
         android:background="@android:color/transparent">
 
-
-
-
-
-
-
-
-
-        <android.support.v7.widget.Toolbar
+<android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -51,7 +43,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
 
-                    />
+                    tools:ignore="ContentDescription" />
 
 
                 <View
@@ -69,44 +61,43 @@
                     android:id="@+id/viewrequest"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:text="Scaned Card"
                     android:layout_gravity="right"
                     android:layout_weight="12"
                     android:src="@drawable/requestmenu"
-                    />
+                    tools:ignore="ContentDescription" />
 
 
                 <ImageView
 
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_width="25dp"
+                    android:layout_width="30dp"
                     android:id="@+id/viewcart"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:text="Scaned Card"
                     android:layout_gravity="right"
                     android:layout_weight="12"
                     android:src="@drawable/cartmenu"
-                    />
-
-                <ImageView
-
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:text="Scaned Card"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
+                    tools:ignore="ContentDescription" />
 
 
-                    android:id="@+id/viewprofile"
-                    android:src="@drawable/profilemenu"
-                    />
-          </LinearLayout>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/viewprofile"
+
+                        android:layout_height="30dp"
+                        android:layout_width="30dp"
+
+                        android:layout_marginRight="3dp"
+                        android:layout_gravity="center"
+
+
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"/>
+                    </LinearLayout>
 
 
 
@@ -147,9 +138,7 @@
             android:background="@color/ivory"
             android:layout_height="match_parent">
 
-
-
-        <ExpandableListView
+          <ExpandableListView
 
 
             android:dividerHeight="0dp"

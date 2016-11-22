@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 
 
-public class RequestExpandableAdapter extends BaseExpandableListAdapter {
+public class RequestExpandableAdapter extends BaseAdapter {
     String headers;
     ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String, String>>();
     private static LayoutInflater inflater=null;
@@ -36,12 +37,12 @@ public class RequestExpandableAdapter extends BaseExpandableListAdapter {
     DisplayImageOptions options;
 
 
-    public RequestExpandableAdapter(ArrayList<HashMap<String,String>> Child, String Headers, Context contxt) {
+    public RequestExpandableAdapter(ArrayList<HashMap<String,String>> Child,  Context contxt) {
         context = contxt;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         result = Child;
-        headers = Headers;
+        //headers = Headers;
         options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565).imageScaleType(ImageScaleType.EXACTLY).resetViewBeforeLoading(true).build();
         ImageLoaderConfiguration.Builder config1 = new ImageLoaderConfiguration.Builder(context);
         config1.defaultDisplayImageOptions(options);
@@ -56,40 +57,21 @@ public class RequestExpandableAdapter extends BaseExpandableListAdapter {
         imageLoader.init(config1.build());
     }
 
-    @Override
-    public int getGroupCount() {
 
-       return 1;
-    }
 
     @Override
-    public int getChildrenCount(int groupPosition) {
-//        int n = child.get(headers.get(groupPosition)).size();
-
+    public int getCount() {
         return result.size();
-
     }
 
     @Override
-    public Object getGroup(int groupPosition)
-    {
-        return headers;
+    public Object getItem(int i) {
+        return result.get(i);
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-
-        return result.get(childPosition);
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return 1;
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
+    public long getItemId(int i) {
+        return i;
     }
 
     @Override
@@ -98,17 +80,30 @@ public class RequestExpandableAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getView(int i, View view, ViewGroup viewGroup) {
 
+        Holder holder=new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.listheadpro, null);
+        rowView = inflater.inflate(R.layout.order_row, null);
+        holder.des=(TextView) rowView.findViewById(R.id.reqdes);
+        holder.status = (TextView) rowView.findViewById(R.id.reqstatus);
+        holder.img=(ImageView) rowView.findViewById(R.id.reqproductimg);
 
-        TextView group = (TextView)rowView.findViewById(R.id.list_header_text);
-        group.setText(headers.toString());
+        holder.craft = (TextView)rowView.findViewById(R.id.requestcraft);
+        holder.quantity = (TextView)rowView.findViewById(R.id.reqquantity);
 
+        holder.des.setText(result.get(i).get("des"));
+        holder.status.setText(result.get(i).get("status"));
+        holder.quantity.setText(result.get(i).get("quantity"));
+
+        Log.d("inside adapter_des",result.get(i).get("des").toString());
+
+        imageLoader.displayImage(result.get(i).get("path"), holder.img);
 
         return rowView;
+
     }
+
 
     public class Holder
     {
@@ -122,31 +117,4 @@ public class RequestExpandableAdapter extends BaseExpandableListAdapter {
 
     }
 
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        Holder holder=new Holder();
-        View rowView;
-        rowView = inflater.inflate(R.layout.order_row, null);
-        holder.des=(TextView) rowView.findViewById(R.id.reqdes);
-        holder.status = (TextView) rowView.findViewById(R.id.reqstatus);
-        holder.img=(ImageView) rowView.findViewById(R.id.reqproductimg);
-
-        holder.craft = (TextView)rowView.findViewById(R.id.requestcraft);
-        holder.quantity = (TextView)rowView.findViewById(R.id.reqquantity);
-
-        holder.des.setText(result.get(childPosition).get("des"));
-        holder.status.setText(result.get(childPosition).get("status"));
-        holder.quantity.setText(result.get(childPosition).get("quantity"));
-
-        Log.d("inside adapter_des",result.get(childPosition).get("des").toString());
-
-        imageLoader.displayImage(result.get(childPosition).get("path"), holder.img);
-
-        return rowView;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
-    }
 }

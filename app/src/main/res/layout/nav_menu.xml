@@ -33,7 +33,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
 
@@ -44,10 +44,10 @@
                 android:id="@+id/hometextsupercat"
                 android:layout_width="80dp"
 
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
 
 
-                android:src="@drawable/hometexcat"/>
+                android:src="@drawable/hometex_trans"/>
 
 
             <ImageView
@@ -55,8 +55,9 @@
                 android:layout_margin="3dp"
                 android:id="@+id/JwlSuperCat"
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/jewelcat"/>
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/jewellery_trans"/>
 
             <ImageView
 
@@ -64,8 +65,8 @@
                 android:layout_margin="3dp"
                 android:id="@+id/sareeSuperCat"
                 android:layout_width="80dp"
-                android:src="@drawable/sareecat"
-                android:layout_height="80dp" />
+                android:src="@drawable/saree_trans"
+                android:layout_height="wrap_content" />
 
             <ImageView
                 android:id="@+id/paintingsSuperCat"
@@ -73,8 +74,9 @@
 
                 android:layout_margin="3dp"
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/paintingscat"/>
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/painting_trans"/>
 
             <ImageView
 
@@ -82,8 +84,9 @@
                 android:id="@+id/homecatSuperCat"
 
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/homecat"/>
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/homedecor_trans"/>
 
             <ImageView
 
@@ -92,8 +95,9 @@
                 android:id="@+id/othersSuperCat"
 
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/othercat"/>
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/others_trans"/>
 
             <ImageView
 
@@ -101,8 +105,9 @@
                 android:id="@+id/apparelSuperCat"
 
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/apparelcat"/>
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/apparel_trans"/>
 
             <ImageView
 
@@ -111,10 +116,25 @@
                 android:id="@+id/accessoriesSuperCat"
 
                 android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/accescat"
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/accessories_trans"
                 android:paddingLeft="10dp"
                />
+            <ImageView
+
+
+                android:layout_margin="3dp"
+                android:id="@+id/miscelSuperCat"
+
+                android:layout_width="80dp"
+
+                android:layout_height="wrap_content"
+                android:src="@drawable/miscellaneous_trans"
+                android:paddingLeft="10dp"
+                />
+
+
 
 
             <ImageView
@@ -123,7 +143,8 @@
                 android:layout_margin="3dp"
 
                 android:layout_width="80dp"
-                android:layout_height="80dp"
+
+                android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:layout_marginBottom="20dp"/>
 

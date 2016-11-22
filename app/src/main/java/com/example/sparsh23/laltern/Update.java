@@ -2,7 +2,10 @@ package com.example.sparsh23.laltern;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +13,9 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.MediaController;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -39,6 +44,7 @@ public class Update extends AppCompatActivity {
     String DOWN_URL3="http://www.whydoweplay.com/lalten/GetArtisian.php";
     String DOWN_URL4 = "http://www.whydoweplay.com/lalten/Getcart.php";
     String DOWN_URL5 = "http://www.whydoweplay.com/lalten/GetSearchFilter.php";
+    String DOWN_URL6 = "http://www.whydoweplay.com/lalten/GetAddr.php";
 
     SessionManager sessionManager;
     HashMap<String,ArrayList<HashMap<String,String>>> masterdataa = new HashMap<String, ArrayList<HashMap<String,String>>>();
@@ -51,6 +57,10 @@ public class Update extends AppCompatActivity {
         setContentView(R.layout.activity_update);
         dbHelper = new DBHelper(getApplicationContext());
 
+
+       // String path = "android.resource://" + getPackageName() + "/" + R.raw.lal_vid;
+
+
         sessionManager = new SessionManager(getApplicationContext());
 
        // LongOperation longOperation = new LongOperation();
@@ -58,9 +68,12 @@ public class Update extends AppCompatActivity {
 
 
 
+
      //   dbHelper.InitSearchData();
 
        // GetAllData();
+
+
         setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
         Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
         ArtisianSetup();
@@ -68,15 +81,51 @@ public class Update extends AppCompatActivity {
 
         SearchFilterSetup();
         setUpStream();
+        InsertAddr(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
 
-        InsertCart(sessionManager.getUserDetails().get("uid"));
+        CountDownTimer timer;
+
+        timer = new CountDownTimer(4000, 20) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                try{
+
+                    startActivity(new Intent(Update.this,NavigationMenu.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    finish();
+
+                }catch(Exception e){
+                    Log.e("Error", "Error: " + e.toString());
+                }
+            }
+        };
+
+        if(InsertCart(sessionManager.getUserDetails().get("uid")))
+        {
+
+            timer.start();
 
 
-        startActivity(new Intent(Update.this,NavigationMenu.class));
+
+        }
 
 
 
-        finish();
+
+
+
+
+
+
+
+
+
+
 
 
         //ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
@@ -198,7 +247,7 @@ public class Update extends AppCompatActivity {
         return true;
     }
 
-    public HashMap<String,ArrayList<HashMap<String,String>>> setUpStream()
+    public boolean setUpStream()
 
     {
         final HashMap<String,ArrayList<HashMap<String,String>>> masterdata = new HashMap<String, ArrayList<HashMap<String,String>>>();
@@ -304,6 +353,8 @@ public class Update extends AppCompatActivity {
                                     map.put("revprice",details.getString("REVPRICE"));
                                     map.put("revquantity",details.getString("REVQUANTITY"));
                                     //,details.getString("REVQUANTITY")
+                                    map.put("sizeavail",details.getString("SIZEAVAIL"));
+
 
                                     imgdata.add(map);
 
@@ -369,11 +420,11 @@ public class Update extends AppCompatActivity {
 
         //Adding request to the queue
         requestQueue5.add(stringRequest5);
-        return masterdata;
+        return true;
     }
 
 
-    public ArrayList<HashMap<String,String>> setOrders(final String buyerid)
+    public boolean setOrders(final String buyerid)
     {
         final ArrayList<HashMap<String,String>> buyreq = new ArrayList<HashMap<String, String>>();
 
@@ -429,6 +480,9 @@ public class Update extends AppCompatActivity {
                                 Log.d("Profile fetched", s);
                                 // loading.dismiss();
 //                                masterdata.put("buy_request",buyreq);
+
+
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -486,14 +540,136 @@ public class Update extends AppCompatActivity {
 
 
 
-        return buyreq;
+        return true;
 
      //   return  true;
     }
 
 
+    public boolean InsertAddr(final String buyerid)
+    {
+        final ArrayList<HashMap<String,String>> cartdata = new ArrayList<HashMap<String, String>>();
 
-    public ArrayList<HashMap<String,String>> InsertCart(final String buyerid)
+        // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
+        StringRequest stringRequest2 = new StringRequest(Request.Method.POST, DOWN_URL6,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+
+
+                        //loading.dismiss();
+
+                        if (s!=null)
+                        {
+
+                            dbHelper.InitAddr();
+                            // HashMap<String,String> map = new HashMap<String, String>();
+
+
+
+                            try {
+                                JSONObject profile = new JSONObject(s);
+                                JSONArray data = profile.getJSONArray("Addr");
+                                // dbHelper.InitOrd();
+                                //dbHelper.InitCart();
+
+                                for(int i=0;i<data.length();i++)
+                                {
+
+                                    HashMap<String,String> map = new HashMap<String, String>();
+                                    JSONObject details = data.getJSONObject(i);
+
+                                  //  dbHelper.InsertCartData(requid,prouid,buyuid,quantity,size);
+
+                                    dbHelper.InsertAddr(details.getString("NAME"),details.getString("ADDR"),details.getString("AREA"),
+                                    details.getString("CITY"),details.getString("DIST"),details.getString("STATE"),
+                                            details.getString("PINCODE"),details.getString("CONT"));
+                                    /*map.put("cartuid",requid);
+                                    map.put("prouid",prouid);
+                                    map.put("quantity",quantity);
+                                    map.put("useruid",buyuid);
+
+                                    cartdata.add(map);
+
+                                    Log.d("check","for data");
+                                    //masterdata.put("cart_data",cartdata);
+                                   // Log.d("master_data_cart",""+masterdata.size());
+                                    GetAllDataReloaded("cart_data",cartdata);
+                                    */
+                                }
+
+                                Log.d("Address_Fetched", s);
+                                // loading.dismiss();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+
+                        }
+
+
+
+
+
+                        //Disimissing the progress dialog
+
+                        //Showing toast message of the response
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        //loading.dismiss();
+
+                        //Showing toast
+
+
+
+                        Toast.makeText(Update.this, "Error In Connectivity four", Toast.LENGTH_SHORT).show();
+
+
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+
+                Keyvalue.put("uid",buyerid);
+
+
+
+                //returning parameters
+                return Keyvalue;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+        stringRequest2.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        //Adding request to the queue
+        requestQueue2.add(stringRequest2);
+
+
+
+
+
+
+        return true;
+
+        //   return  true;
+    }
+
+
+    public boolean InsertCart(final String buyerid)
     {
         final ArrayList<HashMap<String,String>> cartdata = new ArrayList<HashMap<String, String>>();
 
@@ -529,7 +705,8 @@ public class Update extends AppCompatActivity {
                                     String prouid = details.getString("PROUID");
                                     String quantity = details.getString("QUANTITY");
                                     String buyuid = details.getString("USERUID");
-                                    dbHelper.InsertCartData(requid,prouid,buyuid,quantity);
+                                    String size = details.getString("SIZE");
+                                    dbHelper.InsertCartData(requid,prouid,buyuid,quantity,size);
 
                                     /*map.put("cartuid",requid);
                                     map.put("prouid",prouid);
@@ -554,7 +731,10 @@ public class Update extends AppCompatActivity {
 
 
 
+
                         }
+
+
 
 
 
@@ -570,7 +750,13 @@ public class Update extends AppCompatActivity {
                         //loading.dismiss();
 
                         //Showing toast
-                        Toast.makeText(Update.this, "Error In Connectivity four", Toast.LENGTH_LONG).show();
+
+
+
+                        Toast.makeText(Update.this, "Error In Connectivity four", Toast.LENGTH_SHORT).show();
+
+
+
                     }
                 }){
             @Override
@@ -601,7 +787,7 @@ public class Update extends AppCompatActivity {
 
 
 
-        return cartdata;
+        return true;
 
         //   return  true;
     }
@@ -611,7 +797,7 @@ public class Update extends AppCompatActivity {
 
 
 
-    public ArrayList<HashMap<String,String>> ArtisianSetup()
+    public boolean ArtisianSetup()
 
     {
 
@@ -735,11 +921,11 @@ public class Update extends AppCompatActivity {
 
 
 
-        return artistdata;
+        return true;
     }
 
 
-    public ArrayList<HashMap<String,String>> SearchFilterSetup()
+    public boolean SearchFilterSetup()
     {
         final        ArrayList<HashMap<String,String>> filtersearch = new ArrayList<HashMap<String, String>>();
 
@@ -851,11 +1037,11 @@ public class Update extends AppCompatActivity {
 
 
 
-        return filtersearch;
+        return true;
     }
 
 
-  public void Update_Database( HashMap<String,ArrayList<HashMap<String,String>>> data)
+    public void Update_Database( HashMap<String,ArrayList<HashMap<String,String>>> data)
     {
         if (data!=null)
         {
@@ -915,7 +1101,7 @@ public class Update extends AppCompatActivity {
                 Log.d("cartsize_getall",""+cart_data.size());
                 for (int i=0;i<cart_data.size();i++)
                 {
-                    dbHelper.InsertCartData(cart_data.get(i).get("cartuid"),cart_data.get(i).get("prouid"),cart_data.get(i).get("useruid"),cart_data.get(i).get("quantity"));
+                   // dbHelper.InsertCartData(cart_data.get(i).get("cartuid"),cart_data.get(i).get("prouid"),cart_data.get(i).get("useruid"),cart_data.get(i).get("quantity"));
                 }
             }
 
@@ -927,10 +1113,8 @@ public class Update extends AppCompatActivity {
 
                 }
             }
-
             if(artist_data!=null)
             {
-
                 for (int i=0;i<artist_data.size();i++)
                 {
                         dbHelper.InsertArtisian(artist_data.get(i).get("authen"),artist_data.get(i).get("awards"),
@@ -939,48 +1123,12 @@ public class Update extends AppCompatActivity {
                         artist_data.get(i).get("price"),artist_data.get(i).get("ratings"),
                         artist_data.get(i).get("state"),artist_data.get(i).get("tob"),artist_data.get(i).get("uid"));
                     Log.d("check_noimg",""+artist_data.get(i).get("noimg").toString());
-                                                                                                                                                   // dbHelper.InsertArtisian();
                 }
-
             }
-
-
-
         }
-
-
-
-
-
     }
 
-    public void GetAllData()
-    {
 
-        HashMap<String,ArrayList<HashMap<String,String>>> masterdataall = new HashMap<String, ArrayList<HashMap<String,String>>>();
-
-        setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
-        Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
-        ArtisianSetup();
-
-
-        SearchFilterSetup();
-        setUpStream();
-
-        InsertCart(sessionManager.getUserDetails().get("uid"));
-
-        startActivity(new Intent(Update.this,NavigationMenu.class));
-
-
-
-        //Update_Database(GetAllDataReloaded(null,null));
-
-      //  Log.d("masterdata_size_all",""+ArtisianSetup().size()+" "+SearchFilterSetup().size()+" "+setUpStream().size());
-       // Toast.makeText(getApplicationContext(),""+masterdata.size(),Toast.LENGTH_SHORT).show();
-
-
-
-    }
 
     public HashMap<String, ArrayList<HashMap<String, String>>> GetAllDataReloaded(String tag, ArrayList<HashMap<String,String>> data)
     {

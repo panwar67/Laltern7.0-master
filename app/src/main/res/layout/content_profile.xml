@@ -143,10 +143,54 @@
 
             </LinearLayout>
 
+
+            <ExpandableListView
+                android:visibility="gone"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/shadowmild"
+                android:layout_width="match_parent"
+                android:id="@+id/expandaddress"
+                android:clickable="true"
+                android:layout_height="wrap_content">
+            </ExpandableListView>
+
+            <TextView
+                android:textSize="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Addresses"
+                android:typeface="serif"
+                android:paddingRight="20dp"
+                android:drawableRight="@drawable/ic_unfold_more_black_24dp"
+                android:paddingBottom="5dp"
+                android:id="@+id/toggleaddr"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:textSize="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Requests"
+                android:typeface="serif"
+                android:paddingRight="20dp"
+                android:drawableRight="@drawable/ic_unfold_more_black_24dp"
+                android:paddingBottom="5dp"
+                android:id="@+id/togglerequest"
+                android:paddingLeft="10dp"/>
+
+            <com.example.sparsh23.laltern.ExpandableHeightGridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:visibility="gone"
+                android:id="@+id/real_user_addr"></com.example.sparsh23.laltern.ExpandableHeightGridView>
             <ExpandableListView
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="#f5f5f5"
+                android:visibility="gone"
                 android:id="@+id/requests"
                 android:layout_marginBottom="10dp"
 
@@ -156,6 +200,7 @@
             </ExpandableListView>
 
             <ExpandableListView
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -166,17 +211,7 @@
 
             </ExpandableListView>
 
-            <ExpandableListView
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/shadowmild"
-                android:layout_width="match_parent"
-                android:id="@+id/expandaddress"
-                android:layout_height="wrap_content">
 
-
-            </ExpandableListView>
 
 
         </LinearLayout>

@@ -81,7 +81,7 @@ public class LandingHomeListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return result.get(position);
     }
 
     @Override
@@ -91,16 +91,9 @@ public class LandingHomeListAdapter extends BaseAdapter {
 
     public class Holder
     {
-
         ImageView deals,sponser, custom;
         SliderLayout sliderShow ;
-
-
     }
-
-
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();

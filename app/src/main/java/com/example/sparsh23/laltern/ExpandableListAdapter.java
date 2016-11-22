@@ -115,7 +115,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (headers.get(groupPosition).equals("Chat")){
 
-            iconheader.setImageResource(R.drawable.chat);
+
 
         }
         if (headers.get(groupPosition).equals("Contact us"))
@@ -129,7 +129,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         {
             iconheader.setImageResource(R.drawable.vector_drawable_policy);
 
-            imageView.setImageResource(R.drawable.vector_drawable_plus);
+          //  imageView.setImageResource(R.drawable.vector_drawable_plus);
 
            // divier.setBackgroundResource(R.color.red);
         }
@@ -146,21 +146,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         {
 
 
-            iconheader.setImageResource(R.drawable.vector_drawable_jewellery);
+            iconheader.setImageResource(R.drawable.vector_drawable_jewel__);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Accessories"))
         {
-            iconheader.setImageResource(R.drawable.vector_drawable_accessories);
+            iconheader.setImageResource(R.drawable.vector_drawable_access);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
 
         if(headers.get(groupPosition).equals("Sarees"))
         {
-            iconheader.setImageResource(R.drawable.vector_drawable_saree);
+            iconheader.setImageResource(R.drawable.vector_drawable_saree_);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
@@ -181,7 +181,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if(headers.get(groupPosition).equals("Home Decor"))
         {
-            iconheader.setImageResource(R.drawable.vector_drawable_home_dec);
+            iconheader.setImageResource(R.drawable.vector_drawable_home_decor);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
         }
@@ -196,6 +196,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if(headers.get(groupPosition).equals("Others"))
         {
             iconheader.setImageResource(R.drawable.vector_drawable_others);
+
+            imageView.setImageResource(R.drawable.vector_drawable_plus);
+
+           // divier.setBackgroundResource(R.color.maintheme);
+        }
+
+
+        if(headers.get(groupPosition).equals("Miscellaneous"))
+        {
+            iconheader.setImageResource(R.drawable.ic_style_black_24dp);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
 

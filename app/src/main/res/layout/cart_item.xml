@@ -71,6 +71,7 @@
                 android:singleLine="true"
                 android:textSize="13dp"
                 android:text="Rs. 500"
+                android:id="@+id/prototalprice"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

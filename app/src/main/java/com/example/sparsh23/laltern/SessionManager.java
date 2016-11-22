@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.support.v4.app.ActivityCompat;
 
 public class SessionManager
 {
@@ -127,13 +128,14 @@ public class SessionManager
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         // Staring Login Activity
         _context.startActivity(i);
+        ActivityCompat.finishAffinity(null);
     }
 
     /**

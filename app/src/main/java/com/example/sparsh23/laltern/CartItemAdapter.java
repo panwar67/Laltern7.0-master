@@ -117,13 +117,19 @@ public class CartItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+
+        double total=0.0,rate,price;
+
         Holder holder=new Holder();
+
         View rowView;
         rowView = inflater.inflate(R.layout.cart_item, null);
 
         holder.productimg=(ImageView) rowView.findViewById(R.id.cartproductimg);
         // holder.custom=(ImageView) rowView.findViewById(R.id.customlanding);
         //holder.sliderShow = (SliderLayout) rowView.findViewById(R.id.sliderlandingtrending);
+        holder.totalprice = (TextView)rowView.findViewById(R.id.prototalprice);
 
         holder.remove = (Button)rowView.findViewById(R.id.cartremovepro);
 
@@ -133,7 +139,8 @@ public class CartItemAdapter extends BaseAdapter {
 
         holder.quantity = (TextView)rowView.findViewById(R.id.cartquantity);
 
-        holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
+       // holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
+        holder.size = (TextView)rowView.findViewById(R.id.cartprosize);
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-SemiBold.ttf");
         Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"HelveticaNeueLt.ttf");
 
@@ -163,12 +170,15 @@ public class CartItemAdapter extends BaseAdapter {
         //holder.price.setTypeface(null, Typeface.BOLD);
         holder.price.setText(string+" "+result.get(position).get("price")+"/Unit");
         holder.price.setTypeface(typeface1);
+        holder.size.setTypeface(typeface1);
+        holder.size.setText("Size: "+result.get(position).get("size"));
         // holder.moq.setTextColor(#ff000000);
         holder.quantity.setText("Qty - "+result.get(position).get("quantity"));
         holder.quantity.setTypeface(typeface1);
-
+        rate = Double.parseDouble(result.get(position).get("price"));
+        total = rate*Integer.parseInt(result.get(position).get("quantity"));
+        holder.totalprice.setText(""+string+" "+total);
         imageLoader.displayImage(result.get(position).get("path"), holder.productimg);
-
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

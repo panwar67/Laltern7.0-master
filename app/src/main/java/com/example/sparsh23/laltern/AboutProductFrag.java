@@ -1,5 +1,6 @@
 package com.example.sparsh23.laltern;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +34,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
-import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.crystal.crystalrangeseekbar.widgets.BubbleThumbSeekbar;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.clans.fab.FloatingActionButton;
@@ -45,6 +46,8 @@ import org.lucasr.twowayview.TwoWayView;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,11 +68,13 @@ public class AboutProductFrag extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     TwoWayView similar;
+    Spinner avail_sizes;
 
     // TODO: Rename and change types of parameters
     private HashMap<String,String> mParam1;
+    ArrayList<String> sizes = new ArrayList<String>();
     private String mParam2;
-    TextView title , quan, price, artistname, des, craftpro, deshead, crafthead, selectquantity, similarproductslabel, priceseek, finalrating;
+    TextView title , quan, price, artistname, des, craftpro, deshead, crafthead, selectquantity, similarproductslabel, priceseek, finalrating, availcolor, availsizes;
     RatingBar  overall;
     DBHelper dbHelper;
     Button button;
@@ -126,6 +131,7 @@ public class AboutProductFrag extends Fragment {
         dbHelper = new DBHelper(getContext());
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -136,6 +142,9 @@ public class AboutProductFrag extends Fragment {
         seekBar = (BubbleThumbSeekbar) view.findViewById(R.id.quantity);
 
         bar = (TextView)view.findViewById(R.id.quantityseek);
+        avail_sizes = (Spinner) view.findViewById(R.id.sizehorizontalavail);
+        availcolor = (TextView)view.findViewById(R.id.coloravail);
+      //  availsizes = (TextView)view.findViewById(R.id.sizesavailable);
         priceseek = (TextView)view.findViewById(R.id.priceseek);
         des = (TextView)view.findViewById(R.id.descriptionpartpro);
         craftpro = (TextView) view.findViewById(R.id.typepro);
@@ -145,6 +154,27 @@ public class AboutProductFrag extends Fragment {
         sessionManager = new SessionManager(getContext());
         seekBar.setMinStartValue(Float.parseFloat(data.get("quantity")));
         seekBar.setMinValue(Float.parseFloat(data.get("quantity")));
+        ArrayList<String> sizelist = new ArrayList<String>();
+
+        //sizelist = (ArrayList<String>) Arrays.asList(data.get("sizeavail").split(","));
+        sizelist.addAll(Arrays.asList(data.get("sizeavail").split(",")));
+        avail_sizes.setAdapter(new Available_Sizes_Adapter(getContext(),sizelist ));
+
+        avail_sizes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getContext(),"selected item "+adapterView.getSelectedItem()+"",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
         selectquantity = (TextView)view.findViewById(R.id.selectquantitylabel);
         similarproductslabel = (TextView)view.findViewById(R.id.similarproductslabel);
         finalrating = (TextView)view.findViewById(R.id.finalratings);
@@ -162,7 +192,7 @@ public class AboutProductFrag extends Fragment {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        similar.setAdapter(new TrendingProAdapter(getContext(),dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"))));
+        similar.setAdapter(new Trending_Pro_Adapter_Product_Page(getContext(),dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"))));
 
         seekBar.setBarHighlightColor(R.color.seekbar);
 
@@ -230,8 +260,8 @@ public class AboutProductFrag extends Fragment {
 
                     String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-                    dbHelper.InsertCartData(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"), String.valueOf(bar.getText()));
-                    upload_data(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"),String.valueOf(bar.getText()));
+                    dbHelper.InsertCartData(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"), String.valueOf(bar.getText()), String.valueOf(avail_sizes.getSelectedItem()));
+                    upload_data(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"),String.valueOf(bar.getText()),String.valueOf(avail_sizes.getSelectedItem()));
 
                 }
                 else {
@@ -245,7 +275,9 @@ public class AboutProductFrag extends Fragment {
         SliderLayout sliderShow = (SliderLayout) view.findViewById(R.id.slider);
 
         sliderShow.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
-        sliderShow.setCustomIndicator((PagerIndicator) view.findViewById(R.id.custom_indicator));
+        PagerIndicator pagerIndicator = (PagerIndicator)view.findViewById(R.id.custom_indicator);
+
+        sliderShow.setCustomIndicator(pagerIndicator);
 
         int noimg = Integer.parseInt(data.get("noimages"));
 
@@ -278,16 +310,15 @@ public class AboutProductFrag extends Fragment {
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),
                 "Raleway-Regular.ttf");
 
-        Typeface tf1 = Typeface.createFromAsset(getActivity().getAssets(),"Quicksand-Regular.otf");
+        Typeface tf1 = Typeface.createFromAsset(getActivity().getAssets(),"Helveticatest.ttf");
         Typeface tf2    =   Typeface.createFromAsset(getActivity().getAssets(),"Montserrat-Regular.otf");
 
         deshead.setTypeface(tf2);
         crafthead.setTypeface(tf2);
         similarproductslabel.setTypeface(tf2);
         selectquantity.setTypeface(tf2);
-
-
-
+        availcolor.setTypeface(tf2);
+        availcolor.setTypeface(tf2);
         title = (TextView)view.findViewById(R.id.titlepro);
         //des = (TextView)findViewById(R.id.descriptionpartpro);
         quan = (TextView)view.findViewById(R.id.quantitypro);
@@ -295,13 +326,14 @@ public class AboutProductFrag extends Fragment {
         overall.setRating(Float.parseFloat(data.get("rating")));
         finalrating.setText(data.get("rating")+"/5");
         title.setTypeface(tf);
-        des.setTypeface(tf1);
-        craftpro.setTypeface(tf1);
+
+        craftpro.setTypeface(tf);
 
        // TextView textView = (TextView) view.findViewById(R.id.showart);
 
         price.setText( ""+string+""+data.get("price")+" - "+data.get("revprice"));
         des.setText(data.get("des"));
+        des.setTypeface(tf);
         quan.setText("M.O.Q : "+data.get("quantity"));
         title.setText(data.get("title").toUpperCase());
         craftpro.setText(" "+data.get("craft"));
@@ -312,7 +344,10 @@ public class AboutProductFrag extends Fragment {
     }
 
 
-    public void upload_data(final String cartuid, final String prouid, final String useruid, final String quantity)
+
+
+
+    public void upload_data(final String cartuid, final String prouid, final String useruid, final String quantity,final String size)
     {
         final ProgressDialog loading = ProgressDialog.show(getActivity(),"Adding to cart...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
@@ -352,6 +387,7 @@ public class AboutProductFrag extends Fragment {
                 Keyvalue.put("prouid",prouid);
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("quantity",quantity);
+                Keyvalue.put("size",size);
                 //returning parameters
                 return Keyvalue;
             }

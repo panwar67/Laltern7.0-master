@@ -7,12 +7,15 @@
 
     android:layout_marginBottom="5dp"
         android:layout_margin="3dp"
-        android:textColor="@color/black"
         android:singleLine="true"
+        android:text="test"
+    android:textColor="#636363"
+    android:paddingLeft="5dp"
+    android:typeface="serif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-    android:textStyle="bold"
-        android:textAlignment="center"/>
+
+
+        />
 
 

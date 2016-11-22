@@ -10,5 +10,6 @@ public class Cart_Struct {
     public static final String prouid = "PROUID";
     public static final String cartuid = "UID";
     public static final String quantity="QUANTITY";
+    public static final String size = "SIZE";
 
 }

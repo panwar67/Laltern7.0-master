@@ -50,11 +50,13 @@ public class ItemFragment extends Fragment {
     String ARG_TYPE;
     String ARG_CAT;
     String ARG_SUB;
+    HashMap<String,String> cat_subcat_map = new HashMap<String, String>();
     String ARG_UID;
     ImageView sort, filter;
     ToggleButton imageView;
     ArrayList<HashMap<String,String>> map = new ArrayList<HashMap<String, String>>();
     HashMap<String,String> filtermap =    new HashMap<String, String>();
+    HashMap<String,ArrayList<HashMap<String,String>>> filter_build = new HashMap<String, ArrayList<HashMap<String,String>>>();
 
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -86,6 +88,7 @@ public class ItemFragment extends Fragment {
         if (getArguments() != null) {
 
             map = (ArrayList<HashMap<String,String>>)getArguments().getSerializable("data");
+            cat_subcat_map = (HashMap<String,String>)getArguments().getSerializable("selection");
 
             if(getArguments().getSerializable("filter")!=null)
 
@@ -95,10 +98,13 @@ public class ItemFragment extends Fragment {
                 Log.d("inside filter map",filtermap.toString());
 
             }
-            else {
+            if(getArguments().getSerializable("filter_build")!=null);
+            {
+                filter_build = (HashMap<String,ArrayList<HashMap<String,String>>>) getArguments().getSerializable("filter_build");
 
-                filtermap = null;
             }
+
+
 
            // ARG_CAT = getArguments().getString("category");
             //ARG_SUB = getArguments().getString("subcat");
@@ -127,10 +133,6 @@ public class ItemFragment extends Fragment {
         imageView.setTextOff(null);
         imageView.setTextOn(null);
 
-
-
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(map, mListener, getContext(),1));
 
@@ -145,13 +147,14 @@ public class ItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(filtermap!=null)
+                if(filtermap!=null&&filtermap.size()>0)
                 {
 
 
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("filter",filtermap);
+                    bundle.putSerializable("selection",cat_subcat_map);
                     FilterNoSearchFragment fragment = new FilterNoSearchFragment();
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -160,16 +163,11 @@ public class ItemFragment extends Fragment {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
 
-                }
-                else
+                }if(filtermap.size()==0)
                 {
 
-
-
-
-
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("filter",filtermap);
+                    //bundle.putSerializable("filter",filtermap);
                     FilterFragment fragment = new FilterFragment();
                     fragment.setArguments(bundle);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
