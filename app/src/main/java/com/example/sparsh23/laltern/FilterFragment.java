@@ -126,6 +126,7 @@ public class FilterFragment extends Fragment {
         optionslist.setExpanded(true);
 
         optionslist.setNumColumns(1);
+
         itemlist.setExpanded(true);
         itemlist.setNumColumns(1);
         itemlist.setChoiceMode(ExpandableHeightGridView.CHOICE_MODE_MULTIPLE);
@@ -143,14 +144,18 @@ public class FilterFragment extends Fragment {
         options.add("SIZE");
 
         optionslist.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, options ));
+        optionslist.performItemClick(optionslist.findViewWithTag(optionslist.getAdapter().getItem(0)), 0, optionslist.getAdapter().getItemId(0));
 
+        optionslist.performItemClick(
+                optionslist.getAdapter().getView(0, null, null),
+                0,
+                optionslist.getAdapter().getItemId(0));
 
-
+        itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),Check_Protype));
 
         optionslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
 
                 Toast.makeText(getContext(),""+options.get(i)+""+i+"",Toast.LENGTH_SHORT).show();
                 if(options.get(i).equals("COLOR"))

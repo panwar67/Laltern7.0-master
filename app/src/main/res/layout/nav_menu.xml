@@ -150,17 +150,7 @@
 
 
         </LinearLayout>
-
-
-
-
-
-
-
     </HorizontalScrollView>
-
-
-
         <ImageView
             android:layout_gravity="right"
             android:layout_width="20dp"

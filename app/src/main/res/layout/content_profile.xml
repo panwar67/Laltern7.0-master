@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_profile"
     android:orientation="vertical">
@@ -131,6 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="shubham@gmail.com"
+
                         android:id="@+id/emailpro"
                         android:layout_gravity="center_vertical"/>
 
@@ -156,12 +158,16 @@
                 android:layout_height="wrap_content">
             </ExpandableListView>
 
+
             <TextView
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/shadowmild"
                 android:textSize="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="My Addresses"
-                android:typeface="serif"
                 android:paddingRight="20dp"
                 android:drawableRight="@drawable/ic_unfold_more_black_24dp"
                 android:paddingBottom="5dp"
@@ -169,11 +175,14 @@
                 android:paddingLeft="10dp"/>
 
             <TextView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/shadowmild"
+
                 android:textSize="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="My Requests"
-                android:typeface="serif"
                 android:paddingRight="20dp"
                 android:drawableRight="@drawable/ic_unfold_more_black_24dp"
                 android:paddingBottom="5dp"

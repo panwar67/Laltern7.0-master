@@ -111,19 +111,15 @@ public class FilterNoSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
          root = inflater.inflate(R.layout.fragment_filter_no_search, container, false);
-
        // catspinitem.add(filtermap.get("category"));
         //subcatspinitem.add(filtermap.get("subcat"));
-
         producttype = (Spinner)root.findViewById(R.id.producttypespinner);
         sizeall = (Spinner)root.findViewById(R.id.sizespinner);
         color = (Spinner)root.findViewById(R.id.colorspinner);
         optionslist = (ExpandableHeightGridView) root.findViewById(R.id.filteroptionlist);
         itemlist = (ExpandableHeightGridView) root.findViewById(R.id.filteritemlist);
         optionslist.setExpanded(true);
-
         optionslist.setNumColumns(1);
         itemlist.setExpanded(true);
         itemlist.setNumColumns(1);
@@ -136,17 +132,21 @@ public class FilterNoSearchFragment extends Fragment {
         min = (TextView)root.findViewById(R.id.filterpricemin);
         max = (TextView)root.findViewById(R.id.filterpricemax);
         apply = (Button)root.findViewById(R.id.applyfilter);
-
-
         final ArrayList<String> options = new ArrayList<String>();
         options.add("PRODUCT TYPE");
         options.add("COLOR");
         options.add("SIZE");
-
+        optionslist.setSelection(0);
         optionslist.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, options ));
 
+        optionslist.performItemClick(
+                optionslist.getAdapter().getView(0, null, null),
+                0,
+                optionslist.getAdapter().getItemId(0));
 
+        optionslist.performItemClick(optionslist.findViewWithTag(optionslist.getAdapter().getItem(0)), 0, optionslist.getAdapter().getItemId(0));
 
+        itemlist.setAdapter(new Filter_Checkbox_Adapter(getContext(),Check_Protype));
 
         optionslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -220,10 +220,7 @@ public class FilterNoSearchFragment extends Fragment {
                 {
                     HashMap<String,String> map = new HashMap<String, String>();
                     map = (HashMap<String, String>)itemlist.getItemAtPosition(i);
-
                     Selected_Options.add(map);
-
-                    //Selected_Options.remove(map);
                     Log.d("selected_item_size",""+Selected_Options.size());
                         checkedTextView.setChecked(true);
                         Log.d("checked item", "" + i + "");

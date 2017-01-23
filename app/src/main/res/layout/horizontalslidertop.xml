@@ -60,6 +60,7 @@
                 <TextView
                     android:paddingLeft="3dp"
                     android:layout_weight="1"
+                    android:layout_marginLeft="3dp"
                     android:textStyle="bold"
                     android:textSize="15dp"
 
@@ -85,6 +86,8 @@
             </LinearLayout>
 
             <RatingBar
+                android:layout_marginLeft="3dp"
+                android:layout_marginBottom="3dp"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:numStars="5"

@@ -15,7 +15,7 @@ public class Profile_Detail extends AppCompatActivity {
 
     String type;
     Button add;
-    ListView listView;
+    ExpandableHeightGridView listView;
     ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
     DBHelper dbHelper;
     SessionManager sessionManager;
@@ -25,7 +25,9 @@ public class Profile_Detail extends AppCompatActivity {
         setContentView(R.layout.activity_profile__detail);
         dbHelper = new DBHelper(getApplicationContext());
 
-        listView = (ListView)findViewById(R.id.profile_detail_list);
+        listView = (ExpandableHeightGridView) findViewById(R.id.profile_detail_list);
+        listView.setExpanded(true);
+        listView.setNumColumns(1);
 
         Intent intent = getIntent();
         add =   (Button)findViewById(R.id.add_profile_detail);

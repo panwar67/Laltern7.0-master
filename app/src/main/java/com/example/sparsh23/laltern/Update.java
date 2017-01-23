@@ -45,6 +45,8 @@ public class Update extends AppCompatActivity {
     String DOWN_URL4 = "http://www.whydoweplay.com/lalten/Getcart.php";
     String DOWN_URL5 = "http://www.whydoweplay.com/lalten/GetSearchFilter.php";
     String DOWN_URL6 = "http://www.whydoweplay.com/lalten/GetAddr.php";
+    String DOWN_URL7 = "http://www.whydoweplay.com/lalten/Get_Orders.php";
+    String DOWN_URL8 = "http://www.whydoweplay.com/lalten/Login_User.php";
 
     SessionManager sessionManager;
     HashMap<String,ArrayList<HashMap<String,String>>> masterdataa = new HashMap<String, ArrayList<HashMap<String,String>>>();
@@ -74,8 +76,11 @@ public class Update extends AppCompatActivity {
        // GetAllData();
 
 
+        Log_In_User(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("uid"));
         setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
         Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
+
+
         ArtisianSetup();
 
 
@@ -110,22 +115,7 @@ public class Update extends AppCompatActivity {
 
             timer.start();
 
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //ProfileSetup(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("pass"));
@@ -136,6 +126,54 @@ public class Update extends AppCompatActivity {
 
 
 
+    public boolean Log_In_User(final String email, final String uid)
+    {
+
+        StringRequest stringRequest4 = new StringRequest(Request.Method.POST, DOWN_URL8,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+
+
+
+                        //Showing toast message of the response
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        //  loading.dismiss();
+
+                        //Showing toast
+                        Toast.makeText(Update.this, "Error In Connectivity ", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+                Keyvalue.put("email",email);
+                Keyvalue.put("uid",uid);
+
+
+
+                //returning parameters
+                return Keyvalue;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue4 = Volley.newRequestQueue(this);
+        stringRequest4.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        //Adding request to the queue
+        requestQueue4.add(stringRequest4);
+
+        return true;
+    }
 
     public boolean ProfileSetup(final String email, final String pass)
 
@@ -151,7 +189,6 @@ public class Update extends AppCompatActivity {
 
                         if (s!=null)
                         {
-
 
                             dbHelper.InitProfile();
 
@@ -296,9 +333,10 @@ public class Update extends AppCompatActivity {
                                     String des = details.getString("DESCRIPTION");
                                     String path = details.getString("PATH");
                                     String own = details.getString("OWNER");
-                                    searchmapown.put("tag",own);
+                                    String own_name = details.getString("OWN_NAME");
+                                    searchmapown.put("tag",own_name);
                                     searchmapown.put("suggest","In artist");
-                                    searchmapown.put("type","OWNER");
+                                    searchmapown.put("type","OWN_NAME");
                                     SearchData.add(searchmapown);
                                     //searchmap.put("")
                                     //     dbHelper.InsertSearchTag(own," In Artist", "OWNER");
@@ -337,6 +375,7 @@ public class Update extends AppCompatActivity {
                                     map.put("des",des);
                                     map.put("path",path);
                                     map.put("own",own);
+                                    map.put("own_name",own_name);
                                     map.put("price",price);
                                     map.put("quantity",quantity);
                                     map.put("title",title);
@@ -354,6 +393,7 @@ public class Update extends AppCompatActivity {
                                     map.put("revquantity",details.getString("REVQUANTITY"));
                                     //,details.getString("REVQUANTITY")
                                     map.put("sizeavail",details.getString("SIZEAVAIL"));
+                                    map.put("stock",details.getString("STOCK"));
 
 
                                     imgdata.add(map);
@@ -398,9 +438,12 @@ public class Update extends AppCompatActivity {
                         //loading.dismiss();
 
                         //Showing toast
-                        Toast.makeText(Update.this, "Error In Connectivity three", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Update.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(Update.this,No_Internet_Connection.class));
+                        finish();
                     }
-                }){
+                })
+        {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
@@ -583,7 +626,7 @@ public class Update extends AppCompatActivity {
 
                                     dbHelper.InsertAddr(details.getString("NAME"),details.getString("ADDR"),details.getString("AREA"),
                                     details.getString("CITY"),details.getString("DIST"),details.getString("STATE"),
-                                            details.getString("PINCODE"),details.getString("CONT"));
+                                            details.getString("PINCODE"),details.getString("CONT"),details.getString("COUNTRY"));
                                     /*map.put("cartuid",requid);
                                     map.put("prouid",prouid);
                                     map.put("quantity",quantity);
@@ -671,6 +714,8 @@ public class Update extends AppCompatActivity {
 
     public boolean InsertCart(final String buyerid)
     {
+
+        dbHelper.InitCart();
         final ArrayList<HashMap<String,String>> cartdata = new ArrayList<HashMap<String, String>>();
 
         // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
@@ -694,7 +739,7 @@ public class Update extends AppCompatActivity {
                                 JSONObject profile = new JSONObject(s);
                                 JSONArray data = profile.getJSONArray("CartData");
                                // dbHelper.InitOrd();
-                                dbHelper.InitCart();
+
 
                                 for(int i=0;i<data.length();i++)
                                 {
@@ -1038,6 +1083,102 @@ public class Update extends AppCompatActivity {
 
 
         return true;
+    }
+
+
+    public boolean Order_Setup(final String uid)
+    {
+        // final ProgressDia
+        // log loading = ProgressDialog.show(this,"Getting Artisian Data...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL7,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+
+                        if (s!=null)
+                        {
+                            dbHelper.InitOrders();
+                            try {
+                                JSONObject profile = new JSONObject(s);
+                                JSONArray data = profile.getJSONArray("Order_Received");
+
+                                // dbHelper.InitArtisian();
+
+                                for(int i=0;i<data.length();i++)
+                                {
+                                    HashMap<String,String> map = new HashMap<String, String>();
+                                    JSONObject details = data.getJSONObject(i);
+                                    dbHelper.Insert_Orders(details.getString("ORD_UID"),details.getString("PAY_UID"),details.getString("PRO_UID"),details.getString("ORD_ADD"),details.getString("USER_UID"));
+
+
+
+                                }
+                                Log.d("orders_fetched", s);
+                                // masterdata.put("filter_search",filtersearch);
+                                //GetAllDataReloaded("filter_search",filtersearch);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+
+                            }
+
+
+                        }
+                        else
+                        {
+
+                            Toast.makeText(getApplicationContext(),"Error Occured",Toast.LENGTH_SHORT).show();
+                        }
+                        // loading.dismiss();
+
+
+
+
+
+                        //Disimissing the progress dialog
+
+                        //Showing toast message of the response
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        // loading.dismiss();
+
+                        //Showing toast
+                        Toast.makeText(Update.this, "Error In Connectivity 6", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+
+
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+                Keyvalue.put("uid",uid);
+
+
+
+
+
+
+                //returning parameters
+                return Keyvalue;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+
+
+        return true;
+
     }
 
 

@@ -53,17 +53,9 @@ import java.util.HashMap;
         config1.diskCacheSize(100 * 1024 * 1024); // 50 MiB
         config1.tasksProcessingOrder(QueueProcessingType.LIFO);
         config1.writeDebugLogs();
-
-
-
-
-
         imageLoader = ImageLoader.getInstance();
 //        imageLoader.destroy();
         imageLoader.init(config1.build());
-
-
-
     }
 
 
@@ -76,7 +68,7 @@ import java.util.HashMap;
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return result.get(position);
     }
 
     @Override

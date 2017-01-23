@@ -65,6 +65,7 @@ public class Search_Filter_Adapter extends BaseAdapter {
         holder.checkedTextView = (CheckedTextView)rowView.findViewById(R.id.filter_item_textchecked);
         holder.checkedTextView.setText(result.get(i));
 
+
         return rowView;
     }
 

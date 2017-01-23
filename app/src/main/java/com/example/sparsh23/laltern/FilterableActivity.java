@@ -14,7 +14,11 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +28,8 @@ public class FilterableActivity extends AppCompatActivity {
 
 
     HashMap<String,String> selections = new HashMap<String, String>();
+    ArrayList<String> selected_craft = new ArrayList<String>();
+    ArrayList<String> selected_pro_type  =    new ArrayList<String>();
     ToggleButton price, artist, priceL500, priceL1500, priceA2000, priceL5000;
     Spinner craftspin, protypespin;
     ArrayList<HashMap<String,ArrayList<String>>> filterdata = new ArrayList<HashMap<String, ArrayList<String>>>();
@@ -33,6 +39,8 @@ public class FilterableActivity extends AppCompatActivity {
     ArrayList<String> catitems = new ArrayList<String>();
     ArrayList<HashMap<String,String>> datafinal = new ArrayList<HashMap<String, String>>();
     ExpandableHeightGridView craftlist, protypelist;
+    private Tracker mTracker;
+
 
     ArrayList< HashMap<String,ArrayList<String>>> spinnerdata = new ArrayList<HashMap<String, ArrayList<String>>>();
     @Override
@@ -41,6 +49,11 @@ public class FilterableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filterable);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
+
+        mTracker.setScreenName("On_checkout");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         dbHelper = new DBHelper(getApplicationContext());
 
@@ -64,113 +77,62 @@ public class FilterableActivity extends AppCompatActivity {
         craftspin = (Spinner)findViewById(R.id.craftfilter);
         protypespin = (Spinner)findViewById(R.id.typefilter);
 
-        spinnerdata = dbHelper.GetSearchFilter();
+        //spinnerdata = dbHelper.GetSearchFilter();
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                Bundle bundle = new Bundle();
-                Intent intent = new Intent(FilterableActivity.this,NavigationMenu.class);
-                selections.put("craft",craftspin.getSelectedItem().toString());
-                selections.put("protype",protypespin.getSelectedItem().toString());
-                datafinal = dbHelper.GetSearchFilteredData(selections);
-                bundle.putSerializable("data",datafinal);
-                intent.putExtra("datas",bundle);
-                startActivity(intent);
-                finish();
+
+                if(selected_craft.isEmpty()&&selected_pro_type.isEmpty())
+                {
+                    Toast.makeText(getApplicationContext(),"Select from both",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Bundle bundle = new Bundle();
+                    Intent intent = new Intent(FilterableActivity.this,NavigationMenu.class);
+                    datafinal = dbHelper.Get_Search_Home_Filter_Products(selected_craft,selected_pro_type);
+                    bundle.putSerializable("data",datafinal);
+                    intent.putExtra("datas",bundle);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 
-        for (int i = 0;i<spinnerdata.size();i++)
-        {
-            catitems.add(String.valueOf(spinnerdata.get(i).entrySet().iterator().next().getKey()));
-            Log.d("craft spin item",""+spinnerdata.get(i).entrySet().iterator().next().getKey());
-        }
+        catitems = dbHelper.Craft_Search_Page();
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), R.layout.spinner_style,catitems);
-
-
-        craftlist.setAdapter(arrayAdapter);
-
-
+        craftlist.setAdapter(new Search_Filter_Adapter(getApplicationContext(),catitems));
         craftlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                for(int j = 0;j<spinnerdata.size();j++)
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                CheckedTextView check = (CheckedTextView)view.findViewById(R.id.filter_item_textchecked);
+                if(check.isChecked())
                 {
-
-                    Log.d("spinner size",""+spinnerdata.size());
-
-                    if(spinnerdata.get(j).entrySet().iterator().next().getKey().equals(catitems.get(i)))
-                    {
-
-
-                        protypelist.setAdapter(new Search_Filter_Adapter(getApplicationContext(),spinnerdata.get(j).get(catitems.get(i))));
-//                        protypespin.setAdapter(new ArrayAdapter(getApplicationContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
-                //        protypespin.setSelection(0);
-
-
-                    }
-
+                    check.setChecked(false);
+                    selected_craft.remove(craftlist.getItemAtPosition(i));
+                    Log.d("change_size",""+selected_craft.size());
+                    Log.d("deselected_item",""+craftlist.getItemAtPosition(i));
                 }
-
-
-            }
-        });
-
-
-        craftlist.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                //protypelist.setAdapter(new Filter_Checkbox_Adapter(getApplicationContext(),spinnerdata.get(i).get(catitems.get(i))));
-               // protypespin.setSelection(0);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        craftspin.setAdapter(arrayAdapter);
-        craftspin.setSelection(0);
-        craftspin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
-                //ArrayList<String> subcatslist = new ArrayList<String>();
-                for(int i = 0;i<spinnerdata.size();i++)
-                {
-
-                    Log.d("spinner size",""+spinnerdata.size());
-
-                    if(spinnerdata.get(i).entrySet().iterator().next().getKey().equals(catitems.get(position)))
-                    {
-
-
-                        protypespin.setAdapter(new ArrayAdapter(getApplicationContext(),R.layout.spinner_style,spinnerdata.get(i).get(catitems.get(position))));
-                        protypespin.setSelection(0);
-
-
-                    }
-
+                else {
+                    check.setChecked(true);
+                    selected_craft.add(craftlist.getItemAtPosition(i).toString());
+                    Log.d("change_size",""+selected_craft.size());
+                    Log.d("selected_item",""+craftlist.getItemAtPosition(i));
                 }
 
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
         });
 
 
-        protypelist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        protypelist.setAdapter(new Search_Filter_Adapter(getApplicationContext(),dbHelper.Pro_Type_Search_Page()));
+
+        protypelist.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 CheckedTextView checkedTextView = (CheckedTextView)view.findViewById(R.id.filter_item_textchecked);
@@ -181,21 +143,19 @@ public class FilterableActivity extends AppCompatActivity {
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 onBackPressed();
                 finish();
             }
         });
 
-
-
-
-
-
-
-
-
-
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(FilterableActivity.this,NavigationMenu.class));
+    }
 }

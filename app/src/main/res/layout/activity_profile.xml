@@ -30,17 +30,6 @@
                 tools:ignore="ContentDescription" />
 
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/requestprofile"
-                android:src="@drawable/requestmenu"
-                android:layout_weight="1"
-                android:layout_marginRight="5dp"
-                android:layout_gravity="end"
-
-
-                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/logout"

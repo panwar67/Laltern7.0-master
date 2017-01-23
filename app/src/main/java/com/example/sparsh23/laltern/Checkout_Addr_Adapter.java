@@ -62,7 +62,7 @@ public class Checkout_Addr_Adapter extends BaseAdapter {
         View view1 = layoutInflater.inflate(R.layout.checkout_addr_item,null);
 
         Typeface tf = Typeface.createFromAsset(context.getAssets(),
-                "Raleway-Regular.ttf");
+                "HelveticaNeueLt.ttf");
         Holder holder = new Holder();
         holder.title = (TextView)view1.findViewById(R.id.addr_title);
         holder.addr = (TextView)view1.findViewById(R.id.addr);

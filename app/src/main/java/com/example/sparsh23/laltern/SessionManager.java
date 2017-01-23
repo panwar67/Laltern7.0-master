@@ -22,6 +22,7 @@ public class SessionManager
     // Context
     Context _context;
 
+
     // Shared pref mode
     int PRIVATE_MODE = 0;
 
@@ -135,7 +136,8 @@ public class SessionManager
 
         // Staring Login Activity
         _context.startActivity(i);
-        ActivityCompat.finishAffinity(null);
+
+//        ActivityCompat.finishAffinity(null);
     }
 
     /**

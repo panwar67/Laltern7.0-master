@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:background="#f5f5f5"
+    tools:context="com.example.sparsh23.laltern.About_Us">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+        android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+
+        android:layout_width="match_parent"
+        android:textSize="18dp"
+        android:id="@+id/about_us"
+        android:linksClickable="true"
+        android:layout_height="match_parent"
+  />
+        
+        <WebView
+            android:id="@+id/webview_aboutus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"></WebView>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</FrameLayout>

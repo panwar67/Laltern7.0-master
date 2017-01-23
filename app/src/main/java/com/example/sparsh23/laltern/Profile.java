@@ -84,7 +84,7 @@ public class Profile extends AppCompatActivity {
         address = (ExpandableListView)findViewById(R.id.expandaddress);
         dp = (ImageView)findViewById(R.id.imageView1);
         back = (ImageView)findViewById(R.id.backprofile);
-        request = (ImageView)findViewById(R.id.requestprofile);
+        //request = (ImageView)findViewById(R.id.requestprofile);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,13 +93,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Profile.this,SubmitRequest.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                finish();
-            }
-        });
+
 
         logout1 = (ImageView)findViewById(R.id.logout);
 
@@ -134,19 +128,25 @@ public class Profile extends AppCompatActivity {
         real_addr_list.setAdapter( new Checkout_Addr_Adapter(getApplicationContext(),dbHelper.GetAddresses()));
         //address.setAdapter(new Address_ExpandableList_Adapter(dbHelper.GetAddresses(),"My Addresses",getApplicationContext()));
 
-final TextView textView = (TextView)findViewById(R.id.toggleaddr);
+        final TextView textView = (TextView)findViewById(R.id.toggleaddr);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+
+        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"SourceSansPro-Regular.otf");
+
+        textView.setTypeface(typeface);
+        textView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
 
                 startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",textView.getText().toString()));
 
             }
-        });
+        }
+        );
 
         final TextView request = (TextView)findViewById(R.id.togglerequest);
-
+        request.setTypeface(typeface);
         request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,32 +155,21 @@ final TextView textView = (TextView)findViewById(R.id.toggleaddr);
         });
 
 
-
-
-
         Log.d("address_size",""+dbHelper.GetAddresses().size());
         name = (TextView)findViewById(R.id.nameprofile);
         cont = (TextView)findViewById(R.id.contactprofile);
 
-        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"Raleway-SemiBold.ttf");
         name.setText(sessionManager.getUserDetails().get("name"));
         name.setTypeface(typeface);
-        Typeface typeface1 = Typeface.createFromAsset(getApplicationContext().getAssets(),"Raleway-Regular.ttf");
         email = (TextView)findViewById(R.id.emailpro);
-        email.setTypeface(typeface1);
-        cont.setTypeface(typeface1);
+        email.setTypeface(typeface);
+        cont.setTypeface(typeface);
 
 
         email.setText(sessionManager.getUserDetails().get("email"));
 
 
         cont.setText(dbHelper.GetProfile(sessionManager.getUserDetails().get("uid")).get("cont"));
-
-
-
-
-
-
      /*   stream=(ImageView)findViewById(R.id.feed);
         stream.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,14 +199,6 @@ final TextView textView = (TextView)findViewById(R.id.toggleaddr);
 
 
       //  data  = dbHelper.GetProfile();
-
-
-
-
-
-
-
-
 
 
     }

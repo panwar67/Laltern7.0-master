@@ -11,13 +11,13 @@
         android:fillColor="#6a3c11" />
     <path
         android:pathData=" M 16.13 19.05 C 17.56 19.72 16.96 22.70 16.56 24.09 C 15.12 23.43 15.72 20.44 16.13 19.05 Z"
-        android:fillColor="#fe0101" />
+        android:fillColor="#6a3c11" />
     <path
         android:pathData=" M 19.01 19.07 C 20.43 19.75 19.85 22.69 19.42 24.05 C 17.99 23.41 18.56 20.43 19.01 19.07 Z"
-        android:fillColor="#fe0101" />
+        android:fillColor="#6a3c11" />
     <path
         android:pathData=" M 21.43 18.86 C 21.73 18.85 22.34 18.85 22.64 18.84 C 22.67 20.66 22.68 22.48 22.69 24.30 C 22.36 24.29 21.71 24.28 21.38 24.27 C 21.39 22.46 21.40 20.66 21.43 18.86 Z"
-        android:fillColor="#fe0101" />
+        android:fillColor="#6a3c11" />
 
 
 </vector>

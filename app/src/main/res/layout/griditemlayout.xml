@@ -117,7 +117,6 @@
                 android:rating="1"
 
                 android:progressTint="@color/maintheme"
-                android:progressBackgroundTint="@android:color/holo_red_light"
                 android:id="@+id/productratingview"
                 style="?android:attr/ratingBarStyleSmall"
 

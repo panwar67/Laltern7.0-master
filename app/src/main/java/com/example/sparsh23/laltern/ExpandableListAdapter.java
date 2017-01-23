@@ -107,7 +107,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             iconheader.setImageResource(R.drawable.vector_drawable_home);
 
-            divier.setBackgroundResource(R.color.maintheme);
 
 
 
@@ -122,8 +121,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         {
 
             iconheader.setImageResource(R.drawable.vector_drawable_contact);
+            divier.setBackgroundResource(R.color.maintheme);
 
-           // divier.setBackgroundResource(R.color.red);
+
+            // divier.setBackgroundResource(R.color.red);
         }
         if(headers.get(groupPosition).equals("Policies"))
         {
@@ -149,6 +150,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             iconheader.setImageResource(R.drawable.vector_drawable_jewel__);
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
+            divier.setBackgroundResource(R.color.maintheme);
+
         }
 
         if(headers.get(groupPosition).equals("Accessories"))
@@ -209,7 +212,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             imageView.setImageResource(R.drawable.vector_drawable_plus);
 
-            divier.setBackgroundResource(R.color.maintheme);
+           // divier.setBackgroundResource(R.color.maintheme);
         }
 
 

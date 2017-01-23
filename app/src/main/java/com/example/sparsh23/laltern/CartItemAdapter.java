@@ -138,11 +138,14 @@ public class CartItemAdapter extends BaseAdapter {
         holder.price = (TextView)rowView.findViewById(R.id.cartproprice);
 
         holder.quantity = (TextView)rowView.findViewById(R.id.cartquantity);
+        holder.color = (TextView) rowView.findViewById(R.id.cartprocolor);
 
        // holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
         holder.size = (TextView)rowView.findViewById(R.id.cartprosize);
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-SemiBold.ttf");
-        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"HelveticaNeueLt.ttf");
+        Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Montserrat-Light.otf");
+        holder.color.setTypeface(typeface1);
+        //holder.color.setText();
 
 
 
@@ -178,6 +181,7 @@ public class CartItemAdapter extends BaseAdapter {
         rate = Double.parseDouble(result.get(position).get("price"));
         total = rate*Integer.parseInt(result.get(position).get("quantity"));
         holder.totalprice.setText(""+string+" "+total);
+        holder.color.setText(result.get(position).get("color"));
         imageLoader.displayImage(result.get(position).get("path"), holder.productimg);
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override

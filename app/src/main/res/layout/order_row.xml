@@ -10,8 +10,7 @@
 
         android:layout_marginBottom="5dp"
         android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shadowbag">
+        android:layout_height="wrap_content">
 
 
         <LinearLayout

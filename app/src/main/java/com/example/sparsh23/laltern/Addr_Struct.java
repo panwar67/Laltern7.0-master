@@ -14,6 +14,7 @@ public class Addr_Struct {
     public static final String city = "CITY";
     public static final String pin = "PIN";
     public static final String contact = "CONT";
+    public static final String country = "COUNTRY";
 
 
 

@@ -57,11 +57,12 @@
                 android:layout_marginTop="20dp"
                 app:max_start_value="10000"
                 app:min_start_value="100"
-
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

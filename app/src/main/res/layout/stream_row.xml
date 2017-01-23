@@ -6,18 +6,36 @@
     android:layout_height="wrap_content">
 
 
-    <RatingBar
-        android:layout_gravity="center"
 
 
+
+    <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
-        android:numStars="5"
+        android:layout_height="wrap_content"
+        android:text= "Rate our app"
+        android:textSize="20dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/red_border"
+        android:layout_gravity="center"
+        android:textColor="@color/maintheme"/>
+
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_gravity="center"
         android:stepSize="0.1"
-        android:rating="2"
-        android:isIndicator="false"
-        android:layout_marginRight="5dp"
+        android:rating="1"
+
         android:progressTint="@color/maintheme"
-        android:layout_height="60dp"
-        android:id="@+id/productrating"/>
+        android:id="@+id/productratingview"
+        style="?android:attr/ratingBarStyleSmall"
+
+        />
 
 </LinearLayout>

@@ -6,8 +6,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.backup.FileBackupHelper;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -68,7 +71,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+   // private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private FirebaseAuth mAuth;
 
@@ -108,6 +114,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+           if (!isNetworkAvailable())
+            {
+                startActivity(new Intent(LoginActivity.this,No_Internet_Connection.class));
+                finish();
+            }
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
@@ -134,7 +148,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
         sessionManager = new SessionManager(getApplicationContext());
 
@@ -148,25 +161,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
 
 
 
@@ -236,7 +231,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     Log.d("facebook_detailspl", "" +  profile.getLinkUri().toString());
                                     Log.d("facebook_detailspn", "" +  profile.getName().toString());
 
-                                    handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,profile.getName(),profile.getId(),profile.getProfilePictureUri(400,400).toString());
+                                    handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,profile.getName(),profile.getProfilePictureUri(400,400).toString());
                                 }
                             };
                             profileTracker.startTracking();
@@ -252,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d("facebook_detailspid", "" +  pro.getId().toString());
                             Log.d("facebook_detailspl", "" +  pro.getLinkUri().toString());
                             Log.d("facebook_detailspn", "" +  pro.getName().toString());
-                            handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,pro.getName(),pro.getId(),pro.getProfilePictureUri(400,400).toString());
+                            handleFacebookAccessToken(loginResult.getAccessToken(),loginResult,pro.getName(),pro.getProfilePictureUri(400,400).toString());
                         }
                     }
 
@@ -278,6 +273,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
+
+
+    public  boolean hasActiveInternetConnection(Context context) {
+        if (isNetworkAvailable()) {
+            try {
+                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://clients3.google.com/generate_204").openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 204 && urlc.getContentLength() == 0);
+            } catch (IOException e) {
+                Log.e("error_no_data", "Error checking internet connection", e);
+            }
+        } else {
+            Log.d("error_no_data", "No network available!");
+        }
+        return false;
+    }
+
 
 
     public boolean Register_FacebookUser(LoginResult loginResult, final String name, final String uid, final String dp)
@@ -294,7 +315,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Log.v("LoginActivity Response ", response.toString());
 
                         try {
-                            sessionManager.createLoginSession(object.getString("email"),name,uid,dp);
+                            sessionManager.createLoginSession(object.getString("email"),name,mAuth.getCurrentUser().getUid(),dp);
                             Log.v("Email = ", " " + object.getString("email"));
 
 
@@ -322,7 +343,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-    private void handleFacebookAccessToken(AccessToken token, final LoginResult loginResult, final String name, final String uid, final String dp) {
+    private void handleFacebookAccessToken(AccessToken token, final LoginResult loginResult, final String name,  final String dp) {
         Log.d("firebase_token", "handleFacebookAccessToken:" + token);
         // [START_EXCLUDE silent]
         //showProgressDialog();
@@ -343,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         loading.dismiss();
                         Log.d("firebase_signin", "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        Register_FacebookUser(loginResult,name, uid,dp);
+                        Register_FacebookUser(loginResult,name, mAuth.getCurrentUser().getUid(),dp);
                         startActivity(new Intent(LoginActivity.this,Update.class));
                         finish();
 
@@ -383,14 +404,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
+
         } else {
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }
@@ -416,50 +430,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-
-
-            LogInUser(email,password);
-
-        }
-    }
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -504,15 +474,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
        // showProgressDialog();
         // [END_EXCLUDE]
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        final AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("google signin", "signInWithCredential:onComplete:" + task.isSuccessful());
+                        Log.d("google_signin", "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         loading.dismiss();
-                        sessionManager.createLoginSession(acct.getEmail(),acct.getDisplayName(),acct.getId(), String.valueOf(acct.getPhotoUrl()));
+                        sessionManager.createLoginSession(acct.getEmail(),acct.getDisplayName(),mAuth.getCurrentUser().getUid(), String.valueOf(acct.getPhotoUrl()));
                         startActivity(new Intent(LoginActivity.this,Update.class));
                         finish();
 
@@ -589,7 +559,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+       // mEmailView.setAdapter(adapter);
     }
 
     @Override

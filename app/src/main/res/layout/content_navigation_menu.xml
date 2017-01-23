@@ -176,23 +176,44 @@
 
                     android:textSize="20dp"/>
 
-
-
-
-
-
-
-
-
                 <org.lucasr.twowayview.TwoWayView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/horizontallisttop"
-
-
                     android:orientation="horizontal"
                     android:paddingBottom="5dp"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/layout_suicide"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" View Crafts"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:background="#f5f5f5"
+                    android:textColor="#444444"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/craft_suicide"
+                    android:textSize="2dp"/>
+
+
+
+                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                    android:layout_width="match_parent"
+                    android:id="@+id/expandgrid_suicide"
+                    android:background="#f5f5f5"
+                    android:layout_height="2dp"
+                    android:numColumns="2">
+                </com.example.sparsh23.laltern.ExpandableHeightGridView>
+
+            </LinearLayout>
+
 
             <LinearLayout
 

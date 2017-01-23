@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/maintheme</item>
         <item name="colorAccent">@color/maintheme</item>
+        <item name="android:windowAnimationStyle">@style/theme</item>
+
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewLight</item>
         <item name="android:icon">@android:color/transparent</item>
@@ -17,12 +19,19 @@
     </style>
 
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/trans</item>
+    </style>
+
+
     <style name="AutoCompleteTextViewLight" parent="@android:style/Widget.AutoCompleteTextView">
         <item name="android:textColor">@android:color/holo_red_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/theme</item>
+
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewLight</item>
 
         <item name="windowNoTitle">true</item>
@@ -37,9 +46,16 @@
 
     </style>
 
+    <style name="theme">
+        <item name="android:windowEnterAnimation">@anim/left_in</item>
+        <item name="android:windowExitAnimation">@anim/left_out</item>
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:windowAnimationStyle">@style/theme</item>
+
 
     </style>
 

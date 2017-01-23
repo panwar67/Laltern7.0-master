@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import org.lucasr.twowayview.TwoWayView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -98,7 +100,17 @@ public class AboutArtistFrag extends Fragment {
         //overall.setRating(Float.parseFloat(mParam1.get("rating")));
         artistproducts = (TwoWayView)view.findViewById(R.id.artistproducts);
         SliderLayout sliderShow = (SliderLayout) view.findViewById(R.id.slider);
+        final ArrayList<HashMap<String, String>> data =  dbHelper.GetArtistProducts(mParam1.get("artuid"));
         artistproducts.setAdapter(new Trending_Pro_Adapter_Product_Page(getContext(),dbHelper.GetArtistProducts(mParam1.get("artuid"))));
+        artistproducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(),ProductView.class);
+                intent.putExtra("promap",data.get(i));
+                startActivity(intent);
+
+            }
+        });
         WebView webView = (WebView)view.findViewById(R.id.webs);
         webView.getSettings().getJavaScriptCanOpenWindowsAutomatically();
         webView.getSettings().setJavaScriptEnabled(true);
@@ -111,10 +123,11 @@ public class AboutArtistFrag extends Fragment {
      //   webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
+        webView.clearCache(true);
         webView.loadUrl("about:blank");
-        webView.loadUrl("http://www.whydoweplay.com/lalten/no-jquery.html");
+        webView.loadUrl(mParam1.get("des"));
         webView.setWebChromeClient(new WebChromeClient());
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"BioRhyme-Regular.ttf");
+//        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(),"BioRhyme-Regular.ttf");
 //        int noimg = Integer.parseInt(mParam1.get("noimg"));
   //      Log.d("No Images in art", ""+noimg);
         return view;

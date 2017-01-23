@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
@@ -24,6 +25,11 @@ import android.widget.ToggleButton;
 
 import com.example.sparsh23.laltern.dummy.DummyContent;
 import com.example.sparsh23.laltern.dummy.DummyContent.DummyItem;
+import com.nshmura.snappysmoothscroller.LinearLayoutScrollVectorDetector;
+import com.nshmura.snappysmoothscroller.SnapType;
+import com.nshmura.snappysmoothscroller.SnappyGridLayoutManager;
+import com.nshmura.snappysmoothscroller.SnappyLinearLayoutManager;
+import com.nshmura.snappysmoothscroller.SnappySmoothScroller;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,32 +91,24 @@ public class ItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-
+        if (getArguments() != null)
+            {
             map = (ArrayList<HashMap<String,String>>)getArguments().getSerializable("data");
             cat_subcat_map = (HashMap<String,String>)getArguments().getSerializable("selection");
-
             if(getArguments().getSerializable("filter")!=null)
-
             {
-
                 filtermap = (HashMap<String,String>)getArguments().getSerializable("filter");
                 Log.d("inside filter map",filtermap.toString());
-
             }
             if(getArguments().getSerializable("filter_build")!=null);
             {
                 filter_build = (HashMap<String,ArrayList<HashMap<String,String>>>) getArguments().getSerializable("filter_build");
-
             }
-
-
-
-           // ARG_CAT = getArguments().getString("category");
+            // ARG_CAT = getArguments().getString("category");
             //ARG_SUB = getArguments().getString("subcat");
 
             //ARG_UID = getArguments().getString("uid");
-        }
+            }
 
 
 
@@ -136,22 +134,19 @@ public class ItemFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(map, mListener, getContext(),1));
 
+        if(filtermap.isEmpty())
+        {
+            filter.setVisibility(View.GONE);
+        }
+
 
 
        // Toast.makeText(getContext(),""+ARG_CAT+" "+ARG_SUB+" "+ARG_UID+"",Toast.LENGTH_SHORT).show();
-
-
-
-
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(filtermap!=null&&filtermap.size()>0)
-                {
-
-
-
+                {   Log.d("inside","Itemfragment");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("filter",filtermap);
                     bundle.putSerializable("selection",cat_subcat_map);
@@ -162,8 +157,8 @@ public class ItemFragment extends Fragment {
                     fragmentTransaction.replace(R.id.navrep, fragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-
-                }if(filtermap.size()==0)
+                }
+                if(filtermap.size()==0)
                 {
 
                     Bundle bundle = new Bundle();
@@ -176,10 +171,40 @@ public class ItemFragment extends Fragment {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
-
-
             }
         });
+
+
+        final SnappyGridLayoutManager layoutManager = new SnappyGridLayoutManager(getContext(),2 ,LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                SnappySmoothScroller scroller = new SnappySmoothScroller.Builder()
+                        .setSnapType(SnapType.VISIBLE)
+                        .setPosition(position)
+                        .setSnapDuration(500)
+                        .setSnapInterpolator(new DecelerateInterpolator())
+
+                        .setScrollVectorDetector(new LinearLayoutScrollVectorDetector(this))
+                        .build(recyclerView.getContext());
+
+                startSmoothScroll(scroller);
+            }
+        };
+
+      final SnappyLinearLayoutManager layoutManager1 = new SnappyLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false) {
+          @Override
+          public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+              SnappySmoothScroller scroller = new SnappySmoothScroller.Builder()
+                      .setPosition(position)
+                      .setScrollVectorDetector(new LinearLayoutScrollVectorDetector(this))
+                      .build(recyclerView.getContext());
+
+              startSmoothScroll(scroller);
+          }
+      };
+
+
+
 
 
 
@@ -189,15 +214,9 @@ public class ItemFragment extends Fragment {
 
                 Context context = view.getContext();
 
-
-
-
-
-
-
                 if(imageView.isChecked())
                 {
-                    recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+                    recyclerView.setLayoutManager(layoutManager);
 
                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(map, mListener, getContext(),2));
 
@@ -207,7 +226,7 @@ public class ItemFragment extends Fragment {
 
 
 
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setLayoutManager(layoutManager1);
                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(map, mListener, getContext(),1));
 
 
@@ -241,7 +260,7 @@ public class ItemFragment extends Fragment {
 
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext())
-                        .setTitle("Choose a Day")
+                        .setTitle("Order By")
                         .setSingleChoiceItems( items, -1, new DialogInterface.OnClickListener() {
 
                             @Override
@@ -258,7 +277,7 @@ public class ItemFragment extends Fragment {
 
                                     Collections.sort(sorteddata, new MapComparator("price"));
 
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                                    recyclerView.setLayoutManager(layoutManager);
 
                                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(sorteddata, mListener, getContext(),2));
                                     imageView.setChecked(false);
@@ -275,7 +294,7 @@ public class ItemFragment extends Fragment {
 
                                     Collections.reverse(sorteddata);
 
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                                    recyclerView.setLayoutManager(layoutManager);
 
                                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(sorteddata, mListener, getContext(),2));
                                     imageView.setChecked(false);
@@ -289,7 +308,7 @@ public class ItemFragment extends Fragment {
 
                                     Collections.sort(sorteddata,new MapComparator("rating"));
 
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                                    recyclerView.setLayoutManager(layoutManager);
 
                                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(sorteddata, mListener, getContext(),2));
                                     imageView.setChecked(false);
@@ -298,48 +317,23 @@ public class ItemFragment extends Fragment {
                                 }
                                 if (which==3)
                                 {
-
-
                                     sorteddata = map;
-
                                     Collections.sort(sorteddata, new MapComparator("rating"));
                                     Collections.reverse(sorteddata);
-
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
+                                    recyclerView.setLayoutManager(layoutManager);
                                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(sorteddata, mListener, getContext(),2));
                                     imageView.setChecked(false);
-
-
-
-                                }
-
-
-
-
+                                  }
                                 Toast.makeText(getContext(),
                                         "The selected Day is " +which, Toast.LENGTH_LONG).show();
-
-//dismissing the dialog when the user makes a selection.
                                 dialog.dismiss();
                             }
                         });
                 AlertDialog alertdialog2 = builder2.create();
                 alertdialog2.show();
-
-
-
-
-
-
                 return false;
             }
         });
-
-
-
-
-
 
 /*        if (view instanceof RecyclerView) {
 
@@ -359,10 +353,6 @@ public class ItemFragment extends Fragment {
         }
 
 */
-
-
-
-
        /* if(ARG_UID != "nouid")
         {
 
@@ -389,12 +379,6 @@ public class ItemFragment extends Fragment {
 
         return view;
     }
-
-
-
-
-
-
 
     @Override
     public void onAttach(Context context) {

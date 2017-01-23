@@ -21,16 +21,13 @@
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-
             >
-
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
                 android:id="@+id/artistwebview"
                 app:layout_collapseMode="parallax"
                 android:scaleType="fitXY">
-
             </ImageView>
 
             <android.support.v7.widget.Toolbar
@@ -49,32 +46,23 @@
                     android:src="@drawable/ic_arrow_back_black_scroll"
                     tools:ignore="ContentDescription" />
 
-
-
-
                 </android.support.v7.widget.Toolbar>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
-        android:clipToPadding="false"
-        android:background="@color/white"
-
-        android:name="com.example.sparsh23.laltern.ItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.example.sparsh23.laltern.ItemFragment"
-        android:layout_marginTop="10dp"
-        />
-
-
-
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:clipToPadding="false"
+            android:background="@color/white"
+            android:name="com.example.sparsh23.laltern.ItemFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.example.sparsh23.laltern.ItemFragment"
+            android:layout_marginTop="10dp"
+            />
 
 </android.support.design.widget.CoordinatorLayout>

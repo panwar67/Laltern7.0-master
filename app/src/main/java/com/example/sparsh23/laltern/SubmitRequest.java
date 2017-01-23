@@ -23,6 +23,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,6 +45,8 @@ public class SubmitRequest extends AppCompatActivity {
     ImageLoader imageLoader;
     DisplayImageOptions options;
     EditText craft, quantity;
+    private Tracker mTracker;
+
 
     Button submit;
     DBHelper dbHelper;
@@ -66,7 +70,11 @@ public class SubmitRequest extends AppCompatActivity {
         imageLoader = ImageLoader.getInstance();
 //        imageLoader.destroy();
         imageLoader.init(config1.build());
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
 
+        mTracker.setScreenName("Request_from_product");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
 
         craft = (EditText)findViewById(R.id.requestcraft);
@@ -85,6 +93,9 @@ public class SubmitRequest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+                mTracker.setScreenName("Request_submitted");
+                mTracker.send(new HitBuilders.EventBuilder().build());
 
                 String des = editText.getText().toString();
                 String prouid = hashMap.get("uid");

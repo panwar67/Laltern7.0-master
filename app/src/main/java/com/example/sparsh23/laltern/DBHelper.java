@@ -27,9 +27,11 @@ import android.util.Log;
 
 import com.nostra13.universalimageloader.utils.L;
 
+import layout.Order_Struct;
+
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "lalterndData30.db";
+    public static final String DATABASE_NAME = "lalterndData50.db";
     public static final  String reqdirect = "REQDIRECT";
     HashMap<String,String> mAliasMap = new HashMap<>();
 
@@ -44,8 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db)
     {
         // TODO Auto-generated method stub
-
-        db.execSQL("CREATE TABLE ImageData (UID text, DES text, OWN text, PRICE float, PATH text, TYPE text, QUANTITY int, NOIMAGES int, OWNER text, TITLE text, CATEGORY text, SUBCAT text, META text, CRAFT text, PROTYPE text, RATING text, SIZE text, COLOR text, REVPRICE text, REVQUANTITY text, SIZEAVAIL text);");
+db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE float, PATH text, TYPE text, QUANTITY int, NOIMAGES int, OWNER text, TITLE text, CATEGORY text, SUBCAT text, META text, CRAFT text, PROTYPE text, RATING text, SIZE text, COLOR text, REVPRICE text, REVQUANTITY text, SIZEAVAIL text, STOCK text);");
         db.execSQL("CREATE TABLE "+Profile_Strut.Table_Name+" ( "+Profile_Strut.Uid+" text, "+Profile_Strut.Name+" text, "+Profile_Strut.Comp_Name+" text, "+Profile_Strut.Designation+" text, "+Profile_Strut.Addr+" text, "+Profile_Strut.City+" text, "+Profile_Strut.Email+" text, "+Profile_Strut.Cont+" text, "+Profile_Strut.State+" text, "+Profile_Strut.ToB+" text, "+Profile_Strut.Pan+" text, "+Profile_Strut.Web+" text);");
         db.execSQL("CREATE TABLE "+Artisian_Struct.Table_Name+" ( "+Artisian_Struct.name+" text, "+Artisian_Struct.state+" text, "+Artisian_Struct.craft+" text, "+Artisian_Struct.awards+" text, "+Artisian_Struct.description+" text, "+Artisian_Struct.tob+" text, "+Artisian_Struct.pics+" text, "+Artisian_Struct.noimg+" text, "+Artisian_Struct.authentic+" text, "+Artisian_Struct.price+" text, "+Artisian_Struct.ratings+" text, "+Artisian_Struct.uid+" text);");
         db.execSQL("CREATE TABLE "+Request_Struct.table_name+" ( "+Request_Struct.ord_id+" text, "+Request_Struct.pro_id+" text, "+Request_Struct.buy_id+" text, "+Request_Struct.des+" text, "+Request_Struct.path+" text, "+Request_Struct.craft+" text, "+Request_Struct.status+" text, "+Request_Struct.quantity+" text);");
@@ -58,7 +59,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE "+Filter_Struct.table_name+" ("+Filter_Struct.uid+" text, "+Filter_Struct.cat+" text, "+Filter_Struct.subcat+" text, "+Filter_Struct.colorfil+" text, "+ Filter_Struct.sizefil+" text, "+Filter_Struct.producttype+" text);");
         db.execSQL("CREATE TABLE SearchFilter (CRAFT text, PROTYPE text);");
-        db.execSQL("CREATE TABLE "+Addr_Struct.Table_Name+" ("+Addr_Struct.title+" text, "+Addr_Struct.area+" text, "+Addr_Struct.city+" text, "+Addr_Struct.dist+" text, "+Addr_Struct.state+" text, "+Addr_Struct.pin+" text, "+Addr_Struct.contact+" text, "+Addr_Struct.addr+" text);");
+        db.execSQL("CREATE TABLE "+Addr_Struct.Table_Name+" ("+Addr_Struct.title+" text, "+Addr_Struct.area+" text, "+Addr_Struct.city+" text, "+Addr_Struct.dist+" text, "+Addr_Struct.state+" text, "+Addr_Struct.pin+" text, "+Addr_Struct.contact+" text, "+Addr_Struct.addr+" text, "+Addr_Struct.country+" text);");
+        db.execSQL("CREATE TABLE "+ Order_Struct.table_name+" ("+Order_Struct.ord_uid+" text, "+Order_Struct.pay_uid+" text, "+Order_Struct.pro_uid+" text, "+Order_Struct.ord_add+" text, "+Order_Struct.user_uid+" text);");
 
 
 
@@ -87,6 +89,14 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = this.getWritableDatabase();
         database.execSQL("DELETE FROM "+Addr_Struct.Table_Name);
         Log.d("addr","deleted");
+
+    }
+
+    public void InitOrders()
+    {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.execSQL("DELETE FROM "+Order_Struct.table_name);
+        Log.d("orders_table","deleted");
 
     }
 
@@ -138,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean InsertAddr(String title, String addr, String area, String city, String dist, String state, String pin, String cont)
+    public boolean InsertAddr(String title, String addr, String area, String city, String dist, String state, String pin, String cont, String country)
     {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -151,6 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(Addr_Struct.state,state);
         contentValues.put(Addr_Struct.pin,pin);
         contentValues.put(Addr_Struct.contact,cont);
+        contentValues.put(Addr_Struct.country,country);
         long row = db.insertWithOnConflict(Addr_Struct.Table_Name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
         Log.d("addr_inserted",""+row);
 
@@ -212,6 +223,115 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return  data;
     }
+
+    public ArrayList<String> Craft_Search_Page()
+    {
+        ArrayList<String> data = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from SearchFilter group by CRAFT",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            data.add(res.getString(res.getColumnIndex("CRAFT")));
+            res.moveToNext();
+        }
+        return data;
+    }
+
+    public ArrayList<String> Pro_Type_Search_Page()
+    {
+        ArrayList<String> data = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from SearchFilter group by PROTYPE",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            data.add(res.getString(res.getColumnIndex("PROTYPE")));
+            res.moveToNext();
+        }
+
+        return  data;
+    }
+
+    public ArrayList<HashMap<String,String>> Get_Search_Home_Filter_Products(ArrayList<String> craft, ArrayList<String> pro_type)
+    {
+        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+        ArrayList<String> uid = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        for(int i=0;i<craft.size();i++)
+        {
+            Cursor res = db.rawQuery("select * from ImageData where CRAFT like '%"+craft.get(i)+"%'",null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                if (!uid.contains(res.getString(res.getColumnIndex("UID")))) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    //HashMap<String,String> map = new HashMap<String, String>();
+                    map.put("uid", res.getString(res.getColumnIndex("UID")));
+                    map.put("path", res.getString(res.getColumnIndex("PATH")));
+                    map.put("des", res.getString(res.getColumnIndex("DES")));
+                    map.put("title", res.getString(res.getColumnIndex("TITLE")));
+                    map.put("price", res.getString(res.getColumnIndex("PRICE")));
+                    map.put("quantity", res.getString(res.getColumnIndex("QUANTITY")));
+                    map.put("noimages", res.getString(res.getColumnIndex("NOIMAGES")));
+                    map.put("type", res.getString(res.getColumnIndex("TYPE")));
+                    map.put("cat", res.getString(res.getColumnIndex("CATEGORY")));
+                    map.put("subcat", res.getString(res.getColumnIndex("SUBCAT")));
+                    map.put("craft", res.getString(res.getColumnIndex("CRAFT")));
+                    map.put("artuid", res.getString(res.getColumnIndex("OWNER")));
+                    map.put("meta", res.getString(res.getColumnIndex("META")));
+                    map.put("rating", res.getString(res.getColumnIndex("RATING")));
+                    map.put("protype", res.getString(res.getColumnIndex("PROTYPE")));
+                    map.put("revquantity", res.getString(res.getColumnIndex("REVQUANTITY")));
+                    map.put("revprice", res.getString(res.getColumnIndex("REVPRICE")));
+                    map.put("sizeavail", res.getString(res.getColumnIndex("SIZEAVAIL")));
+                    uid.add(res.getString(res.getColumnIndex("UID")));
+                    data.add(map);
+                    res.moveToNext();
+                }
+            }
+        }
+
+        for(int i=0;i<pro_type.size();i++)
+        {
+            Cursor res = db.rawQuery("select * from ImageData where PROTYPE like '%"+pro_type.get(i)+"%'",null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                if (!uid.contains(res.getString(res.getColumnIndex("UID")))) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    //HashMap<String,String> map = new HashMap<String, String>();
+                    map.put("uid", res.getString(res.getColumnIndex("UID")));
+                    map.put("path", res.getString(res.getColumnIndex("PATH")));
+                    map.put("des", res.getString(res.getColumnIndex("DES")));
+                    map.put("title", res.getString(res.getColumnIndex("TITLE")));
+                    map.put("price", res.getString(res.getColumnIndex("PRICE")));
+                    map.put("quantity", res.getString(res.getColumnIndex("QUANTITY")));
+                    map.put("noimages", res.getString(res.getColumnIndex("NOIMAGES")));
+                    map.put("type", res.getString(res.getColumnIndex("TYPE")));
+                    map.put("cat", res.getString(res.getColumnIndex("CATEGORY")));
+                    map.put("subcat", res.getString(res.getColumnIndex("SUBCAT")));
+                    map.put("craft", res.getString(res.getColumnIndex("CRAFT")));
+                    map.put("artuid", res.getString(res.getColumnIndex("OWNER")));
+                    map.put("meta", res.getString(res.getColumnIndex("META")));
+                    map.put("rating", res.getString(res.getColumnIndex("RATING")));
+                    map.put("protype", res.getString(res.getColumnIndex("PROTYPE")));
+                    map.put("revquantity", res.getString(res.getColumnIndex("REVQUANTITY")));
+                    map.put("revprice", res.getString(res.getColumnIndex("REVPRICE")));
+                    map.put("sizeavail", res.getString(res.getColumnIndex("SIZEAVAIL")));
+                    uid.add(res.getString(res.getColumnIndex("UID")));
+                    data.add(map);
+                    res.moveToNext();
+                }
+            }
+        }
+
+        return data;
+    }
+
+
+
+
+
 
 
     public boolean InsertFilterData(   ArrayList<HashMap<String,String>> data)
@@ -569,6 +689,7 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("state",res.getString(res.getColumnIndex(Addr_Struct.state)));
             map.put("pin",res.getString(res.getColumnIndex(Addr_Struct.pin)));
             map.put("cont",res.getString(res.getColumnIndex(Addr_Struct.contact)));
+            map.put("country",res.getString(res.getColumnIndex(Addr_Struct.country)));
             data.add(map);
             Log.d("inside_addr",""+res.getString(res.getColumnIndex(Addr_Struct.pin)));
             res.moveToNext();
@@ -587,6 +708,7 @@ public class DBHelper extends SQLiteOpenHelper {
        {
                 Cursor res = db.rawQuery("select * from ImageData where CATEGORY like '"+selection.get("category")+"' and SUBCAT like '"+selection.get("subcat")+"' and "+data.get(i).get("col")+" like '%"+data.get(i).get("tag")+"%'",null);
                 Log.d("query_sql","select * from ImageData where CATEGORY like '"+selection.get("category")+"' and SUBCAT like '"+selection.get("subcat")+"' and "+data.get(i).get("col")+" like '%"+data.get(i).get("tag")+"%'") ;
+                Log.d("used","get_product_all");
            res.moveToFirst();
                 while (!res.isAfterLast())
                 {
@@ -932,6 +1054,43 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean Insert_Orders(String orduid, String payuid, String prouid, String ordadd, String useruid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("orduid",orduid);
+        contentValues.put("payuid",payuid);
+        contentValues.put("prouid",prouid);
+        contentValues.put("ordadd",ordadd);
+        contentValues.put("useruid",useruid);
+        long row = db.insertWithOnConflict(Order_Struct.table_name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
+        Log.d("order_inserted",""+row);
+
+
+        return true;
+    }
+
+    public ArrayList<HashMap<String,String>> Get_Orders(String uid)
+    {
+        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from "+Order_Struct.table_name+" where "+Order_Struct.user_uid+" = '"+uid+"';",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            HashMap<String,String> map = new HashMap<>();
+            map.put("orduid",res.getString(res.getColumnIndex(Order_Struct.ord_uid)));
+            map.put("prouid",res.getString(res.getColumnIndex(Order_Struct.pro_uid)));
+            map.put("payuid",res.getString(res.getColumnIndex(Order_Struct.pay_uid)));
+            map.put("ordadd",res.getString(res.getColumnIndex(Order_Struct.ord_add)));
+            map.put("useruid",res.getString(res.getColumnIndex(Order_Struct.user_uid)));
+            data.add(map);
+            Log.d("order_uid",res.getString(res.getColumnIndex(Order_Struct.ord_uid)));
+            res.moveToNext();
+        }
+
+        return  data;
+    }
 
 
     public boolean InsertImageData  (ArrayList<HashMap<String,String>> data)
@@ -949,7 +1108,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("UID", data.get(i).get("uid"));
-                Log.d("category", data.get(i).get("category"));
+                Log.d("stock", data.get(i).get("stock"));
                 contentValues.put("PRICE",data.get(i).get("price"));
                 contentValues.put("QUANTITY", data.get(i).get("quantity"));
                 contentValues.put("NOIMAGES", data.get(i).get("noimg"));
@@ -960,6 +1119,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 contentValues.put("META",data.get(i).get("meta"));
                 contentValues.put("DES", data.get(i).get("des"));
                 contentValues.put("OWNER", data.get(i).get("own"));
+                contentValues.put("OWN_NAME",data.get(i).get("own_name"));
                 contentValues.put("CRAFT", data.get(i).get("craft"));
                 contentValues.put("COLOR",data.get(i).get("color"));
                 contentValues.put("SIZE",data.get(i).get("size"));
@@ -968,6 +1128,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 contentValues.put("REVPRICE",data.get(i).get("revprice"));
                 contentValues.put("REVQUANTITY",data.get(i).get("revquantity"));
                 contentValues.put("SIZEAVAIL",data.get(i).get("sizeavail"));
+                contentValues.put("STOCK",data.get(i).get("stock"));
                // Log.d("craft", );
 //                Log.d("owner from network",""+own);
 
@@ -1106,7 +1267,7 @@ public class DBHelper extends SQLiteOpenHelper {
         HashMap<String,String> map = new HashMap<String, String>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from "+Artisian_Struct.Table_Name+" where "+Artisian_Struct.uid+"= "+uid+";",null);
+        Cursor res = db.rawQuery("select * from "+Artisian_Struct.Table_Name+" where "+Artisian_Struct.uid+"= '"+uid+"';",null);
         Log.d("uid artist",uid);
         res.moveToFirst();
         while (!res.isAfterLast())
@@ -1145,12 +1306,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<HashMap<String,String>> getimageDataMeta(String types )
+    public  ArrayList<HashMap<String,String>> GetProductByArtist(String artuids)
     {
-
         ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from ImageData where META = '"+types+"'", null);
+        Cursor res = db.rawQuery("select * from ImageData where OWNER like '"+artuids+"'",null);
         res.moveToFirst();
 
         while (!res.isAfterLast())
@@ -1160,7 +1320,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String uid = res.getString(res.getColumnIndex("UID"));
             String craft = res.getString(res.getColumnIndex("CRAFT"));
             String artuid = res.getString(res.getColumnIndex("OWNER"));
-            String own = res.getString(res.getColumnIndex("OWN"));
+            //String own = res.getString(res.getColumnIndex("OWN"));
             String des = res.getString(res.getColumnIndex("DES"));
             String title = res.getString(res.getColumnIndex("TITLE"));
             String category = res.getString(res.getColumnIndex("CATEGORY"));
@@ -1179,7 +1339,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             map.put("uid",uid);
             map.put("path",path);
-            map.put("own",own);
+            //map.put("own",own);
             map.put("des",des);
             map.put("artuid",artuid);
             map.put("title",title);
@@ -1196,6 +1356,70 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
             map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
             map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
+
+            data.add(map);
+
+            res.moveToNext();
+        }
+
+
+
+        return data;
+    }
+
+    public ArrayList<HashMap<String,String>> getimageDataMeta(String types )
+    {
+
+        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from ImageData where META = '"+types+"' ;", null);
+        res.moveToFirst();
+
+        while (!res.isAfterLast())
+        {
+            HashMap<String, String> map = new HashMap<String, String>();
+            String path = res.getString(res.getColumnIndex("PATH"));
+            String uid = res.getString(res.getColumnIndex("UID"));
+            String craft = res.getString(res.getColumnIndex("CRAFT"));
+            String artuid = res.getString(res.getColumnIndex("OWNER"));
+            //String own = res.getString(res.getColumnIndex("OWN"));
+            String des = res.getString(res.getColumnIndex("DES"));
+            String title = res.getString(res.getColumnIndex("TITLE"));
+            String category = res.getString(res.getColumnIndex("CATEGORY"));
+            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
+            String price = res.getString(res.getColumnIndex("PRICE"));
+            String noimages = res.getString(res.getColumnIndex("NOIMAGES"));
+            String type = res.getString(res.getColumnIndex("TYPE"));
+            String subcat = res.getString(res.getColumnIndex("SUBCAT"));
+            String meta = res.getString(res.getColumnIndex("META"));
+            String rating = res.getString(res.getColumnIndex("RATING"));
+
+
+
+            Log.d("sizes_avail", ""+res.getString(res.getColumnIndex("SIZEAVAIL")));
+            Log.d("des",""+des);
+
+            map.put("uid",uid);
+            map.put("path",path);
+            //map.put("own",own);
+            map.put("des",des);
+            map.put("artuid",artuid);
+            map.put("title",title);
+            map.put("category", category);
+            map.put("quantity", quantity);
+            map.put("price", price);
+            map.put("noimages",noimages);
+            map.put("type",type);
+            map.put("subcat",subcat);
+            map.put("meta",meta);
+            map.put("craft",craft);
+            map.put("rating",rating);
+            map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
+            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+            map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
 
             data.add(map);
 
@@ -1220,7 +1444,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String uid = res.getString(res.getColumnIndex("UID"));
             String craft = res.getString(res.getColumnIndex("CRAFT"));
             String artuid = res.getString(res.getColumnIndex("OWNER"));
-            String own = res.getString(res.getColumnIndex("OWN"));
+//           String own = res.getString(res.getColumnIndex("OWN"));
             String des = res.getString(res.getColumnIndex("DES"));
             String title = res.getString(res.getColumnIndex("TITLE"));
             String category = res.getString(res.getColumnIndex("CATEGORY"));
@@ -1239,7 +1463,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             map.put("uid",uid);
             map.put("path",path);
-            map.put("own",own);
+         //   map.put("own",own);
             map.put("des",des);
             map.put("artuid",artuid);
             map.put("title",title);
@@ -1256,6 +1480,7 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
             map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
             map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
 
             data.add(map);
 
@@ -1290,8 +1515,9 @@ public class DBHelper extends SQLiteOpenHelper {
             }
 
             String path = res.getString(res.getColumnIndex("PATH"));
+
             String uid = res.getString(res.getColumnIndex("UID"));
-            String own = res.getString(res.getColumnIndex("OWN"));
+            String own = res.getString(res.getColumnIndex("OWNER"));
             String des = res.getString(res.getColumnIndex("DES"));
             String title = res.getString(res.getColumnIndex("TITLE"));
             String category = res.getString(res.getColumnIndex("CATEGORY"));
@@ -1318,6 +1544,8 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("meta",meta);
             map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
             map.put("size",size);
+            map.put("color",res.getString(res.getColumnIndex("COLOR")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
 
             res.moveToNext();
 
@@ -1335,7 +1563,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d("Sent Data",selected.toString());
       //  db.query("sku_table", columns, "owner=? and price=?", new String[] { owner, price }, null, null, null);
 
-        String[]  col = {"PATH,UID,DES,TITLE,PRICE,QUANTITY,NOIMAGES,TYPE,SUBCAT,META,OWNER,CRAFT"};
+       // String[]  col = {"PATH,UID,DES,TITLE,PRICE,QUANTITY,NOIMAGES,TYPE,SUBCAT,META,OWNER,CRAFT"};
         //Cursor res = db.query("ImageData",col,"CATEGORY =? and SUBCAT =?", new String[] { selected.get("category"), selected.get("subcat") }, null, null, null);
         Cursor res1 = db.rawQuery("select * from ImageData where CATEGORY like '"+selected.get("category")+"' and SUBCAT like '"+selected.get("subcat")+"';", null);
         Log.d("category size", ""+res1.getCount());
@@ -1377,8 +1605,9 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("protype",res1.getString(res1.getColumnIndex("PROTYPE")));
             map.put("revquantity",revquantity);
             map.put("revprice",revprice);
-
+            map.put("stock",res1.getString(res1.getColumnIndex("STOCK")));
             map.put("sizeavail",res1.getString(res1.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res1.getString(res1.getColumnIndex("STOCK")));
             data.add(map);
             res1.moveToNext();
         }
@@ -1405,7 +1634,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("uid", res.getString(res.getColumnIndex("UID")));
                 map.put("path", res.getString(res.getColumnIndex("PATH")));
-                map.put("own", res.getString(res.getColumnIndex("OWNER")));
+                map.put("artuid", res.getString(res.getColumnIndex("OWNER")));
                 map.put("des", res.getString(res.getColumnIndex("DES")));
                 map.put("title", res.getString(res.getColumnIndex("TITLE")));
                 map.put("category", res.getString(res.getColumnIndex("CATEGORY")));
@@ -1419,6 +1648,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 map.put("rating", res.getString(res.getColumnIndex("RATING")));
                 map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
                 map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+                map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+                map.put("size",res.getString(res.getColumnIndex("SIZE")));
+                map.put("stock",res.getString(res.getColumnIndex("STOCK")));
+
                 data.add(map);
 
             }
@@ -1447,7 +1680,7 @@ public class DBHelper extends SQLiteOpenHelper {
             HashMap<String,String> map = new HashMap<String, String>();
             map.put("uid", res.getString(res.getColumnIndex("UID")));
             map.put("path", res.getString(res.getColumnIndex("PATH")));
-            map.put("own", res.getString(res.getColumnIndex("OWNER")));
+            map.put("artuid", res.getString(res.getColumnIndex("OWNER")));
             map.put("des", res.getString(res.getColumnIndex("DES")));
             map.put("title", res.getString(res.getColumnIndex("TITLE")));
             map.put("category", res.getString(res.getColumnIndex("CATEGORY")));
@@ -1459,13 +1692,42 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("meta", res.getString(res.getColumnIndex("META")));
             map.put("craft", res.getString(res.getColumnIndex("CRAFT")));
             map.put("rating", res.getString(res.getColumnIndex("RATING")));
+
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+
+            map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("size",res.getString(res.getColumnIndex("SIZE")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
             data.add(map);
             res.moveToNext();
-
-
         }
 
         return data;
+    }
+
+
+    public ArrayList<HashMap<String,String>> Get_Search_Tags()
+    {
+        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from SearchData group by TAG ;",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            HashMap<String,String> map = new HashMap<String, String>();
+            map.put("tag",res.getString(res.getColumnIndex("TAG")));
+            map.put("uid",res.getString(res.getColumnIndex("UID")));
+            map.put("type",res.getString(res.getColumnIndex("TYPE")));
+            map.put("suggest",res.getString(res.getColumnIndex("SUGGEST")));
+            data.add(map);
+            res.moveToNext();
+        }
+
+        Log.d("search_tag",""+data.size());
+
+
+        return  data;
     }
 
 
@@ -1488,9 +1750,10 @@ public class DBHelper extends SQLiteOpenHelper {
         String tag = res1.getString(res1.getColumnIndex("TAG"));
         String suggest = res1.getString(res1.getColumnIndex("TYPE"));
 
-      //  Log.d("suggest new ", suggest);
+        //  Log.d("suggest new ", suggest);
         //Log.d("suggest uid",Uid);
-        Log.d("suggest tag",tag);
+        Log.d("suggest_tag",tag);
+        Log.d("suggest_type",suggest);
 
 
 
@@ -1538,6 +1801,7 @@ public class DBHelper extends SQLiteOpenHelper {
             map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
             map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
             map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
             data.add(map);
             res.moveToNext();
 
@@ -1547,8 +1811,218 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    return data;
+        return data;
     }
+
+    public ArrayList<HashMap<String,String>> GetProductsFromSearch_test( String col, String value)
+
+    {
+        ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+        //  Log.d("suggest new ", suggest);
+        //Log.d("suggest uid",Uid);
+        Log.d("suggest_tag",value);
+        Log.d("suggest_type",col);
+
+
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from ImageData where "+col+" = '"+value+"' ;",null);
+        Log.d("return cursor size", ""+res.getCount());
+
+        res.moveToFirst();
+        while (!res.isAfterLast()){
+
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            String path = res.getString(res.getColumnIndex("PATH"));
+            String uid = res.getString(res.getColumnIndex("UID"));
+            String des = res.getString(res.getColumnIndex("DES"));
+            String title = res.getString(res.getColumnIndex("TITLE"));
+            String price = res.getString(res.getColumnIndex("PRICE"));
+            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
+            int nopic = res.getInt(res.getColumnIndex("NOIMAGES"));
+            String type = res.getString(res.getColumnIndex("TYPE"));
+            String craft = res.getString(res.getColumnIndex("CRAFT"));
+            String owner = res.getString(res.getColumnIndex("OWNER"));
+
+            String rating = res.getString(res.getColumnIndex("RATING"));
+            Log.d("craft",""+owner);
+
+            //Log.d("category", selected.get("category"));
+            String subcat = res.getString(res.getColumnIndex("SUBCAT"));
+            String meta = res.getString(res.getColumnIndex("META"));
+            map.put("uid",uid);
+            map.put("path",path);
+            map.put("des",des);
+            map.put("craft",craft);
+            map.put("title", title);
+            map.put("price",price);
+            map.put("quantity",quantity);
+            map.put("noimages", String.valueOf(nopic));
+            map.put("type",type);
+            map.put("subcat",subcat);
+            map.put("artuid",owner);
+            map.put("meta",meta);
+            map.put("rating",rating);
+            map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
+            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+            map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+            map.put("stock",res.getString(res.getColumnIndex("STOCK")));
+            data.add(map);
+            res.moveToNext();
+
+
+        }
+
+
+
+
+        return data;
+    }
+
+    public ArrayList<HashMap<String,String>> GetSizes_Random(String col, String value)
+    {
+        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
+        ArrayList<String> sizes = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select * from ImageData where "+col+" like '"+value+"'  group by "+Filter_Struct.sizefil,null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            ArrayList<String> sizelist = new ArrayList<String>();
+            String aux_sizes = res.getString(res.getColumnIndex(Filter_Struct.sizefil));
+            sizelist.addAll(Arrays.asList(aux_sizes.split(",")));
+            Log.d("inside size", res.getString(res.getColumnIndex(Filter_Struct.sizefil))+" , "+sizelist.size());
+            sizes.addAll(sizelist);
+            res.moveToNext();
+        }
+        Log.d("size_before_clean",""+sizes.size());
+        HashSet<String> cleansizes = new HashSet<String>();
+        cleansizes.addAll(sizes);
+        sizes.clear();
+
+        sizes.addAll(cleansizes);
+        Log.d("size_after_clean",""+sizes.size());
+        for(int i=0;i<sizes.size();i++)
+        {
+            HashMap<String,String> map = new HashMap<String, String>();
+            map.put("tag",sizes.get(i));
+            map.put("status","false");
+            map.put("col","SIZE");
+            Log.d("tag_clean_size",sizes.get(i));
+            list.add(map);
+        }
+        return list;
+    }
+
+    public ArrayList<HashMap<String,String>> GetColor_Random(String col, String value)
+    {
+        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select * from ImageData where "+col+" like '"+value+"' group by COLOR",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            HashMap<String,String> map = new HashMap<String, String>();
+            map.put("tag",res.getString(res.getColumnIndex(Filter_Struct.colorfil)));
+            map.put("status","false");
+            map.put("col","COLOR");
+            Log.d("inside color", res.getString(res.getColumnIndex(Filter_Struct.colorfil)));
+            list.add(map);
+            res.moveToNext();
+        }
+
+        return list;
+
+    }
+
+
+    public  ArrayList<HashMap<String,String>> GetProType_Random(String col, String value)
+    {
+
+
+        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select * from ImageData where "+col+" like '"+value+"'  group by PROTYPE",null);
+        res.moveToFirst();
+        while (!res.isAfterLast())
+        {
+            HashMap<String,String> map = new HashMap<String, String>();
+            map.put("tag",res.getString(res.getColumnIndex("PROTYPE")));
+            map.put("status","false");
+            map.put("col","PROTYPE");
+            Log.d("inside color", res.getString(res.getColumnIndex(Filter_Struct.producttype)));
+            list.add(map);
+            res.moveToNext();
+        }
+
+        return list;
+
+
+    }
+
+    public ArrayList<HashMap<String,String>> Get_Product_All_Test_Filter(ArrayList<HashMap<String,String>> data, HashMap<String,String> selection)
+    {
+        HashSet<String> uids = new HashSet<String>();
+        ArrayList<HashMap<String,String>> Product_Color_List = new ArrayList<HashMap<String, String>>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("check_forall_filtersize",""+data.size());
+        for(int i=0;i<data.size();i++)
+        {
+            Cursor res = db.rawQuery("select * from ImageData where "+selection.get("col")+" like '"+selection.get("value")+"'  and "+data.get(i).get("col")+" like '%"+data.get(i).get("tag")+"%'",null);
+            Log.d("query_sql","select * from ImageData where "+selection.get("col")+" like '"+selection.get("value")+"'  and "+data.get(i).get("col")+" like '%"+data.get(i).get("tag")+"%'") ;
+            Log.d("used","get_product_all_test");
+            res.moveToFirst();
+            while (!res.isAfterLast())
+            {
+
+                Log.d("inside_get_all",""+data.get(i));
+                if(!uids.contains(res.getString(res.getColumnIndex("UID"))))
+                {
+                    HashMap<String,String> map = new HashMap<String, String>();
+
+                    map.put("uid",res.getString(res.getColumnIndex("UID")));
+                    map.put("path",res.getString(res.getColumnIndex("PATH")));
+                    map.put("des",res.getString(res.getColumnIndex("DES")));
+                    map.put("title", res.getString(res.getColumnIndex("TITLE")));
+                    map.put("price",res.getString(res.getColumnIndex("PRICE")));
+                    map.put("quantity",res.getString(res.getColumnIndex("QUANTITY")));
+                    map.put("noimages", res.getString(res.getColumnIndex("NOIMAGES")));
+                    map.put("type",res.getString(res.getColumnIndex("TYPE")));
+                    map.put("cat",res.getString(res.getColumnIndex("CATEGORY")));
+                    map.put("subcat",res.getString(res.getColumnIndex("SUBCAT")));
+                    map.put("craft",res.getString(res.getColumnIndex("CRAFT")));
+                    map.put("artuid",res.getString(res.getColumnIndex("OWNER")));
+                    map.put("meta",res.getString(res.getColumnIndex("META")));
+                    map.put("rating",res.getString(res.getColumnIndex("RATING")));
+                    map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
+                    map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+                    map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
+
+                    map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+                    map.put("stock",res.getString(res.getColumnIndex("STOCK")));
+                    Product_Color_List.add(map);
+
+
+                }
+                Log.d("color_pro_title",res.getString(res.getColumnIndex("TITLE")));
+
+                uids.add(res.getString(res.getColumnIndex("UID")));
+                res.moveToNext();
+            }
+
+        }
+
+        return  Product_Color_List;
+    }
+
+
 
     public Cursor getImageData(String[] sel){
 
@@ -1608,52 +2082,55 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor res = db.rawQuery("select * from ImageData where TITLE LIKE '%"+query+"%' or CRAFT LIKE '%"+query+"%' or PROTYPE LIKE '%"+query+"%' ;",null);
+        Cursor res = db.rawQuery("select * from ImageData where SIZE IS NOT NULL AND SIZE !='' and (TITLE LIKE '%"+query+"%' or CRAFT LIKE '%"+query+"%' or PROTYPE LIKE '%"+query+"%') ;",null);
         Log.d("return cursor size", ""+res.getCount());
 
         res.moveToFirst();
-        while (!res.isAfterLast()){
+        while (!res.isAfterLast())
 
+        {
 
-            HashMap<String, String> map = new HashMap<String, String>();
-            String path = res.getString(res.getColumnIndex("PATH"));
-            String uid = res.getString(res.getColumnIndex("UID"));
-            String des = res.getString(res.getColumnIndex("DES"));
-            String title = res.getString(res.getColumnIndex("TITLE"));
-            String price = res.getString(res.getColumnIndex("PRICE"));
-            String quantity = res.getString(res.getColumnIndex("QUANTITY"));
-            int nopic = res.getInt(res.getColumnIndex("NOIMAGES"));
-            String type = res.getString(res.getColumnIndex("TYPE"));
-            String craft = res.getString(res.getColumnIndex("CRAFT"));
-            String owner = res.getString(res.getColumnIndex("OWNER"));
+                HashMap<String, String> map = new HashMap<String, String>();
+                String path = res.getString(res.getColumnIndex("PATH"));
+                String uid = res.getString(res.getColumnIndex("UID"));
+                String des = res.getString(res.getColumnIndex("DES"));
+                String title = res.getString(res.getColumnIndex("TITLE"));
+                String price = res.getString(res.getColumnIndex("PRICE"));
+                String quantity = res.getString(res.getColumnIndex("QUANTITY"));
+                int nopic = res.getInt(res.getColumnIndex("NOIMAGES"));
+                String type = res.getString(res.getColumnIndex("TYPE"));
+                String craft = res.getString(res.getColumnIndex("CRAFT"));
+                String owner = res.getString(res.getColumnIndex("OWNER"));
 
-            String rating = res.getString(res.getColumnIndex("RATING"));
-            Log.d("artist uid dbhelper",""+owner);
+                String rating = res.getString(res.getColumnIndex("RATING"));
+                Log.d("artist uid dbhelper", "" + owner);
 
-            //Log.d("category", selected.get("category"));
-            String subcat = res.getString(res.getColumnIndex("SUBCAT"));
-            String meta = res.getString(res.getColumnIndex("META"));
-            map.put("uid",uid);
-            map.put("craft",craft);
-            map.put("path",path);
-            map.put("des",des);
-            map.put("title", title);
-            map.put("price",price);
-            map.put("quantity",quantity);
-            map.put("noimages", String.valueOf(nopic));
-            map.put("type",type);
-            map.put("subcat",subcat);
-            map.put("artuid",owner);
-            map.put("meta",meta);
-            map.put("rating",rating);
-            map.put("protype",res.getString(res.getColumnIndex("PROTYPE")));
-            map.put("revprice",res.getString(res.getColumnIndex("REVPRICE")));
-            map.put("revquantity",res.getString(res.getColumnIndex("REVQUANTITY")));
+                //Log.d("category", selected.get("category"));
+                String subcat = res.getString(res.getColumnIndex("SUBCAT"));
+                String meta = res.getString(res.getColumnIndex("META"));
+                map.put("uid", uid);
+                map.put("craft", craft);
+                map.put("path", path);
+                map.put("des", des);
+                map.put("title", title);
+                map.put("price", price);
+                map.put("quantity", quantity);
+                map.put("noimages", String.valueOf(nopic));
+                map.put("type", type);
+                map.put("subcat", subcat);
+                map.put("artuid", owner);
+                map.put("meta", meta);
+                map.put("rating", rating);
+                map.put("protype", res.getString(res.getColumnIndex("PROTYPE")));
+                map.put("revprice", res.getString(res.getColumnIndex("REVPRICE")));
+                map.put("revquantity", res.getString(res.getColumnIndex("REVQUANTITY")));
 
-            map.put("sizeavail",res.getString(res.getColumnIndex("SIZEAVAIL")));
+                map.put("sizeavail", res.getString(res.getColumnIndex("SIZEAVAIL")));
+                map.put("stock", res.getString(res.getColumnIndex("STOCK")));
 
-            data.add(map);
-            res.moveToNext();
+                data.add(map);
+                res.moveToNext();
+
 
 
         }
@@ -1671,7 +2148,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public  boolean IsProductUnique(  String Value) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String Query = "Select * from CART   where PROUID = "+Value;
+        String Query = "Select * from CART  where PROUID = '"+Value+"'";
         Cursor cursor = db.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
             cursor.close();
@@ -1686,7 +2163,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.execSQL("delete from CART where PROUID = "+prouid);
+        db.execSQL("delete from CART where PROUID = '"+prouid+"'");
 
 
 

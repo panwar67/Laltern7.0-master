@@ -41,6 +41,8 @@ import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.lucasr.twowayview.TwoWayView;
 
@@ -94,6 +96,7 @@ public class AboutProductFrag extends Fragment {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private Tracker mTracker;
 
 
     private OnFragmentInteractionListener mListener;
@@ -128,12 +131,19 @@ public class AboutProductFrag extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
         dbHelper = new DBHelper(getContext());
+
+        AnalyticsApplication application = (AnalyticsApplication)getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+
+
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
@@ -154,6 +164,7 @@ public class AboutProductFrag extends Fragment {
         sessionManager = new SessionManager(getContext());
         seekBar.setMinStartValue(Float.parseFloat(data.get("quantity")));
         seekBar.setMinValue(Float.parseFloat(data.get("quantity")));
+        seekBar.setMaxValue(Float.parseFloat(data.get("stock")));
         ArrayList<String> sizelist = new ArrayList<String>();
 
         //sizelist = (ArrayList<String>) Arrays.asList(data.get("sizeavail").split(","));
@@ -192,7 +203,17 @@ public class AboutProductFrag extends Fragment {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        similar.setAdapter(new Trending_Pro_Adapter_Product_Page(getContext(),dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"))));
+        final ArrayList<HashMap<String,String>> pro_data = dbHelper.GetSimilarProducts(data.get("title"),data.get("protype"),data.get("craft"),data.get("uid"));
+        similar.setAdapter(new Trending_Pro_Adapter_Product_Page(getContext(),pro_data));
+        similar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(),ProductView.class);
+                intent.putExtra("promap",pro_data.get(i));
+                startActivity(intent);
+
+            }
+        });
 
         seekBar.setBarHighlightColor(R.color.seekbar);
 
@@ -219,7 +240,7 @@ public class AboutProductFrag extends Fragment {
                 }
                 if(value.intValue()>Integer.parseInt(data.get("revquantity")))
                 {
-                    seekBar.setBarHighlightColor(Color.GREEN);
+                    seekBar.setBarHighlightColor(Color.DKGRAY);
                     priceseek.setText(""+ finalString +""+data.get("revprice"));
 
 
@@ -227,10 +248,8 @@ public class AboutProductFrag extends Fragment {
 
             }
         });
-
         fabcart = (FloatingActionButton) view.findViewById(R.id.fabcart);
         fabreq = (com.github.clans.fab.FloatingActionButton)view.findViewById(R.id.fabreq);
-
         fabreq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,9 +274,9 @@ public class AboutProductFrag extends Fragment {
                 if (dbHelper.IsProductUnique(data.get("uid")))
                 {
 
-
-
-
+                    mTracker.setScreenName("Add to cart");
+                    //mTracker.set("added_cart",""+data.get("uid"));
+                    mTracker.send(new HitBuilders.EventBuilder().build());
                     String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
                     dbHelper.InsertCartData(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"), String.valueOf(bar.getText()), String.valueOf(avail_sizes.getSelectedItem()));
@@ -308,7 +327,7 @@ public class AboutProductFrag extends Fragment {
 
 
         Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),
-                "Raleway-Regular.ttf");
+                "Montserrat-Light.otf");
 
         Typeface tf1 = Typeface.createFromAsset(getActivity().getAssets(),"Helveticatest.ttf");
         Typeface tf2    =   Typeface.createFromAsset(getActivity().getAssets(),"Montserrat-Regular.otf");

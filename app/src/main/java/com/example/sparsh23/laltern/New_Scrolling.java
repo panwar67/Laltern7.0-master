@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class New_Scrolling extends AppCompatActivity {
 
 
-    ImageView imageView;
+    ImageView imageView,back;
     String meta;
     DBHelper dbHelper;
     ArrayList<HashMap<String, String>> data;
@@ -41,7 +41,13 @@ public class New_Scrolling extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dbHelper = new DBHelper(getApplicationContext());
-
+        back = (ImageView)findViewById(R.id.cartback);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         options = new DisplayImageOptions.Builder().cacheOnDisk(true).cacheInMemory(true).bitmapConfig(Bitmap.Config.RGB_565).imageScaleType(ImageScaleType.EXACTLY).resetViewBeforeLoading(true).build();
         ImageLoaderConfiguration.Builder config1 = new ImageLoaderConfiguration.Builder(getApplicationContext());
         config1.defaultDisplayImageOptions(options);
@@ -76,13 +82,14 @@ public class New_Scrolling extends AppCompatActivity {
         //recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
 
-        data = dbHelper.getimageDataMeta(meta);
+        data = dbHelper.GetProductByArtist(meta);
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(data, mListener, getApplicationContext(),2));
 
+    }
 
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

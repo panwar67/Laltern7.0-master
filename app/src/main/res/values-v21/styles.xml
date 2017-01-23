@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
@@ -10,8 +10,17 @@
         <item name="android:logo">@android:color/transparent</item>
         <item name="android:displayOptions">disableHome</item>
         <item name="displayOptions">disableHome</item>
+        <item name="android:windowAnimationStyle">@style/theme</item>
 
+    </style>
 
+    <style name="theme">
+        <item name="android:windowEnterAnimation">@anim/left_in</item>
+        <item name="android:windowExitAnimation">@anim/left_out</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/trans</item>
     </style>
 
     <style name="AutoCompleteTextViewLight" parent="@android:style/Widget.AutoCompleteTextView">

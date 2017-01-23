@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -45,6 +46,8 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -61,7 +64,9 @@ public class ProductView extends AppCompatActivity implements AboutArtistFrag.On
     DBHelper dbHelper;
     Button button;
     TextView bar;
-     HashMap<String,String> data;
+    private Tracker mTracker;
+
+    HashMap<String,String> data;
    // FloatingActionsMenu floatingActionsMenu;
     String DOWN_URL = "http://www.whydoweplay.com/lalten/Addtocart.php";
     int counter = 0;
@@ -82,28 +87,32 @@ public class ProductView extends AppCompatActivity implements AboutArtistFrag.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_view);
 
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
+
+        mTracker.setScreenName("View_Product");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
        // button= (Button)findViewById(R.id.submitreq);
-
-
-
-
-
-
-
         viewcart = (ImageView)findViewById(R.id.viewcartpro);
-
         viewcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProductView.this,CartActivity.class));
             }
         });
-
-
-
         Intent intent = getIntent();
-         data = (HashMap<String,String>)intent.getSerializableExtra("promap");
+        data = (HashMap<String,String>)intent.getSerializableExtra("promap");
         ImageView imageView = (ImageView)findViewById(R.id.backpro);
+
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                    onBackPressed();
+
+                return false;
+            }
+        });
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

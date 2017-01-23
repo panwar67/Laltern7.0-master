@@ -3,6 +3,7 @@ package com.example.sparsh23.laltern;
 //import android.app.Fragment;
 import android.animation.ObjectAnimator;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -11,13 +12,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-//import android.support.v4.app.Fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.SearchView;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -44,6 +43,8 @@ import android.widget.Toast;
 
 import com.example.sparsh23.laltern.dummy.DummyContent;
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -52,6 +53,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.lucasr.twowayview.TwoWayView;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,13 +61,20 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import in.srain.cube.views.GridViewWithHeaderAndFooter;
+import layout.Buyer_Policies;
 
 public class NavigationMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,   ItemFragment.OnListFragmentInteractionListener, categoryFragment.OnListFragmentInteractionListener,  FilterFragment.OnFragmentInteractionListener, FilterNoSearchFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ItemFragment.OnListFragmentInteractionListener,
+        categoryFragment.OnListFragmentInteractionListener,
+        FilterFragment.OnFragmentInteractionListener, FilterNoSearchFragment.OnFragmentInteractionListener,
+        ItemFragment_Search.OnListFragmentInteractionListener, FilterNoSearchFragment_Search.OnFragmentInteractionListener
+        ,Contact_Us.OnFragmentInteractionListener,About_Us.OnFragmentInteractionListener,Policies_List.OnFragmentInteractionListener,Buyer_Policies.OnFragmentInteractionListener    {
 
 
    // LandingHome landinghome;
     DBHelper dbHelper;
+    private Tracker mTracker;
 
     ExpandableListView expandableListView;
     ArrayList<String> listDataHeader = new ArrayList<String>();
@@ -73,7 +82,7 @@ public class NavigationMenu extends AppCompatActivity
      HashMap<String,List<String>> listDataChild = new HashMap<String, List<String>>();
     ListView listView;
 
-    ImageView jewel, homedecor, hometext, saree, painting,access, others,apparel, cart, request;
+    ImageView jewel, homedecor, hometext, saree, painting,access, others,apparel, cart, request, miscell;
     CircleImageView profile;
     TextView home, aboutus, contactus, policies;
     ImageLoader imageLoader;
@@ -88,7 +97,8 @@ public class NavigationMenu extends AppCompatActivity
     HorizontalScrollView horizontalScrollView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -108,9 +118,14 @@ public class NavigationMenu extends AppCompatActivity
         imageLoader = ImageLoader.getInstance();
 //        imageLoader.destroy();
         imageLoader.init(config1.build());
+        //sessionManager = new SessionManager(getApplicationContext());
+
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
+
+        mTracker.setScreenName("Home_Screen");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         sessionManager = new SessionManager(getApplicationContext());
-
-
 
 
         horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontallistauto);
@@ -180,6 +195,9 @@ public class NavigationMenu extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+                mTracker.setScreenName("Profile_view");
+                mTracker.send(new HitBuilders.EventBuilder().build());
+                sessionManager = new SessionManager(getApplicationContext());
 
                 startActivity(new Intent(NavigationMenu.this,Profile.class));
 
@@ -243,22 +261,67 @@ public class NavigationMenu extends AppCompatActivity
         testicals.setExpanded(true);
         testicals.setNumColumns(1);
         testicals.setAdapter(new LandingHomeListAdapter(getApplicationContext(),testicals_list));
-
-
-
-
-
-        ExpandableHeightGridView gridView = new ExpandableHeightGridView(this);
-
-        gridView = (ExpandableHeightGridView)findViewById(R.id.expandgrid);
+        final ArrayList<HashMap<String, String>> finalTesticals_list = testicals_list;
+        testicals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                LayoutInflater inflater = getLayoutInflater();
+                View alertLayout = inflater.inflate(R.layout.testimonial_pop, null);
+                TextView test_text = (TextView)alertLayout.findViewById(R.id.testimonial_text);
+                test_text.setText(""+finalTesticals_list.get(i).get("des"));
+                AlertDialog.Builder alert = new AlertDialog.Builder(NavigationMenu.this,R.style.MyDialogTheme);
+                alert.setTitle("Testimonial");
+                // this is set the view from XML inside AlertDialog
+                alert.setView(alertLayout);
+                // disallow cancel of AlertDialog on click of back button and outside touch
+                alert.setCancelable(true);
+              //  AlertDialog alertdialog2 = .create();
+                //alertdialog2.show();
+                alert.create();
+                alert.show();
+            }
+        });
+      final   ExpandableHeightGridView gridView = (ExpandableHeightGridView)findViewById(R.id.expandgrid);
+        ExpandableHeightGridView gridView_suicide = new ExpandableHeightGridView(this);
+        gridView_suicide = (ExpandableHeightGridView)findViewById(R.id.expandgrid_suicide);
+        gridView_suicide.setExpanded(true);
+        gridView_suicide.setNumColumns(2);
+        ArrayList<HashMap<String,String>> data_suicide = new ArrayList<HashMap<String, String>>();
+        data_suicide.add(dbHelper.getimageDatatype("craft").get(1));
+        gridView_suicide.setAdapter(new GridSubcatAdapter(getApplicationContext(),data_suicide));
+        //gridView_suicide.setVisibility(View.GONE);
+        //gridView =
         final ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
         //ExpandableHeightGridView gridView1 = (ExpandableHeightGridView)findViewById(R.id.expandgridone);
         gridView1.setAdapter(new LandingHomeListAdapter(getApplicationContext(),dbHelper.getimageDatatype("artist")));
         gridView1.setNumColumns(1);
         gridView1.setExpanded(true);
         gridView.setNumColumns(2);
-        gridView.setAdapter(new GridSubcatAdapter(getApplicationContext(),dbHelper.getimageDatatype("craft")));
+        ArrayList<HashMap<String,String>> craft_data = new ArrayList<HashMap<String, String>>();
+        craft_data = dbHelper.getimageDatatype("craft");
+        gridView.setAdapter(new GridSubcatAdapter(getApplicationContext(),craft_data));
         gridView.setExpanded(true);
+
+       // final ExpandableHeightGridView finalGridView = gridView;
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                HashMap<String,String> map = new HashMap<String, String>();
+                map = (HashMap<String,String>) gridView.getItemAtPosition(i);
+                ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+                data = dbHelper.getimageDatatype(map.get("meta"));
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data",data);
+                ItemFragment newhom1 = ItemFragment.newInstance(1);
+                FragmentManager transaction = getSupportFragmentManager();
+                newhom1.setArguments(bundle);
+                // fra.beginTransaction().replace()
+                android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, newhom1);
+                //transaction.beginTransaction().replace()
+                frag.addToBackStack(null);
+                frag.commit();
+            }
+        });
 
         gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -269,8 +332,6 @@ public class NavigationMenu extends AppCompatActivity
                 intent.putExtra("uid",map.get("uid"));
                 Log.d("uid_meta",""+map.get("uid"));
                 startActivity(intent);
-
-
             }
         });
 
@@ -301,10 +362,11 @@ public class NavigationMenu extends AppCompatActivity
                     scrollView.post(new Runnable() {
                         @Override
                         public void run() {
-                            scrollView.fullScroll(View.FOCUS_DOWN);
+                            //scrollView.fullScroll(View.FOCUS_DOWN);
                         }
                     });
-                    onSearchRequested();
+                    startActivity(new Intent(NavigationMenu.this,Test_SearchView.class));
+                    finish();
                 }
             });
         }
@@ -326,6 +388,7 @@ public class NavigationMenu extends AppCompatActivity
 
 
                         startActivity(new Intent(NavigationMenu.this,FilterableActivity.class));
+                        finish();
 
                         return true;
                     }
@@ -395,6 +458,27 @@ public class NavigationMenu extends AppCompatActivity
             frag.commit();
         }
 
+        Bundle bundle1 = new Bundle();
+        bundle1 = intent.getBundleExtra("datas_search");
+
+        if(bundle1!=null) {
+
+
+            ItemFragment_Search newhom1 = ItemFragment_Search.newInstance(1);
+
+
+            FragmentManager transaction = getSupportFragmentManager();
+
+
+            newhom1.setArguments(bundle1);
+            // fra.beginTransaction().replace()
+            android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, newhom1);
+            //transaction.beginTransaction().replace()
+            frag.addToBackStack(null);
+            frag.commit();
+        }
+
+
 
 
 
@@ -411,7 +495,21 @@ public class NavigationMenu extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"rating",Toast.LENGTH_SHORT).show();
+
+                Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                // To count with Play market backstack, After pressing back button,
+                // to taken back to our application, we need to add following flags to intent.
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
+                }
+
             }
         });
      //   expandableListView.addHeaderView(header, null, false);
@@ -477,6 +575,9 @@ public class NavigationMenu extends AppCompatActivity
             }
         });
 
+
+
+
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             // Keep track of previous expanded parent
             int previousGroup = -1;
@@ -517,6 +618,44 @@ public class NavigationMenu extends AppCompatActivity
                         drawer.closeDrawer(GravityCompat.START);
                     }
 
+                else if (groupPosition==10)
+                    {
+                        Contact_Us fragment = new Contact_Us().newInstance(" "," ");
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.navrep, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    }
+                else if (groupPosition==11)
+                    {
+                        About_Us fragment = new About_Us().newInstance(" "," ");
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.navrep, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    }
+
+                    else if(groupPosition==12)
+                    {
+
+                        Policies_List fragment = new Policies_List().newInstance(" "," ");
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.navrep, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+
+                    }
 
 
                     return false;
@@ -541,6 +680,7 @@ public class NavigationMenu extends AppCompatActivity
                     categoryFragment = categoryFragment.newInstance();
                     Bundle bundle = new Bundle();
                     bundle.putString("type", "jewel");
+                    bundle.putString("cat","Jewellery");
                     categoryFragment.setArguments(bundle);
                     android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                     //transaction.beginTransaction().replace()
@@ -562,6 +702,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "homedecor");
+                bundle.putString("cat","Home Decor");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -583,6 +724,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "hometextile");
+                bundle.putString("cat","Home Textile");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -601,6 +743,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "saree");
+                bundle.putString("cat","Sarees");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -620,6 +763,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "painting");
+                bundle.putString("cat","Paintings");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -637,6 +781,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "accessories");
+                bundle.putString("cat","Accessories");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -654,6 +799,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "others");
+                bundle.putString("cat","Others");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -672,6 +818,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "apparel");
+                bundle.putString("cat","Apparel");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()
@@ -681,6 +828,8 @@ public class NavigationMenu extends AppCompatActivity
 
             }
         });
+
+      //  miscell =   (ImageView)findViewById(R.id.miscelSuperCat);
 
         ImageView missel = (ImageView)findViewById(R.id.miscelSuperCat);
         missel.setOnClickListener(new View.OnClickListener() {
@@ -692,6 +841,7 @@ public class NavigationMenu extends AppCompatActivity
                 categoryFragment = categoryFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString("type", "mislane");
+                bundle.putString("cat","Miscellaneous");
                 categoryFragment.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction frag = transaction.beginTransaction().replace(R.id.navrep, categoryFragment);
                 //transaction.beginTransaction().replace()

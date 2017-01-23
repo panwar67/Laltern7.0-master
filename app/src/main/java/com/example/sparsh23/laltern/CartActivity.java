@@ -1,5 +1,6 @@
 package com.example.sparsh23.laltern;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +33,8 @@ public class CartActivity extends AppCompatActivity {
     DBHelper dbHelper;
     TextView carttotal;
     ImageView back;
+    private Tracker mTracker;
+
     Button checkout;
     double totals, tax, sub;
     ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
@@ -46,11 +51,15 @@ public class CartActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
+
         carttotal = (TextView)findViewById(R.id.cartprototal);
         back = (ImageView)findViewById(R.id.cartback);
         checkout = (Button)findViewById(R.id.checkout);
 
         listView = (ExpandableHeightGridView)findViewById(R.id.cartproducts);
+
          dbHelper = new DBHelper(getApplicationContext());
         data = dbHelper.GetCartData();
 
@@ -69,19 +78,20 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(data.size()>0) {
+                if(data.size()>0)
+                {
+                    Intent intent = new Intent(CartActivity.this,Checkout_Page.class);
+                    intent.putExtra("total",totals);
+                    intent.putExtra("sub",sub);
+                    intent.putExtra("tax",tax);
+                    intent.putExtra("prolist",data);
 
-
-
-                    startActivity(new Intent(CartActivity.this,
-                            Checkout_Page.class).putExtra("total",totals).putExtra("sub",sub).putExtra("tax",tax));
+                    startActivity(intent);
                     finish();
                 }
 
                 if(data.size()==0)
                 {
-
-
                     Toast.makeText(getApplicationContext(),"Cart is empty",Toast.LENGTH_SHORT);
                 }
 
@@ -91,7 +101,11 @@ public class CartActivity extends AppCompatActivity {
         });
 
 
-        Populate_Cart(cartpro);
+        if(!data.isEmpty()){
+            Populate_Cart(cartpro);
+
+        }
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,10 +158,10 @@ public class CartActivity extends AppCompatActivity {
         subtotal.setText("Sub Total  :   "+total);
         taxes = (total*13.5)/100;
         tax=taxes;
-        taxtotal.setText("Total Taxes :     "+taxes);
+        taxtotal.setText("Taxes :     "+taxes);
         double total_grand = total+taxes;
         totals = total_grand;
-        grandtotal.setText("Total :     "+total_grand);
+        grandtotal.setText("Grand Total :     "+total_grand);
         return true;
     }
 
@@ -156,42 +170,28 @@ public class CartActivity extends AppCompatActivity {
 
     public boolean Deletecart(final String cartuid)
     {
-
-
+        mTracker.setScreenName("item_removed");
+        mTracker.send(new HitBuilders.EventBuilder().build());
+        //sessionManager = new SessionManager(getApplicationContext());
 
         Log.d("cartuid",cartuid);
-        // final ProgressDialog loading = ProgressDialog.show(this,"Getting orders...","Please wait...",false,false);
+         final ProgressDialog loading = ProgressDialog.show(this,"Deleting items...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-
-
-
-
+                        loading.dismiss();
                         int total = data.size()-1;
                         carttotal.setText("Total Items : "+total);
-
-
-
                         Toast.makeText(getApplicationContext(),""+s.toString(),Toast.LENGTH_SHORT).show();
                         Calculate_Total_Price();
-
-
-
-
-
-
-                        //Disimissing the progress dialog
-
-                        //Showing toast message of the response
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        //loading.dismiss();
+                        loading.dismiss();
 
                         Log.d("voley error",volleyError.toString());
                         //Showing toast

@@ -115,6 +115,20 @@
             android:hint="Contact No"
             android:inputType="phone"/>
 
+        <EditText
+
+
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/enter_addr_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Country (Leave blank if India)"
+/>
+
+
         <Button
 
             android:singleLine="true"

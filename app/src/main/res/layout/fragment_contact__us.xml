@@ -1,0 +1,119 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#f5f5f5"
+    tools:context="com.example.sparsh23.laltern.Contact_Us">
+
+    <!-- TODO: Update blank fragment layout -->
+
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+    <LinearLayout
+        android:background="#f5f5f5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:linksClickable="true"
+            android:background="#cec9c9"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Telephone" />
+
+        <TextView
+
+            android:linksClickable="true"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:id="@+id/phone_call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+
+            android:linksClickable="true"
+            android:background="#cec9c9"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mail Ids"/>
+
+        <TextView
+
+            android:linksClickable="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:id="@+id/contactus_email"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:background="#cec9c9"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Office Hours"/>
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mon - Sun (9 AM to 11PM) IST"/>
+
+        <TextView
+            android:background="#cec9c9"
+            android:textSize="20dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Media Requests"/>
+        <TextView
+
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/contactus_request"
+            android:linksClickable="true"
+            android:textSize="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="maneet@lal10.com"/>
+
+
+
+
+
+    </LinearLayout>
+
+   </ScrollView>
+
+
+
+</FrameLayout>

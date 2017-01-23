@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.sparsh23.laltern.Test_SearchView"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/curved_back"
+        android:orientation="horizontal">
+    <ImageView
+
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:id="@+id/test_search_back"
+        android:src="@drawable/ic_arrow_back_black_scroll"/>
+
+    <android.support.v7.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:searchHintIcon="@null"
+        android:searchIcon="@null"
+
+        android:id="@+id/test_search">
+    </android.support.v7.widget.SearchView>
+
+
+
+    </LinearLayout>
+    <ListView
+        android:layout_marginTop="6dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:scrollbars="none"
+
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="9dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/test_search_list"
+        android:background="@drawable/shadowbag_new"
+        >
+
+    </ListView>
+
+
+</LinearLayout>

@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,15 +87,27 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public void onBindViewHolder(final ViewHolder holder, int position) {
        // holder.mItem = mValues.get(position);
        // holder.mIdView.setText();
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-Regular.ttf");
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(),"SourceSansPro-Regular.otf");
         Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Roboto-Regular.ttf");
-
+        String string = "\u20B9";
+        byte[] utf8 = null;
+        try {
+            utf8 = string.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        assert utf8 != null;
+        try {
+            string = new String(utf8, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         holder.mContentView.setText(mValues.get(position).get("title"));
         holder.mContentView.setTypeface(typeface);
-        holder.gridprice.setText(""+mValues.get(position).get("price"));
-        holder.gridprice.setTypeface(typeface1);
+        holder.gridprice.setText(string+" "+mValues.get(position).get("price"));
+        holder.gridprice.setTypeface(typeface);
         holder.moq.setText("M.O.Q - "+mValues.get(position).get("quantity"));
-        holder.moq.setTypeface(typeface1);
+        holder.moq.setTypeface(typeface);
       //  holder.artist.setText("By - "+mValues.get(position).get("artuid"));
 
 

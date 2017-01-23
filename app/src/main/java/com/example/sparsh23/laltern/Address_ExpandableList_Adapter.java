@@ -73,7 +73,7 @@ public class Address_ExpandableList_Adapter extends BaseAdapter {
         View view1 = inflater.inflate(R.layout.checkout_addr_item,null);
 
         Typeface tf = Typeface.createFromAsset(context.getAssets(),
-                "Raleway-Regular.ttf");
+                "SourceSansPro-Regular.otf");
        // Holder holder = new Holder();
         holder.title = (TextView)view1.findViewById(R.id.addr_title);
         holder.addr = (TextView)view1.findViewById(R.id.addr);
@@ -82,6 +82,7 @@ public class Address_ExpandableList_Adapter extends BaseAdapter {
         holder.dist = (TextView)view1.findViewById(R.id.dist);
         holder.state = (TextView)view1.findViewById(R.id.addr_state);
         holder.pin = (TextView)view1.findViewById(R.id.addr_pin);
+        holder.cont = (TextView)view1.findViewById(R.id.addr_cont);
 
         holder.title.setTypeface(tf);
         holder.addr.setTypeface(tf);
@@ -96,8 +97,9 @@ public class Address_ExpandableList_Adapter extends BaseAdapter {
         holder.area.setText(data.get(i).get("area"));
         holder.dist.setText(data.get(i).get("dist"));
         holder.state.setText(data.get(i).get("state"));
-        holder.state.setText(data.get(i).get("pin"));
+        holder.state.setText(data.get(i).get("state"));
         holder.city.setText(data.get(i).get("city"));
+        holder.cont.setText(data.get(i).get("cont"));
         return view1;
 
 
@@ -106,7 +108,7 @@ public class Address_ExpandableList_Adapter extends BaseAdapter {
 
     class  Holder
     {
-        TextView title, addr, area, dist, state, country, pin,city;
+        TextView title, addr, area, dist, state, cont, pin,city;
 
     }
 

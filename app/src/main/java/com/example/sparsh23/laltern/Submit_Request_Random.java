@@ -1,12 +1,19 @@
 package com.example.sparsh23.laltern;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,6 +41,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
+import com.mlsdev.rximagepicker.RxImagePicker;
+import com.mlsdev.rximagepicker.Sources;
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker;
 import com.nguyenhoanglam.imagepicker.model.Image;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -48,10 +57,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import rx.functions.Action1;
+
 public class Submit_Request_Random extends AppCompatActivity {
 
 
-    ImageView imageView;
+    ImageView imageView, back;
     ImageLoader imageLoader;
     Button submit ;
     DBHelper dbHelper;
@@ -105,13 +116,8 @@ public class Submit_Request_Random extends AppCompatActivity {
         description = (EditText)findViewById(R.id.desreq);
         quantity = (EditText)findViewById(R.id.requestquantity);
         craftreq = (EditText)findViewById(R.id.requestcraft);
-
+        back    =   (ImageView)findViewById(R.id.back_submit_request);
         submit = (Button)findViewById(R.id.reqbutton);
-
-
-
-
-
         ImageLoaderConfiguration.Builder config1 = new ImageLoaderConfiguration.Builder(getApplicationContext());
         config1.threadPriority(Thread.NORM_PRIORITY - 2);
         config1.denyCacheImageMultipleSizesInMemory();
@@ -125,63 +131,99 @@ public class Submit_Request_Random extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.reqproimg);
 
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                final String[] types = {QuickImagePick.MIME_TYPE_IMAGE_JPEG, QuickImagePick.MIME_TYPE_IMAGE_WEBP};
-                QuickImagePick.setAllowedMimeTypes(getApplicationContext(), types);
-
-                QuickImagePick.pickFromMultipleSources(Submit_Request_Random.this, 1, "All sources", PickSource.CAMERA,  PickSource.GALLERY);
-
-
-
-
-
-
                 //Intent intent = new Intent(getApplicationContext(), com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.class);
-
                 //intent.putExtra(com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_MODE, com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.MODE_SINGLE);
                 //intent.putExtra(com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_LIMIT, 1);
                 //intent.putExtra(com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity.INTENT_EXTRA_SHOW_CAMERA, true);
-
                 //startActivityForResult(intent, 67);
-
-
-
+                RxImagePicker.with(getApplicationContext()).requestImage(Sources.GALLERY).subscribe(new Action1<Uri>() {
+                    @Override
+                    public void call(Uri uri) {
+                        Log.d("path_chooser","file:///"+getRealPathFromURI_API19(getApplicationContext(),uri));
+                        imageLoader.displayImage("file:///"+getRealPathFromURI_API19(getApplicationContext(),uri),imageView);
+                        //Get image by uri using one of image loading libraries. I use Glide in sample app.
+                    }
+                });
             }
         });
-
-
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-
-
-
                 String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
-
                 dbHelper.InsertRequestData("ANY",sessionManager.getUserDetails().get("uid"),uid,description.getText().toString(),"https://www.whydoweplay.com/lalten/DirectRequestImages/"+uid+".jpeg","Under Review","WAIT",craftreq.getText().toString(),quantity.getText().toString());
-
-
                 upload_data("any",sessionManager.getUserDetails().get("uid"),description.getText().toString(),craftreq.getText().toString(),quantity.getText().toString(),uid);
-
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static String getRealPathFromURI_API19(Context context, Uri uri) {
+        String filePath = "";
+        if (uri.getHost().contains("com.android.providers.media")) {
+            // Image pick from recent
+            String wholeID = DocumentsContract.getDocumentId(uri);
 
+            // Split at colon, use second item in the array
+            String id = wholeID.split(":")[1];
 
+            String[] column = {MediaStore.Images.Media.DATA};
 
+            // where id is equal to
+            String sel = MediaStore.Images.Media._ID + "=?";
 
+            Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    column, sel, new String[]{id}, null);
+
+            int columnIndex = cursor.getColumnIndex(column[0]);
+
+            if (cursor.moveToFirst()) {
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+            return filePath;
+        } else {
+            // image pick from gallery
+            return  getRealPathFromURI_API11to18(context,uri);
+        }
+
+    }
+
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if(cursor != null){
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
     }
 
 
@@ -239,10 +281,11 @@ public class Submit_Request_Random extends AppCompatActivity {
                 //Converting Bitmap to String
 
 
-                GlideBitmapDrawable drawable = (GlideBitmapDrawable) imageView.getDrawable();
+               // GlideBitmapDrawable drawable = (GlideBitmapDrawable) imageView.getDrawable();
 
-               // BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
+                BitmapDrawable drawable1 = (BitmapDrawable) imageView.getDrawable();
+                //drawable1.getBitmap();
+                Bitmap bitmap = drawable1.getBitmap();
 
 
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();

@@ -55,7 +55,7 @@
 
             android:background="@color/white"
             android:id="@+id/titlegrid"
-
+            android:textSize="17dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pricegrid"
-
+                android:textSize="15dp"
                 android:paddingTop="8dp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="price"/>
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/moqgrid"
                 android:paddingTop="8dp"
-
+                android:textSize="12dp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="MOQ"/>
 
@@ -100,11 +100,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-
+                android:paddingTop="8dp"
                 android:stepSize="0.1"
                 android:rating="1"
 
-                android:progressBackgroundTint="@android:color/holo_red_light"
                 android:progressTint="@color/maintheme"
                 android:id="@+id/productratingview"
                 style="?android:attr/ratingBarStyleSmall"

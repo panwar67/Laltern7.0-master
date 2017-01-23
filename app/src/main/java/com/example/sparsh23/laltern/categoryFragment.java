@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +52,7 @@ public class categoryFragment extends Fragment {
     ImageLoader imageLoader;
     DisplayImageOptions options;
     String type;
-    // TODO: Customize parameters
+    String cat;
     private int mColumnCount = 2;
     DBHelper dbHelper;
     ArrayList<HashMap<String,String>> headcategory = new ArrayList<HashMap<String, String>>();
@@ -85,6 +87,8 @@ public class categoryFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             type = getArguments().getString("type");
+            cat = getArguments().getString("cat");
+
 
 
         }
@@ -142,14 +146,38 @@ public class categoryFragment extends Fragment {
         listView.addHeaderView(header,null,true);
         listView.setAdapter(new GridSubcatAdapter(getContext(),category));
         listView.deferNotifyDataSetChanged();
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(),""+category.get(position).get("meta"),Toast.LENGTH_SHORT).show();
+                ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+                data = dbHelper.GetProductsFromSearch_test("SUBCAT",category.get(position).get("meta"));
+                //ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+                data = dbHelper.GetProductsFromSearch_test("SUBCAT",category.get(position).get("meta"));
+                HashMap<String,String> aux = new HashMap<String, String>();
+                HashMap<String,String> map = new HashMap<String, String>();
 
+                aux.put("col","SUBCAT");
+                aux.put("value",category.get(position).get("meta"));
+                HashMap<String,ArrayList<HashMap<String,String>>> filterdata = new HashMap<String, ArrayList<HashMap<String, String>>>();
+                filterdata.put("size",dbHelper.GetSizes_Random("SUBCAT",category.get(position).get("meta")));
+                filterdata.put("color",dbHelper.GetColor_Random("SUBCAT",category.get(position).get("meta")));
+                filterdata.put("protype",dbHelper.GetProType_Random("SUBCAT",category.get(position).get("meta")));
 
-                Toast.makeText(getContext(),""+category.get(position).get("path"),Toast.LENGTH_SHORT).show();
+                Bundle bundle1 = new Bundle();
 
+                bundle1.putSerializable("data",data);
+                bundle1.putSerializable("filter",filterdata);
+                bundle1.putSerializable("selection",aux);
+
+                ItemFragment_Search itemFragment = new ItemFragment_Search();
+
+                itemFragment.setArguments(bundle1);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.navrep, itemFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
 
             }
         });
@@ -163,18 +191,6 @@ public class categoryFragment extends Fragment {
 
         imageLoader.displayImage(headcategory.get(0).get("path"), imageView);
 
-
-
-
-
-
-
-
-
-
-
-
-
         sliderShow.setPresetTransformer(SliderLayout.Transformer.FlipHorizontal);
         sliderShow.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
         //sliderShow.startAutoCycle();
@@ -187,8 +203,37 @@ public class categoryFragment extends Fragment {
             sliderShow.addSlider(new DefaultSliderView(getContext()).image(viewall.get(i).get("path")).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                 @Override
                 public void onSliderClick(BaseSliderView slider) {
-                    Toast.makeText(getContext(),""+viewall.get(0).get("meta"),Toast.LENGTH_SHORT).show();
+
+                    ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
+                    data = dbHelper.GetProductsFromSearch_test("CATEGORY",cat);
+                    HashMap<String,String> aux = new HashMap<String, String>();
+                    HashMap<String,String> map = new HashMap<String, String>();
+
+                    aux.put("col","CATEGORY");
+                    aux.put("value",cat);
+                    HashMap<String,ArrayList<HashMap<String,String>>> filterdata = new HashMap<String, ArrayList<HashMap<String, String>>>();
+                    filterdata.put("size",dbHelper.GetSizes_Random("CATEGORY",cat));
+                    filterdata.put("color",dbHelper.GetColor_Random("CATEGORY",cat));
+                    filterdata.put("protype",dbHelper.GetProType_Random("CATEGORY",cat));
+
+                    Bundle bundle1 = new Bundle();
+
+                    bundle1.putSerializable("data",data);
+                    bundle1.putSerializable("filter",filterdata);
+                    bundle1.putSerializable("selection",aux);
+
+                    ItemFragment_Search itemFragment = new ItemFragment_Search();
+
+                    itemFragment.setArguments(bundle1);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.navrep, itemFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                   // Toast.makeText(getContext(),""+viewall.get(0).get("meta"),Toast.LENGTH_SHORT).show();
                    // Bundle bundle = new Bundle();bundle.putString("type", artistdata.get(0).get("meta"));DealsFragment nextFrag= new DealsFragment();nextFrag.setArguments(bundle);getFragmentManager().beginTransaction().replace(R.id.navrep, nextFrag,null).addToBackStack(null).commit();
+
 
                 }
             }));

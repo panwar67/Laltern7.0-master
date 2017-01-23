@@ -24,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,10 +36,11 @@ public class Add_New_Address extends AppCompatActivity {
 
 
     String DOWN_URL = "http://www.whydoweplay.com/lalten/InsertAddr.php";
-    EditText title, addr, area, city, dist, state, pin, cont;
+    EditText title, addr, area, city, dist, state, pin, cont, country;
     DBHelper dbHelper;
     SessionManager sessionManager;
     Button save, back, add;
+    private Tracker mTracker;
 
 
     @Override
@@ -46,7 +49,11 @@ public class Add_New_Address extends AppCompatActivity {
         setContentView(R.layout.activity_add__new__address);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        AnalyticsApplication application = (AnalyticsApplication)getApplication();
+        mTracker = application.getDefaultTracker();
 
+        mTracker.setScreenName("Add_new_address");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         sessionManager = new SessionManager(getApplicationContext());
 
         dbHelper = new DBHelper(getApplicationContext());
@@ -57,15 +64,24 @@ public class Add_New_Address extends AppCompatActivity {
         city = (EditText)findViewById(R.id.enter_addr_city);
         dist = (EditText)findViewById(R.id.enter_addr_dist);
         pin = (EditText)findViewById(R.id.enter_addr_pin);
+        state = (EditText)findViewById(R.id.enter_addr_state);
+        cont = (EditText)findViewById(R.id.enter_addr_cont);
+        country = (EditText)findViewById(R.id.enter_addr_country);
 
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.InsertAddr(title.getText().toString(),addr.getText().toString(),area.getText().toString(),city.getText().toString(),dist.getText().toString(),state.getText().toString(),pin.getText().toString(),cont.getText().toString());
+                dbHelper.InsertAddr(title.getText().toString(),addr.getText().toString(),
+                        area.getText().toString(),city.getText().toString(),
+                        dist.getText().toString(),state.getText().toString(),
+                        pin.getText().toString(),cont.getText().toString(),country.getText().toString());
                 upload_data(title.getText().toString(),addr.getText().toString(),
-                        area.getText().toString(),city.getText().toString(),dist.getText().toString(),
-                        state.getText().toString(),pin.getText().toString(),cont.getText().toString(),sessionManager.getUserDetails().get("uid"));
+                        area.getText().toString(),city.getText().toString(),
+                        dist.getText().toString(),
+                        state.getText().toString(),
+                        pin.getText().toString(),cont.getText().toString(),
+                        sessionManager.getUserDetails().get("uid"),country.getText().toString());
                // updatespinner();
 
             }
@@ -87,23 +103,16 @@ public class Add_New_Address extends AppCompatActivity {
 
 
 
-    public void upload_data(final String title, final String addr, final String area, final String city,final String dist, final String state, final String pin, final  String cont, final String useruid )
+    public void upload_data(final String title, final String addr, final String area, final String city,final String dist, final String state, final String pin, final  String cont, final String useruid, final String country )
     {
         final ProgressDialog loading = ProgressDialog.show(Add_New_Address.this,"Adding Addresses...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-
-
-
-
-
                         Toast.makeText(getApplicationContext(),s.toString(),Toast.LENGTH_LONG).show();
-
                         Log.d("response",s.toString());
-
-
+                        onBackPressed();
                         loading.dismiss();
                     }
                 },
@@ -112,7 +121,6 @@ public class Add_New_Address extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-
                         //Showing toast
                         Toast.makeText(getApplicationContext(), "Error In Connectivity", Toast.LENGTH_LONG).show();
                     }
@@ -120,10 +128,7 @@ public class Add_New_Address extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
-
                 String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
-
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
                 Keyvalue.put("name",title);
                 Keyvalue.put("addr",addr);
@@ -135,6 +140,7 @@ public class Add_New_Address extends AppCompatActivity {
                 Keyvalue.put("cont",cont);
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("uid",uid);
+                Keyvalue.put("country",country);
 
                 //returning parameters
                 return Keyvalue;
@@ -144,11 +150,14 @@ public class Add_New_Address extends AppCompatActivity {
         //Creating a Request Queue
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         //Adding request to the queue
         requestQueue.add(stringRequest);
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

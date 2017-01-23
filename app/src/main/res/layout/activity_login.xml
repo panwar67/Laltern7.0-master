@@ -24,10 +24,6 @@
 
 
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
 
@@ -40,7 +36,7 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
 
 
@@ -49,102 +45,38 @@
 
 
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:textColorHint="@color/black"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:visibility="gone"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
 
 
 
 
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-
-                    android:visibility="gone"
-                    android:textColorHint="@color/black"
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:visibility="gone"
-                android:id="@+id/email_sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_gravity="center"
-
-                android:background="@drawable/sigin"
-
-                android:textStyle="bold" />
-            <Button
-
-                android:visibility="gone"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/sign_up_button"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/sigout"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:id="@+id/login_button"
+                android:layout_height="120dp"
+                android:textColor="#3b5998"
+                android:layout_weight="1"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/_facebook"
                 />
 
 
             <Button
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/facebook_box"
-                android:layout_width="wrap_content"
-                android:id="@+id/login_button"
-                android:layout_height="wrap_content"
-                android:text="       Login With Facebook"
-                android:textColor="#3b5998"
-                android:textAlignment="center"
-                android:background="@color/white"
-                android:paddingLeft="10dp"
-                android:paddingRight="20dp"/>
-
-
-            <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
-                android:layout_marginTop="20dp"
-                android:layout_width="240dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="120dp"
                 android:textAlignment="center"
-
+                android:background="@drawable/online_social_media_google_search_plus"
                 android:layout_centerInParent="true"
                 android:visibility="visible" />
 
         </LinearLayout>
-    </ScrollView>
+
 
 
 
