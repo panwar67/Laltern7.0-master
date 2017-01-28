@@ -31,7 +31,7 @@ import layout.Order_Struct;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "lalterndData50.db";
+    public static final String DATABASE_NAME = "lalterndData55.db";
     public static final  String reqdirect = "REQDIRECT";
     HashMap<String,String> mAliasMap = new HashMap<>();
 
@@ -60,7 +60,7 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
         db.execSQL("CREATE TABLE "+Filter_Struct.table_name+" ("+Filter_Struct.uid+" text, "+Filter_Struct.cat+" text, "+Filter_Struct.subcat+" text, "+Filter_Struct.colorfil+" text, "+ Filter_Struct.sizefil+" text, "+Filter_Struct.producttype+" text);");
         db.execSQL("CREATE TABLE SearchFilter (CRAFT text, PROTYPE text);");
         db.execSQL("CREATE TABLE "+Addr_Struct.Table_Name+" ("+Addr_Struct.title+" text, "+Addr_Struct.area+" text, "+Addr_Struct.city+" text, "+Addr_Struct.dist+" text, "+Addr_Struct.state+" text, "+Addr_Struct.pin+" text, "+Addr_Struct.contact+" text, "+Addr_Struct.addr+" text, "+Addr_Struct.country+" text);");
-        db.execSQL("CREATE TABLE "+ Order_Struct.table_name+" ("+Order_Struct.ord_uid+" text, "+Order_Struct.pay_uid+" text, "+Order_Struct.pro_uid+" text, "+Order_Struct.ord_add+" text, "+Order_Struct.user_uid+" text);");
+        db.execSQL("CREATE TABLE "+ Order_Struct.table_name+" ("+Order_Struct.ord_uid+" text, "+Order_Struct.pay_uid+" text, "+Order_Struct.pro_uid+" text, "+Order_Struct.ord_add+" text, "+Order_Struct.user_uid+" text, "+Order_Struct.date_time+" text, "+Order_Struct.pay_mode+" text, "+Order_Struct.status+" text, "+Order_Struct.user_name+" text, "+Order_Struct.price+" text );");
 
 
 
@@ -1054,15 +1054,20 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
 
     }
 
-    public boolean Insert_Orders(String orduid, String payuid, String prouid, String ordadd, String useruid)
+    public boolean Insert_Orders(String orduid, String payuid, String pro_uid, String ordadd, String useruid, String date_time, String user_name,String paymode, String status,String price)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("orduid",orduid);
-        contentValues.put("payuid",payuid);
-        contentValues.put("prouid",prouid);
-        contentValues.put("ordadd",ordadd);
-        contentValues.put("useruid",useruid);
+        contentValues.put(Order_Struct.ord_uid,orduid);
+        contentValues.put(Order_Struct.date_time,date_time);
+        contentValues.put(Order_Struct.user_name,user_name);
+        contentValues.put(Order_Struct.user_uid,useruid);
+        contentValues.put(Order_Struct.pay_mode,paymode);
+        contentValues.put(Order_Struct.status,status);
+        contentValues.put(Order_Struct.pro_uid,pro_uid);
+        contentValues.put(Order_Struct.price,price);
+        contentValues.put(Order_Struct.ord_add,ordadd);
+        contentValues.put(Order_Struct.pay_uid,payuid);
         long row = db.insertWithOnConflict(Order_Struct.table_name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
         Log.d("order_inserted",""+row);
 

@@ -154,6 +154,16 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+        final TextView order = (TextView)findViewById(R.id.toggleorders);
+        order.setTypeface(typeface);
+        request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+            }
+        });
 
         Log.d("address_size",""+dbHelper.GetAddresses().size());
         name = (TextView)findViewById(R.id.nameprofile);

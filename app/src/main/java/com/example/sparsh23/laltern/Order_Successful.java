@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,6 +30,7 @@ public class Order_Successful extends AppCompatActivity {
     ListView listView;
     Button shopping;
     String DOWN_URL2 = "http://www.whydoweplay.com/lalten/Receive_Order.php";
+    TextView orderid, grandtotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +56,20 @@ public class Order_Successful extends AppCompatActivity {
 
         ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
         data.add(checkout_data);
-        Generate_Order(map.get("order_id"),"offline",map.get("product_list"),map.get("useruid"),map.get("useradd"),map.get("price"));
+       // Generate_Order("offline",map.get("product_list"),map.get("useruid"),map.get("useradd"),map.get("price"),map.get("username"),map.get("user_email"));
 
         listView.setAdapter(new Checkout_Addr_Adapter(getApplicationContext(),data));
 
+        orderid =   (TextView)findViewById(R.id.order_id_confirmed);
+        grandtotal  =   (TextView)findViewById(R.id.grandtotal_order);
+        orderid.setText(map.get("orderuid_server"));
+        grandtotal.setText(map.get("price"));
 
 
 
     }
 
-    public void Generate_Order(final String orduid, final String payuid, final String prouid, final String useruid, final String ordadd, final String grandtotal)
+    public void Generate_Order( final String payuid, final String prouid, final String useruid, final String ordadd, final String grandtotal, final String user_name, final String user_email)
     {
         final ProgressDialog loading = ProgressDialog.show(this,"Generating Invoice...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
@@ -87,12 +93,16 @@ public class Order_Successful extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
-                Keyvalue.put("orduid",orduid);
+
                 Keyvalue.put("payuid",payuid);
                 Keyvalue.put("prouid",prouid);
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("ordadd",ordadd);
                 Keyvalue.put("grandtotal",grandtotal);
+                Keyvalue.put("user_email",user_email);
+                Keyvalue.put("user_name",user_name);
+                Keyvalue.put("pay_mode","OFFLINE");
+                Keyvalue.put("status","NOT PAID");
                 //returning parameters
                 return Keyvalue;
             }

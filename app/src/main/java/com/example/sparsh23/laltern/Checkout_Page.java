@@ -201,11 +201,12 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                     HashMap<String, String> map = new HashMap<String, String>();
                     //map = ;
                     map.put("price", total);
-                    String uid = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                    map.put("order_id", uid);
+                   // map.put("order_id", uid);
                     map.put("product_list", pro_data.toString());
                     map.put("useradd", spinner.getSelectedItem().toString());
                     map.put("useruid", sessionManager.getUserDetails().get("uid"));
+                    map.put("username",sessionManager.getUserDetails().get("name"));
+                    map.put("user_email",sessionManager.getUserDetails().get("email"));
 
                     Intent intent1 = new Intent(Checkout_Page.this, Choose_Offline_Payment_Mode.class);
                     intent1.putExtra("checkout",map);
@@ -344,8 +345,10 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                 if (confirm != null) {
                     //Getting the payment details
                     String paymentDetails = confirm.toJSONObject().toString();
-                    Toast.makeText(getApplicationContext(),"payment successful",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"payment successful",Toast.LENGTH_SHORT).show();
                     Log.i("paymentExample", paymentDetails);
+
+                    Generate_Order(paymentDetails,pro_data.toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total,"PAID","PayPal");
 
                     //Starting a new activity for the payment details and also putting the payment details with intent
 
@@ -430,7 +433,8 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
 
     }
 
-    public void startPayment() {
+    public void startPayment()
+    {
         /**
          * Instantiate Checkout
          */
@@ -480,7 +484,9 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
             options.put("amount", "100");
 
             checkout.open(this, options);
-        } catch(Exception e) {
+        }
+        catch(Exception e)
+        {
             Log.e("card_razor", "Error in starting Razorpay Checkout", e);
         }
     }
@@ -490,8 +496,7 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
     {
         Log.d("payment_Sucess"," "+s);
         Toast.makeText(getApplicationContext(),""+s,Toast.LENGTH_SHORT).show();
-        String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        Generate_Order("ord_"+uid,s,pro_data.toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total);
+        Generate_Order(s,pro_data.toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total,"PAID","Razor_Pay");
 
     }
 
@@ -511,7 +516,7 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
 
     }
 
-    public void Generate_Order(final String orduid, final String payuid, final String prouid, final String useruid, final String ordadd, final String grand_total)
+    public void Generate_Order( final String payuid, final String prouid, final String useruid, final String ordadd, final String grand_total, final String status, final String pay_mode)
     {
         final ProgressDialog loading = ProgressDialog.show(this,"Generating Invoice...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
@@ -535,12 +540,15 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
             protected Map<String, String> getParams() throws AuthFailureError {
                 //Converting Bitmap to String
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
-                Keyvalue.put("orduid",orduid);
                 Keyvalue.put("payuid",payuid);
                 Keyvalue.put("prouid",prouid);
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("ordadd",ordadd);
                 Keyvalue.put("grandtotal",grand_total);
+                Keyvalue.put("user_name",sessionManager.getUserDetails().get("name"));
+                Keyvalue.put("user_email",sessionManager.getUserDetails().get("email"));
+                Keyvalue.put("pay_mode",pay_mode);
+                Keyvalue.put("status",status);
                 //returning parameters
                 return Keyvalue;
             }

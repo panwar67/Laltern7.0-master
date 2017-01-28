@@ -1,29 +1,21 @@
 {
   "project_info": {
-    "project_number": "346126574637",
-    "firebase_url": "https://lal10-841fb.firebaseio.com",
-    "project_id": "lal10-841fb",
-    "storage_bucket": "lal10-841fb.appspot.com"
+    "project_number": "500773107013",
+    "firebase_url": "https://lal10-release.firebaseio.com",
+    "project_id": "lal10-release",
+    "storage_bucket": "lal10-release.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:346126574637:android:6c3a4060f16a1563",
+        "mobilesdk_app_id": "1:500773107013:android:6c3a4060f16a1563",
         "android_client_info": {
           "package_name": "com.example.sparsh23.laltern"
         }
       },
       "oauth_client": [
         {
-          "client_id": "346126574637-9c3l8noukuk8egoj4t78td2lvtbg0hvg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.sparsh23.laltern",
-            "certificate_hash": "E957ADCCDDA86E3F882EC3F65304A96C2CA984C4"
-          }
-        },
-        {
-          "client_id": "346126574637-26ahs6jfnkp0enl6iqoc1sitis444oiu.apps.googleusercontent.com",
+          "client_id": "500773107013-hrpkq88gl3p8if4a0jvlo58q1gcn826d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.sparsh23.laltern",
@@ -31,13 +23,13 @@
           }
         },
         {
-          "client_id": "346126574637-2o08ukbj3ae0fm8e8qmnpdj0f2671unc.apps.googleusercontent.com",
+          "client_id": "500773107013-ld0ql1avl917b4kcge8ng3r6bov19d7u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBQR5RblF4atnHOkxqVKGGTkK2LBHjMRJE"
+          "current_key": "AIzaSyCJBos98uwM1qkHk5yn9KNyKJuUp14RIWY"
         }
       ],
       "services": {
@@ -48,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "346126574637-2o08ukbj3ae0fm8e8qmnpdj0f2671unc.apps.googleusercontent.com",
+              "client_id": "500773107013-ld0ql1avl917b4kcge8ng3r6bov19d7u.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

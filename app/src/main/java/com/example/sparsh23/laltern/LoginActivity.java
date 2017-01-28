@@ -216,9 +216,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 @Override
                                 protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
 
-
-
-
                                     this.stopTracking();
                                     Profile.setCurrentProfile(currentProfile);
                                     com.facebook.Profile profile = Profile.getCurrentProfile();
@@ -451,6 +448,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 firebaseAuthWithGoogle(account);
             } else {
                 loading.dismiss();
+                Toast.makeText(getApplicationContext(),"google sigin error",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
          //       updateUI(null);
@@ -496,6 +494,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.w("google signin", "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                        }else {
+
+                            Toast.makeText(getApplicationContext(),"error sigin google",Toast.LENGTH_SHORT).show();
                         }
                         // [START_EXCLUDE]
                         //hideProgressDialog();

@@ -82,7 +82,7 @@ public class Update extends AppCompatActivity {
 
 
         ArtisianSetup();
-
+        Order_Setup(sessionManager.getUserDetails().get("uid"));
 
         SearchFilterSetup();
         setUpStream();
@@ -508,17 +508,7 @@ public class Update extends AppCompatActivity {
                                     String path = details.getString("PATH");
                                     String reply = details.getString("REPLY");
                                     dbHelper.InsertRequestData(prouid,buyuid,requid,description,path,status,reply,crafts,quantity);
-                                    /*map.put("requid",requid);
-                                    map.put("prouid",prouid);
-                                    map.put("quantity",quantity);
-                                    map.put("craft",crafts);
-                                    map.put("buyuid",buyuid);
-                                    map.put("des",description);
-                                    map.put("status",status);
-                                    map.put("path",path);
-                                    map.put("reply",reply);
-                                    buyreq.add(map);
-                                    //Log.d("check","for data");*/
+
                                 }
                                 Log.d("Profile fetched", s);
                                 // loading.dismiss();
@@ -1108,8 +1098,7 @@ public class Update extends AppCompatActivity {
                                 {
                                     HashMap<String,String> map = new HashMap<String, String>();
                                     JSONObject details = data.getJSONObject(i);
-                                    dbHelper.Insert_Orders(details.getString("ORD_UID"),details.getString("PAY_UID"),details.getString("PRO_UID"),details.getString("ORD_ADD"),details.getString("USER_UID"));
-
+                                    dbHelper.Insert_Orders(details.getString("ORD_UID"),details.getString("PAY_UID"),details.getString("PRO_UID"),details.getString("ORD_ADD"),details.getString("USER_UID"),details.getString("DATE_TIME"),details.getString("USER_NAME"),details.getString("PAY_MODE"),details.getString("STATUS"),details.getString("TOTAL"));
 
 
                                 }
@@ -1128,7 +1117,7 @@ public class Update extends AppCompatActivity {
                         else
                         {
 
-                            Toast.makeText(getApplicationContext(),"Error Occured",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Error Occured in Orders",Toast.LENGTH_SHORT).show();
                         }
                         // loading.dismiss();
 

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LAL10</string>
-    <string name="facebook_app_id">1761495477471790</string>
+    <string name="facebook_app_id">604303733100791</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -95,7 +96,9 @@
     <string name="title_activity_stream">Stream</string>
     <string name="lalternstream">Stream of Sellers</string>
     <string name="title_activity_search">Search</string>
-    <string name="fb_login_protocol_scheme">fb1761495477471790</string>
+
+    <string name="fb_login_protocol_scheme">fb604303733100791</string>
+
     <string name="gatracking">UA-88237199-1</string>
 
     <string-array name="categories">

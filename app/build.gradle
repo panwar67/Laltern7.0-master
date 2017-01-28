@@ -17,13 +17,17 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
+    }
+    productFlavors {
     }
 }
 
@@ -31,16 +35,19 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     //compile 'com.commonsware.cwac:camera:0.6@arr'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:23.4.0'
+    compile('com.paypal.sdk:paypal-android-sdk:2.14.2') {
+        exclude group: 'io.card'
+    }
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
     compile 'com.github.nostra13:Android-Universal-Image-Loader:v1.9.5'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
     compile 'com.roughike:swipe-selector:1.0.6'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:support-v4:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
     compile 'in.srain.cube:grid-view-with-header-footer:1.0.12'
     compile 'com.github.aakira:expandable-layout:1.5.1@aar'
@@ -62,11 +69,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:9.6.1'
     compile 'com.razorpay:checkout:1.2.0'
     compile 'com.nshmura:snappysmoothscroller:1.0.0'
-    compile ('com.paypal.sdk:paypal-android-sdk:2.14.2'){
-        exclude group: 'io.card'
-    }
-
-    
 }
 
 apply plugin: 'com.google.gms.google-services'

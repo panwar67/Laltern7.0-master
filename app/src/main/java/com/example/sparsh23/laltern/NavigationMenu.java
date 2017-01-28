@@ -268,6 +268,9 @@ public class NavigationMenu extends AppCompatActivity
                 LayoutInflater inflater = getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.testimonial_pop, null);
                 TextView test_text = (TextView)alertLayout.findViewById(R.id.testimonial_text);
+               Typeface typeface = Typeface.createFromAsset(getAssets(),
+                       "DroidSansFallback.ttf");
+                test_text.setTypeface(typeface);
                 test_text.setText(""+finalTesticals_list.get(i).get("des"));
                 AlertDialog.Builder alert = new AlertDialog.Builder(NavigationMenu.this,R.style.MyDialogTheme);
                 alert.setTitle("Testimonial");
