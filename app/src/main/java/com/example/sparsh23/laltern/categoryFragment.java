@@ -149,7 +149,6 @@ public class categoryFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),""+category.get(position).get("meta"),Toast.LENGTH_SHORT).show();
                 ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
                 data = dbHelper.GetProductsFromSearch_test("SUBCAT",category.get(position).get("meta"));
                 //ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();

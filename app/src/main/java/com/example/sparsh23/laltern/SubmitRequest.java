@@ -112,22 +112,25 @@ public class SubmitRequest extends AppCompatActivity {
     public void upload_data(final String prouid, final String buyuid, final String des, final String path, final String craft, final String quantity)
 
     {
-        final ProgressDialog loading = ProgressDialog.show(this,"Registering User...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(this,"Submitting request...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         String res = s.replaceAll("\\s+","");
-                        if (res.equals("Uploaded"))
+                        if (res.equals("uploaded"))
 
+
+
+                            loading.dismiss();
 
 
                         Toast.makeText(getApplicationContext(),s.toString(),Toast.LENGTH_SHORT).show();
 
 
 
-                        loading.dismiss();
 
+                       onBackPressed();
                         finish();
 
 

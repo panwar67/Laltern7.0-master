@@ -84,7 +84,20 @@ public class New_Scrolling extends AppCompatActivity {
 
         data = dbHelper.GetProductByArtist(meta);
         recyclerView.setAdapter(new MyItemRecyclerViewAdapter(data, mListener, getApplicationContext(),2));
+        ItemClickSupport.addTo(recyclerView)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
+                        Intent intent = new Intent(New_Scrolling.this,ProductView.class);
+                        intent.putExtra("promap",data.get(position));
+                        startActivity(intent);
+
+
+
+
+                    }
+                });
     }
 
     @Override

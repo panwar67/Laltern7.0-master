@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.daimajia.slider.library.SliderLayout;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,14 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Panwar on 8/31/2016.
+ * Created by Panwar on 30/01/17.
  */
-
-public class CartItemAdapter extends BaseAdapter {
-
-
-
-    CartActivity context;
+public class Order_Item_Adapter extends BaseAdapter {
+    Context context;
     DBHelper dbHelper;
     private static LayoutInflater inflater=null;
 
@@ -42,7 +36,7 @@ public class CartItemAdapter extends BaseAdapter {
 
     ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
 
-    public CartItemAdapter(CartActivity landingHome, ArrayList<HashMap<String,String>> data){
+    public Order_Item_Adapter(Context landingHome, ArrayList<HashMap<String,String>> data){
 
         result=data;
         context = landingHome;
@@ -90,7 +84,7 @@ public class CartItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return result.get(position);
     }
 
     @Override
@@ -105,15 +99,10 @@ public class CartItemAdapter extends BaseAdapter {
 
         ImageView productimg;
 
-        TextView title, price, quantity, artist,totalprice,size,color;
+        TextView title, price, quantity, procode,totalprice,size,color, status;
         Button remove;
 
-
-
     }
-
-
-
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -124,27 +113,26 @@ public class CartItemAdapter extends BaseAdapter {
         Holder holder=new Holder();
 
         View rowView;
-        rowView = inflater.inflate(R.layout.cart_item, null);
+        rowView = inflater.inflate(R.layout.order_item_item, null);
 
         holder.productimg=(ImageView) rowView.findViewById(R.id.cartproductimg);
         // holder.custom=(ImageView) rowView.findViewById(R.id.customlanding);
         //holder.sliderShow = (SliderLayout) rowView.findViewById(R.id.sliderlandingtrending);
         holder.totalprice = (TextView)rowView.findViewById(R.id.prototalprice);
 
-        holder.remove = (Button)rowView.findViewById(R.id.cartremovepro);
 
         holder.title = (TextView)rowView.findViewById(R.id.cartprotitle);
 
         holder.price = (TextView)rowView.findViewById(R.id.cartproprice);
 
         holder.quantity = (TextView)rowView.findViewById(R.id.cartquantity);
-        holder.color = (TextView) rowView.findViewById(R.id.cartprocolor);
+        holder.procode = (TextView)rowView.findViewById(R.id.order_pro_id);
+        holder.status = (TextView)rowView.findViewById(R.id.order_pro_status);
 
-       // holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
+        // holder.artist = (TextView) rowView.findViewById(R.id.cartproartist);
         holder.size = (TextView)rowView.findViewById(R.id.cartprosize);
         Typeface typeface = Typeface.createFromAsset(context.getAssets(),"Raleway-SemiBold.ttf");
         Typeface typeface1 = Typeface.createFromAsset(context.getAssets(),"Montserrat-Light.otf");
-        holder.color.setTypeface(typeface1);
         //holder.color.setText();
 
 
@@ -181,26 +169,15 @@ public class CartItemAdapter extends BaseAdapter {
         rate = Double.parseDouble(result.get(position).get("rate"));
         total = rate*Integer.parseInt(result.get(position).get("quantity"));
         holder.totalprice.setText(""+string+" "+total);
-        holder.color.setText(result.get(position).get("color"));
         imageLoader.displayImage(result.get(position).get("path"), holder.productimg);
-        holder.remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // dbHelper.RemoveFromCart(result.get(position).get("uid"));
-                context.Deletecart(result.get(position).get("cartuid"),result.get(position).get("uid"));
-
-                result.remove(position);
-
-                notifyDataSetChanged();
-
-
-            }
-        });
-
+        holder.procode.setText("Product Id : "+result.get(position).get("pro_uid"));
+        holder.status.setText(result.get(position).get("status"));
 
 
 
 
         return rowView;
     }
+
+
 }

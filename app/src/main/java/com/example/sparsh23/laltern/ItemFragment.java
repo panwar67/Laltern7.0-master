@@ -324,8 +324,6 @@ public class ItemFragment extends Fragment {
                                     recyclerView.setAdapter(new MyItemRecyclerViewAdapter(sorteddata, mListener, getContext(),2));
                                     imageView.setChecked(false);
                                   }
-                                Toast.makeText(getContext(),
-                                        "The selected Day is " +which, Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
                             }
                         });

@@ -11,5 +11,9 @@ public class Cart_Struct {
     public static final String cartuid = "UID";
     public static final String quantity="QUANTITY";
     public static final String size = "SIZE";
+    public static final String rate = "RATE";
+    public static  final String title = "TITLE";
+    public static final String path = "PATH";
+    public static final String price = "PRICE";
 
 }

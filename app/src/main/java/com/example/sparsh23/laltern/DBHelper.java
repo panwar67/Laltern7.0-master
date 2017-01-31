@@ -27,11 +27,15 @@ import android.util.Log;
 
 import com.nostra13.universalimageloader.utils.L;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import layout.Order_Struct;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "lalterndData55.db";
+    public static final String DATABASE_NAME = "lalterndDataRelease1.db";
     public static final  String reqdirect = "REQDIRECT";
     HashMap<String,String> mAliasMap = new HashMap<>();
 
@@ -53,18 +57,20 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
 
         db.execSQL("CREATE TABLE SearchData ( UID INTEGER PRIMARY KEY AUTOINCREMENT, TAG text, SUGGEST text, TYPE text );");
 
-        db.execSQL("CREATE TABLE "+Cart_Struct.Table_Name+" ( "+Cart_Struct.cartuid+" text , "+Cart_Struct.useruid+" text, "+Cart_Struct.prouid+" text, "+Cart_Struct.quantity+" text, "+Cart_Struct.size+" text);");
+        db.execSQL("CREATE TABLE "+Cart_Struct.Table_Name+" ( "+Cart_Struct.cartuid+" text , "+Cart_Struct.useruid+" text, "+Cart_Struct.prouid+" text, "+Cart_Struct.quantity+" text, "+Cart_Struct.size+" text, "+Cart_Struct.rate+" text, "+Cart_Struct.title+" text, "+Cart_Struct.path+" text, "+Cart_Struct.price+" text);");
 
       //  db.execSQL("CREATE TABLE "+Request_Struct.table_name+" ( "+Request_Struct.ord_id+" text, "+Request_Struct.pro_id+" text, "+Request_Struct.buy_id+" text, "+Request_Struct.des+" text, "+Request_Struct.path+" text, "+Request_Struct.craft+" text, "+Request_Struct.status+" text, "+Request_Struct.quantity+" text, "+Request_Struct.reply+" text);");
 
         db.execSQL("CREATE TABLE "+Filter_Struct.table_name+" ("+Filter_Struct.uid+" text, "+Filter_Struct.cat+" text, "+Filter_Struct.subcat+" text, "+Filter_Struct.colorfil+" text, "+ Filter_Struct.sizefil+" text, "+Filter_Struct.producttype+" text);");
         db.execSQL("CREATE TABLE SearchFilter (CRAFT text, PROTYPE text);");
         db.execSQL("CREATE TABLE "+Addr_Struct.Table_Name+" ("+Addr_Struct.title+" text, "+Addr_Struct.area+" text, "+Addr_Struct.city+" text, "+Addr_Struct.dist+" text, "+Addr_Struct.state+" text, "+Addr_Struct.pin+" text, "+Addr_Struct.contact+" text, "+Addr_Struct.addr+" text, "+Addr_Struct.country+" text);");
-        db.execSQL("CREATE TABLE "+ Order_Struct.table_name+" ("+Order_Struct.ord_uid+" text, "+Order_Struct.pay_uid+" text, "+Order_Struct.pro_uid+" text, "+Order_Struct.ord_add+" text, "+Order_Struct.user_uid+" text, "+Order_Struct.date_time+" text, "+Order_Struct.pay_mode+" text, "+Order_Struct.status+" text, "+Order_Struct.user_name+" text, "+Order_Struct.price+" text );");
+        db.execSQL("CREATE TABLE "+ Order_Struct.table_name+" ("+Order_Struct.ord_uid+" text, "+Order_Struct.pay_uid+" text, "+Order_Struct.ord_add+" text, "+Order_Struct.user_uid+" text, "+Order_Struct.date_time+" text, "+Order_Struct.pay_mode+" text, "+Order_Struct.status+" text, "+Order_Struct.user_name+" text, "+Order_Struct.price+" text );");
 
 
 
     }
+
+
 
 
     @Override
@@ -100,7 +106,13 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
 
     }
 
+    public void Filter_Search_Table()
+    {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.execSQL("DELETE FROM SearchData WHERE TAG IS NULL OR trim(TAG) = ''");
+        Log.d("cleared","search");
 
+    }
 
 
 
@@ -168,7 +180,7 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
         return  true;
     }
 
-    public boolean InsertCartData(String cartuid, String prouid, String useruid, String quantity, String size){
+    public boolean InsertCartData(String cartuid, String prouid, String useruid, String quantity, String size, String rate, String title, String path, String price){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -177,6 +189,10 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
         contentValues.put(Cart_Struct.useruid, useruid);
         contentValues.put(Cart_Struct.quantity, quantity);
         contentValues.put(Cart_Struct.size, size);
+        contentValues.put(Cart_Struct.title,title);
+        contentValues.put(Cart_Struct.path,path);
+        contentValues.put(Cart_Struct.rate,rate);
+        contentValues.put(Cart_Struct.price,price);
         long row = db.insertWithOnConflict(Cart_Struct.Table_Name,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
         Log.d("cart data",String.valueOf(row));
 
@@ -927,6 +943,40 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
 
 
 
+    public JSONArray GetCartDataJson()
+    {
+        JSONArray data = new JSONArray();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from "+Cart_Struct.Table_Name+" group by "+Cart_Struct.prouid, null);
+        res.moveToFirst();
+        while (res.isAfterLast()==false)
+        {
+            JSONObject map = new JSONObject();
+            try {
+                map.put("cartuid",res.getString(res.getColumnIndex(Cart_Struct.cartuid)));
+                map.put("uid",res.getString(res.getColumnIndex(Cart_Struct.prouid)));
+                map.put("useruid",res.getString(res.getColumnIndex(Cart_Struct.useruid)));
+                map.put("quantity",res.getString(res.getColumnIndex(Cart_Struct.quantity)));
+                map.put("size",res.getString(res.getColumnIndex(Cart_Struct.size)));
+                map.put("title",res.getString(res.getColumnIndex(Cart_Struct.title)));
+                map.put("path",res.getString(res.getColumnIndex(Cart_Struct.path)));
+                map.put("price",res.getString(res.getColumnIndex(Cart_Struct.price)));
+                map.put("rate",res.getString(res.getColumnIndex(Cart_Struct.rate)));
+                data.put(map);
+                res.moveToNext();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // map.put("craft",res.getString(res.getColumnIndex(Request_Struct.craft)));
+            //map.put("quantity",res.getString(res.getColumnIndex(Request_Struct.quantity)));
+//            res.moveToNext();
+        }
+        return  data;
+
+
+    }
+
 
 
 
@@ -940,10 +990,15 @@ db.execSQL("CREATE TABLE ImageData (UID text, DES text,  OWN_NAME text, PRICE fl
         {
             HashMap<String,String> map = new HashMap<String, String>();
             map.put("cartuid",res.getString(res.getColumnIndex(Cart_Struct.cartuid)));
-            map.put("prouid",res.getString(res.getColumnIndex(Cart_Struct.prouid)));
+            map.put("uid",res.getString(res.getColumnIndex(Cart_Struct.prouid)));
             map.put("useruid",res.getString(res.getColumnIndex(Cart_Struct.useruid)));
             map.put("quantity",res.getString(res.getColumnIndex(Cart_Struct.quantity)));
             map.put("size",res.getString(res.getColumnIndex(Cart_Struct.size)));
+            map.put("title",res.getString(res.getColumnIndex(Cart_Struct.title)));
+            map.put("path",res.getString(res.getColumnIndex(Cart_Struct.path)));
+            map.put("price",res.getString(res.getColumnIndex(Cart_Struct.price)));
+            map.put("rate",res.getString(res.getColumnIndex(Cart_Struct.rate)));
+
            // map.put("craft",res.getString(res.getColumnIndex(Request_Struct.craft)));
             //map.put("quantity",res.getString(res.getColumnIndex(Request_Struct.quantity)));
             data.add(map);

@@ -38,7 +38,6 @@ public class CartActivity extends AppCompatActivity {
     Button checkout;
     double totals, tax, sub;
     ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String, String>>();
-    ArrayList<HashMap<String,String>> cartpro = new ArrayList<HashMap<String, String>>();
     ExpandableHeightGridView listView;
     TextView subtotal, taxtotal, grandtotal;
     String DOWN_URL2 = "http://www.whydoweplay.com/lalten/DeleteFromCart.php";
@@ -73,7 +72,6 @@ public class CartActivity extends AppCompatActivity {
         taxtotal.setTypeface(typeface);
         grandtotal.setTypeface(typeface);
 
-        cartpro = GetcartData();
         checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +100,7 @@ public class CartActivity extends AppCompatActivity {
 
 
         if(!data.isEmpty()){
-            Populate_Cart(cartpro);
+            Populate_Cart(data);
 
         }
 
@@ -125,30 +123,16 @@ public class CartActivity extends AppCompatActivity {
 
     }
 
-    public ArrayList<HashMap<String,String>> GetcartData()
-    {
-        ArrayList<HashMap<String,String>> temppro = new ArrayList<HashMap<String, String>>();
-        for(int i = 0; i<data.size();i++)
-        {
-            HashMap<String,String> map = new HashMap<String, String>();
-            map = dbHelper.GetProMap(data.get(i).get("prouid"),data.get(i).get("quantity"),data.get(i).get("size"));
-            map.put("cartuid",data.get(i).get("cartuid"));
-            temppro.add(map);
-        }
-
-        return temppro;
-
-    }
 
 
-    public boolean Calculate_Total_Price()
+    public boolean Calculate_Total_Price(ArrayList<HashMap<String,String>> pro_data)
     {
         double total=0;
         double taxes=0;
-        for(int i=0;i<cartpro.size();i++)
+        for(int i=0;i<pro_data.size();i++)
         {
-            int qty = Integer.parseInt(cartpro.get(i).get("quantity"));
-            double rate = Float.parseFloat(cartpro.get(i).get("price"));
+            int qty = Integer.parseInt(pro_data.get(i).get("quantity"));
+            double rate = Float.parseFloat(pro_data.get(i).get("rate"));
             double aux_total = qty*rate;
             total = aux_total+total;
 
@@ -168,7 +152,7 @@ public class CartActivity extends AppCompatActivity {
 
 
 
-    public boolean Deletecart(final String cartuid)
+    public boolean Deletecart(final String cartuid, final String prouid)
     {
         mTracker.setScreenName("item_removed");
         mTracker.send(new HitBuilders.EventBuilder().build());
@@ -180,12 +164,25 @@ public class CartActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        loading.dismiss();
-                        int total = data.size()-1;
-                        carttotal.setText("Total Items : "+total);
-                        Toast.makeText(getApplicationContext(),""+s.toString(),Toast.LENGTH_SHORT).show();
-                        Calculate_Total_Price();
-                    }
+                        if(s.equals("deleted"))
+                        {
+                            data = dbHelper.GetCartData();
+                            int total = data.size();
+                            carttotal.setText("Total Items : "+total);
+
+                            dbHelper.RemoveFromCart(prouid);
+                            data = dbHelper.GetCartData();
+                            Populate_Cart(data);
+                            loading.dismiss();
+                            Toast.makeText(getApplicationContext(),""+s.toString(),Toast.LENGTH_SHORT).show();
+
+
+                        }
+                        else {
+                            loading.dismiss();
+                            Toast.makeText(getApplicationContext(), "" + s, Toast.LENGTH_SHORT).show();
+                        }
+                         }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -240,9 +237,9 @@ public class CartActivity extends AppCompatActivity {
         listView.setNumColumns(1);
         cartItemAdapter.notifyDataSetChanged();
 
-        carttotal.setText("Total Items : "+cartpro.size());
+        carttotal.setText("Total Items : "+data.size());
 
-        Calculate_Total_Price();
+        Calculate_Total_Price(data);
 
 
 

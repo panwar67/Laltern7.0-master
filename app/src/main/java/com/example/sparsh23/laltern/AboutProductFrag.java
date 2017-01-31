@@ -44,6 +44,9 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.lucasr.twowayview.TwoWayView;
 
 import java.io.UnsupportedEncodingException;
@@ -97,6 +100,7 @@ public class AboutProductFrag extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Tracker mTracker;
+    String finalString;
 
 
     private OnFragmentInteractionListener mListener;
@@ -174,7 +178,7 @@ public class AboutProductFrag extends Fragment {
         avail_sizes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getContext(),"selected item "+adapterView.getSelectedItem()+"",Toast.LENGTH_SHORT).show();
+
 
             }
 
@@ -217,7 +221,7 @@ public class AboutProductFrag extends Fragment {
 
         seekBar.setBarHighlightColor(R.color.seekbar);
 
-        final String finalString = string;
+          finalString = string;
         seekBar.setLeftThumbHighlightDrawable(R.drawable.seekbig);
         seekBar.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
@@ -227,7 +231,7 @@ public class AboutProductFrag extends Fragment {
                 if(value.intValue()<Integer.parseInt(data.get("revquantity") ))
                 {
 
-                    priceseek.setText(""+ finalString +""+data.get("price"));
+                    priceseek.setText(""+ finalString +" "+data.get("price"));
 
                     seekBar.setBarHighlightColor(R.color.seekbarin);
                     //seekBar.col
@@ -278,9 +282,10 @@ public class AboutProductFrag extends Fragment {
                     //mTracker.set("added_cart",""+data.get("uid"));
                     mTracker.send(new HitBuilders.EventBuilder().build());
                     String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
-                    dbHelper.InsertCartData(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"), String.valueOf(bar.getText()), String.valueOf(avail_sizes.getSelectedItem()));
-                    upload_data(uid,data.get("uid"),sessionManager.getUserDetails().get("uid"),String.valueOf(bar.getText()),String.valueOf(avail_sizes.getSelectedItem()));
+                    Log.d("price_actual",priceseek.getText().toString().replace(finalString,""));
+                    float price = Integer.valueOf(priceseek.getText().toString().replace(finalString,"").replace(" ",""))*Integer.valueOf(bar.getText().toString().replace(" ",""));
+                    Log.d("price_product_total", String.valueOf(price));
+                    upload_data("",data.get("uid"),sessionManager.getUserDetails().get("uid"),String.valueOf(bar.getText()),String.valueOf(avail_sizes.getSelectedItem()),priceseek.getText().toString().replace(finalString,""), String.valueOf(price),data.get("path"),data.get("title"));
 
                 }
                 else {
@@ -357,7 +362,6 @@ public class AboutProductFrag extends Fragment {
         title.setText(data.get("title").toUpperCase());
         craftpro.setText(" "+data.get("craft"));
         Log.d("craft used",""+data.get("craft"));
-        Toast.makeText(getContext(),""+data.get("craft"),Toast.LENGTH_SHORT).show();
 
         return view;
     }
@@ -366,7 +370,7 @@ public class AboutProductFrag extends Fragment {
 
 
 
-    public void upload_data(final String cartuid, final String prouid, final String useruid, final String quantity,final String size)
+    public void upload_data(final String cartuid, final String prouid, final String useruid, final String quantity, final String size, final String rate, final String proprice, final String path, final String protitle)
     {
         final ProgressDialog loading = ProgressDialog.show(getActivity(),"Adding to cart...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
@@ -374,16 +378,38 @@ public class AboutProductFrag extends Fragment {
                     @Override
                     public void onResponse(String s) {
 
+                        if(s!=null)
+                        {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("Cart_Confirm");
+                                JSONObject jsoncart = jsonArray.getJSONObject(0);
+                                Log.d("cartuid",jsoncart.getString("cartuid"));
+                                loading.dismiss();
+
+                                dbHelper.InsertCartData(jsoncart.getString("cartuid"),data.get("uid"),sessionManager.getUserDetails().get("uid"), String.valueOf(bar.getText()), String.valueOf(avail_sizes.getSelectedItem()),rate,protitle,path,proprice);
+                                Toast.makeText(getContext(),"Added to Cart",Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                loading.dismiss();
+
+                                Toast.makeText(getContext(),"Error Occured : Item not added to cart",Toast.LENGTH_SHORT).show();
+
+                            }
 
 
+                        }else
+                        {
+                            loading.dismiss();
+                            Toast.makeText(getContext(),"Error Occured", Toast.LENGTH_SHORT).show();
 
 
-                        Toast.makeText(getContext(),s.toString(),Toast.LENGTH_LONG).show();
+                        }
+
 
                         Log.d("response",s.toString());
-
-
-                        loading.dismiss();
+                        //Toast.makeText(getContext(),priceseek.getText().toString().replace(finalString,""),Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -391,7 +417,6 @@ public class AboutProductFrag extends Fragment {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         loading.dismiss();
-
                         //Showing toast
                         Toast.makeText(getActivity(), "Error In Connectivity", Toast.LENGTH_LONG).show();
                     }
@@ -407,6 +432,11 @@ public class AboutProductFrag extends Fragment {
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("quantity",quantity);
                 Keyvalue.put("size",size);
+                Keyvalue.put("rate",rate);
+
+                Keyvalue.put("price",proprice);
+                Keyvalue.put("title",protitle);
+                Keyvalue.put("path",path);
                 //returning parameters
                 return Keyvalue;
             }

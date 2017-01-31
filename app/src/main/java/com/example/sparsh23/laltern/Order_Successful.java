@@ -29,14 +29,17 @@ public class Order_Successful extends AppCompatActivity {
 
     ListView listView;
     Button shopping;
-    String DOWN_URL2 = "http://www.whydoweplay.com/lalten/Receive_Order.php";
+    String DOWN_URL2 = "http://www.whydoweplay.com/lalten/Delete_Cart_User.php";
     TextView orderid, grandtotal;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order__successful);
+        dbHelper = new DBHelper(getApplicationContext());
         listView = (ListView)findViewById(R.id.order_address);
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
         shopping = (Button)findViewById(R.id.continueshopping);
         shopping.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +62,7 @@ public class Order_Successful extends AppCompatActivity {
        // Generate_Order("offline",map.get("product_list"),map.get("useruid"),map.get("useradd"),map.get("price"),map.get("username"),map.get("user_email"));
 
         listView.setAdapter(new Checkout_Addr_Adapter(getApplicationContext(),data));
-
+        Clear_Cart(sessionManager.getUserDetails().get("uid"));
         orderid =   (TextView)findViewById(R.id.order_id_confirmed);
         grandtotal  =   (TextView)findViewById(R.id.grandtotal_order);
         orderid.setText(map.get("orderuid_server"));
@@ -69,14 +72,33 @@ public class Order_Successful extends AppCompatActivity {
 
     }
 
-    public void Generate_Order( final String payuid, final String prouid, final String useruid, final String ordadd, final String grandtotal, final String user_name, final String user_email)
+    public void Clear_Cart( final String useruid)
     {
         final ProgressDialog loading = ProgressDialog.show(this,"Generating Invoice...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
+                        if(s!=null)
+                        {
+                            if(s.equals("deleted"))
+                            {
+                                dbHelper.InitCart();
+                                loading.dismiss();
+                                Toast.makeText(getApplicationContext(),"Order Successful",Toast.LENGTH_SHORT).show();
+
+                            }
+                            else
+                            {
+
+                                loading.dismiss();
+                                Toast.makeText(getApplicationContext(),"Your cart may not be empyt",Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        }
                         loading.dismiss();
+                        Toast.makeText(getApplicationContext(),"Error Occured, Your cart may not be empty",Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -86,7 +108,7 @@ public class Order_Successful extends AppCompatActivity {
                         loading.dismiss();
                         Log.d("voley error",volleyError.toString());
                         //Showing toast
-                        Toast.makeText(Order_Successful.this, "Error In Connectivity four", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Order_Successful.this, "Error In Connectivity", Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -94,15 +116,7 @@ public class Order_Successful extends AppCompatActivity {
                 //Converting Bitmap to String
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
 
-                Keyvalue.put("payuid",payuid);
-                Keyvalue.put("prouid",prouid);
-                Keyvalue.put("useruid",useruid);
-                Keyvalue.put("ordadd",ordadd);
-                Keyvalue.put("grandtotal",grandtotal);
-                Keyvalue.put("user_email",user_email);
-                Keyvalue.put("user_name",user_name);
-                Keyvalue.put("pay_mode","OFFLINE");
-                Keyvalue.put("status","NOT PAID");
+                Keyvalue.put("uid",useruid);
                 //returning parameters
                 return Keyvalue;
             }

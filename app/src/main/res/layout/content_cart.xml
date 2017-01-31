@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:text="Sub Total  :   1000 "
+            android:text="Sub Total  :    "
             android:id="@+id/cartsubtotal"
             android:layout_gravity="end"/>
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
             android:paddingRight="5dp"
-            android:text="Total Taxes :     500 "
+            android:text="Total Taxes :     "
             android:layout_gravity="end"/>
 
         <TextView
@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:text="Total  :10000 "
+            android:text="Total  : "
             android:layout_gravity="end"/>
 
     </LinearLayout>

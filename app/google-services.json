@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "500773107013-janldd6h810rfds29nonb9cfj7b4s0nu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sparsh23.laltern",
+            "certificate_hash": "E957ADCCDDA86E3F882EC3F65304A96C2CA984C4"
+          }
+        },
+        {
           "client_id": "500773107013-hrpkq88gl3p8if4a0jvlo58q1gcn826d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

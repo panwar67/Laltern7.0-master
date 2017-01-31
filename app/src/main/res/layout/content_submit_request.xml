@@ -24,7 +24,7 @@
         <ImageView
             android:layout_marginTop="5dp"
             android:background="@drawable/shadowbag"
-            android:src="@drawable/upload"
+            android:src="@drawable/reqbanner"
             android:fitsSystemWindows="true"
             android:scaleType="fitCenter"
             android:layout_marginBottom="5dp"

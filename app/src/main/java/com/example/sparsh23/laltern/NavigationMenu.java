@@ -91,7 +91,7 @@ public class NavigationMenu extends AppCompatActivity
 
 
 
-
+    ImageView homelogo;
     categoryFragment categoryFragment;
     //newHome newhom;
     HorizontalScrollView horizontalScrollView;
@@ -114,12 +114,22 @@ public class NavigationMenu extends AppCompatActivity
         config1.diskCacheFileNameGenerator(new Md5FileNameGenerator());
         config1.diskCacheSize(100 * 1024 * 1024); // 50 MiB
         config1.tasksProcessingOrder(QueueProcessingType.LIFO);
+        homelogo = (ImageView)findViewById(R.id.home_logo);
         config1.writeDebugLogs();
         imageLoader = ImageLoader.getInstance();
 //        imageLoader.destroy();
         imageLoader.init(config1.build());
         //sessionManager = new SessionManager(getApplicationContext());
+        homelogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = NavigationMenu.this.getSupportFragmentManager();
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
 
+            }
+        });
         AnalyticsApplication application = (AnalyticsApplication)getApplication();
         mTracker = application.getDefaultTracker();
 
@@ -199,7 +209,8 @@ public class NavigationMenu extends AppCompatActivity
                 mTracker.send(new HitBuilders.EventBuilder().build());
                 sessionManager = new SessionManager(getApplicationContext());
 
-                startActivity(new Intent(NavigationMenu.this,Profile.class));
+                startActivity(new Intent(NavigationMenu.this,Profile.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+                finish();
 
             }
         });
@@ -247,7 +258,6 @@ public class NavigationMenu extends AppCompatActivity
           @Override
           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-              Toast.makeText(getApplicationContext(),""+i+""+ finalTop_products.get(i).get("uid")+" "+finalTop_products.get(i).get("artuid"),Toast.LENGTH_SHORT).show();
 
               Intent intent = new Intent(NavigationMenu.this,ProductView.class);
               intent.putExtra("promap", finalTop_products.get(i));
@@ -267,11 +277,27 @@ public class NavigationMenu extends AppCompatActivity
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 LayoutInflater inflater = getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.testimonial_pop, null);
-                TextView test_text = (TextView)alertLayout.findViewById(R.id.testimonial_text);
+                TextView test_text = (TextView)alertLayout.findViewById(R.id.testimonial_text_);
                Typeface typeface = Typeface.createFromAsset(getAssets(),
                        "DroidSansFallback.ttf");
+
                 test_text.setTypeface(typeface);
-                test_text.setText(""+finalTesticals_list.get(i).get("des"));
+
+
+                if (i==1)
+                {
+                    test_text.setText("we are pleased that artist are using technology as a medium to solve their problems");
+                }
+
+                if(i==2)
+                {
+                    test_text.setText("बहुत ही उम्दा app। लाल10 द्वारा एक महत्वपूर्ण  पहल।");
+
+                }
+                if((i!=1)&(i!=2)){
+                    test_text.setText(""+finalTesticals_list.get(i).get("des"));
+
+                }
                 AlertDialog.Builder alert = new AlertDialog.Builder(NavigationMenu.this,R.style.MyDialogTheme);
                 alert.setTitle("Testimonial");
                 // this is set the view from XML inside AlertDialog
@@ -344,7 +370,6 @@ public class NavigationMenu extends AppCompatActivity
         lvTest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),""+position+""+finalTrendingmap.get(position).get("uid")+" "+finalTrendingmap.get(position).get("artuid"),Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(NavigationMenu.this,ProductView.class);
                 intent.putExtra("promap", finalTrendingmap.get(position));
@@ -528,8 +553,6 @@ public class NavigationMenu extends AppCompatActivity
                 String cat = listDataHeader.get(groupPosition);
                 String subcat = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
 
-                Toast.makeText(getApplicationContext(),""+cat+"  "+subcat,Toast.LENGTH_SHORT).show();
-
 
                 ArrayList<HashMap<String,String>> map = new ArrayList<HashMap<String, String>>();
                 HashMap<String,String> aux = new HashMap<String, String>();
@@ -604,7 +627,6 @@ public class NavigationMenu extends AppCompatActivity
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                Toast.makeText(getApplicationContext(),""+groupPosition,Toast.LENGTH_SHORT).show();
 
 
 

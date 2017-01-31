@@ -153,7 +153,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if((sessionManager.isLoggedIn())&&(sessionManager.getUserDetails().get("uid")!=null)){
 
-            Toast.makeText(getApplicationContext(),""+sessionManager.getUserDetails().get("uid"),Toast.LENGTH_SHORT).show();
 
             startActivity(new Intent(LoginActivity.this,Update.class));
             finish();
@@ -448,7 +447,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 firebaseAuthWithGoogle(account);
             } else {
                 loading.dismiss();
-                Toast.makeText(getApplicationContext(),"google sigin error",Toast.LENGTH_SHORT).show();
                 // Google Sign In failed, update UI appropriately
                 // [START_EXCLUDE]
          //       updateUI(null);
@@ -496,7 +494,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     Toast.LENGTH_SHORT).show();
                         }else {
 
-                            Toast.makeText(getApplicationContext(),"error sigin google",Toast.LENGTH_SHORT).show();
+
                         }
                         // [START_EXCLUDE]
                         //hideProgressDialog();

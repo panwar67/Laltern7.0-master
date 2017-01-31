@@ -64,25 +64,13 @@ public class Update extends AppCompatActivity {
 
 
         sessionManager = new SessionManager(getApplicationContext());
-
-       // LongOperation longOperation = new LongOperation();
-       // longOperation.execute();
-
-
-
-
-     //   dbHelper.InitSearchData();
-
-       // GetAllData();
-
-
         Log_In_User(sessionManager.getUserDetails().get("email"),sessionManager.getUserDetails().get("uid"));
         setOrders(sessionManager.getUserDetails().get(SessionManager.KEY_UID));
         Log.d("Userid for orders",""+sessionManager.getUserDetails().get(SessionManager.KEY_UID));
 
 
         ArtisianSetup();
-        Order_Setup(sessionManager.getUserDetails().get("uid"));
+        //Order_Setup(sessionManager.getUserDetails().get("uid"));
 
         SearchFilterSetup();
         setUpStream();
@@ -436,7 +424,9 @@ public class Update extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
                         //loading.dismiss();
-
+                        Intent intent = new Intent(Update.this,No_Internet_Connection.class);
+                        startActivity(intent);
+                        finish();
                         //Showing toast
                         Toast.makeText(Update.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(Update.this,No_Internet_Connection.class));
@@ -741,7 +731,8 @@ public class Update extends AppCompatActivity {
                                     String quantity = details.getString("QUANTITY");
                                     String buyuid = details.getString("USERUID");
                                     String size = details.getString("SIZE");
-                                    dbHelper.InsertCartData(requid,prouid,buyuid,quantity,size);
+
+                                    dbHelper.InsertCartData(requid,prouid,buyuid,quantity,size,details.getString("RATE"),details.getString("TITLE"),details.getString("PATH"),details.getString("PRICE"));
 
                                     /*map.put("cartuid",requid);
                                     map.put("prouid",prouid);

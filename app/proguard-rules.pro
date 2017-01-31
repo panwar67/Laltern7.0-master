@@ -27,3 +27,4 @@
 
 -optimizations !method/inlining/*
 -dontwarn okio.**
+-dontwarn org.apache.lang.**

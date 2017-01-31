@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4fafacac">
+    android:background="@color/white">
     <TextView
-        android:background="#4fafacac"
+        android:background="@color/white"
+
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
-        android:id="@+id/testimonial_text"/>
+        android:id="@+id/testimonial_text_"/>
 
 
 

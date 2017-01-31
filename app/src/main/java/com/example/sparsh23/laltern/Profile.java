@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -16,6 +18,12 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,15 +35,15 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Profile extends AppCompatActivity {
-    ImageView dp, logout1,  back, request;
+public class Profile extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+    ImageView dp, logout1, back, request;
     DBHelper dbHelper;
 
     private FirebaseAuth mAuth;
     CallbackManager callbackManager;
 
-    HashMap<String,String> map = new HashMap<String, String>();
-    HashMap<String,String> data = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> data = new HashMap<String, String>();
     TextView name, company, desig, tob, addr, cont, pan, email, webs, state, city, requests;
     Button logout, orders;
     SessionManager sessionManager;
@@ -43,9 +51,11 @@ public class Profile extends AppCompatActivity {
     ExpandableHeightGridView real_addr_list;
     ImageLoader imageLoader;
     DisplayImageOptions options;
+
+    private GoogleApiClient mGoogleApiClient;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -63,12 +73,18 @@ public class Profile extends AppCompatActivity {
         config1.tasksProcessingOrder(QueueProcessingType.LIFO);
         config1.writeDebugLogs();
 
-        real_addr_list = (ExpandableHeightGridView)findViewById(R.id.real_user_addr);
-        real_addr_list.setExpanded(false);
-        real_addr_list.setNumColumns(1);
 
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
 
         imageLoader = ImageLoader.getInstance();
@@ -76,14 +92,11 @@ public class Profile extends AppCompatActivity {
         imageLoader.init(config1.build());
 
 
-        sessionManager=new SessionManager(getApplicationContext());
+        sessionManager = new SessionManager(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
-        expandableListView = (ExpandableListView)findViewById(R.id.requests);
 
-        order = (ExpandableListView)findViewById(R.id.orderlistpro);
-        address = (ExpandableListView)findViewById(R.id.expandaddress);
-        dp = (ImageView)findViewById(R.id.imageView1);
-        back = (ImageView)findViewById(R.id.backprofile);
+        dp = (ImageView) findViewById(R.id.imageView1);
+        back = (ImageView) findViewById(R.id.backprofile);
         //request = (ImageView)findViewById(R.id.requestprofile);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -94,92 +107,88 @@ public class Profile extends AppCompatActivity {
         });
 
 
-
-        logout1 = (ImageView)findViewById(R.id.logout);
+        logout1 = (ImageView) findViewById(R.id.logout);
 
         logout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 LoginManager.getInstance().logOut();
-                mAuth.signOut();
+                signOut();
                 sessionManager.logoutUser();
                 finish();
             }
         });
 
-        imageLoader.displayImage(sessionManager.getUserDetails().get("dp"),dp);
+        imageLoader.displayImage(sessionManager.getUserDetails().get("dp"), dp);
 
         dp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),""+sessionManager.getUserDetails().get("dp"),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "" + sessionManager.getUserDetails().get("dp"), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        ArrayList<HashMap<String,String>> map = new ArrayList<HashMap<String, String>>();
-        map = dbHelper.GetOrders(sessionManager.getUserDetails().get("uid"));
-        Log.d("request_size",""+map.size());
 
 
-       // expandableListView.setAdapter(new RequestExpandableAdapter(map,"My Requests",getApplicationContext()));
+        // expandableListView.setAdapter(new RequestExpandableAdapter(map,"My Requests",getApplicationContext()));
         //order.setAdapter(new RequestExpandableAdapter(map,"My Orders",getApplicationContext()));
-        real_addr_list.setAdapter( new Checkout_Addr_Adapter(getApplicationContext(),dbHelper.GetAddresses()));
         //address.setAdapter(new Address_ExpandableList_Adapter(dbHelper.GetAddresses(),"My Addresses",getApplicationContext()));
 
-        final TextView textView = (TextView)findViewById(R.id.toggleaddr);
+        final TextView textView = (TextView) findViewById(R.id.toggleaddr);
 
 
-        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(),"SourceSansPro-Regular.otf");
+        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "SourceSansPro-Regular.otf");
 
         textView.setTypeface(typeface);
-        textView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
+        textView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
 
-                startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",textView.getText().toString()));
+                                            startActivity(new Intent(Profile.this, Profile_Detail.class).putExtra("type", textView.getText().toString()));
 
-            }
-        }
+                                        }
+                                    }
         );
 
-        final TextView request = (TextView)findViewById(R.id.togglerequest);
-        request.setTypeface(typeface);
-        request.setOnClickListener(new View.OnClickListener() {
+        final TextView request = (TextView) findViewById(R.id.togglerequest);
+
+        request.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",request.getText().toString()));
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                startActivity(new Intent(Profile.this, Profile_Detail.class).putExtra("type", request.getText().toString()));
+                return false;
             }
         });
 
-        final TextView order = (TextView)findViewById(R.id.toggleorders);
+
+        final TextView order = (TextView) findViewById(R.id.toggleorders);
         order.setTypeface(typeface);
-        request.setOnClickListener(new View.OnClickListener() {
+
+
+        order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
+                startActivity(new Intent(Profile.this,Profile_Detail.class).putExtra("type",order.getText().toString()));
             }
         });
 
-        Log.d("address_size",""+dbHelper.GetAddresses().size());
-        name = (TextView)findViewById(R.id.nameprofile);
-        cont = (TextView)findViewById(R.id.contactprofile);
+        request.setTypeface(typeface);
+        Log.d("address_size", "" + dbHelper.GetAddresses().size());
+        name = (TextView) findViewById(R.id.nameprofile);
 
         name.setText(sessionManager.getUserDetails().get("name"));
         name.setTypeface(typeface);
-        email = (TextView)findViewById(R.id.emailpro);
+        email = (TextView) findViewById(R.id.emailpro);
         email.setTypeface(typeface);
-        cont.setTypeface(typeface);
+       // cont.setTypeface(typeface);
 
 
         email.setText(sessionManager.getUserDetails().get("email"));
 
 
-        cont.setText(dbHelper.GetProfile(sessionManager.getUserDetails().get("uid")).get("cont"));
+        //cont.setText(dbHelper.GetProfile(sessionManager.getUserDetails().get("uid")).get("cont"));
      /*   stream=(ImageView)findViewById(R.id.feed);
         stream.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,9 +217,36 @@ public class Profile extends AppCompatActivity {
         */
 
 
-      //  data  = dbHelper.GetProfile();
+        //  data  = dbHelper.GetProfile();
 
 
     }
 
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        //  updateUI(null);
+                    }
+                });
+
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Profile.this,NavigationMenu.class));
+        finish();
+    }
 }

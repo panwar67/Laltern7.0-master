@@ -86,23 +86,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
-    <TextView
-        android:paddingLeft="5dp"
-        android:textAlignment="center"
-        android:text="Phone : "
-        android:textStyle="bold"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="3dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       />
 
-    <TextView
-        android:id="@+id/contactprofile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="9871485365"
-        android:layout_gravity="center_vertical"/>
 
 
 
@@ -146,21 +130,11 @@
             </LinearLayout>
 
 
-            <ExpandableListView
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/shadowmild"
-                android:layout_width="match_parent"
-                android:id="@+id/expandaddress"
-                android:clickable="true"
-                android:layout_height="wrap_content">
-            </ExpandableListView>
+
 
 
             <TextView
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/shadowmild"
@@ -175,6 +149,7 @@
                 android:paddingLeft="10dp"/>
 
             <TextView
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/shadowmild"
@@ -193,7 +168,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/shadowmild"
-
+                android:layout_marginTop="10dp"
                 android:textSize="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -205,36 +180,7 @@
                 android:paddingLeft="10dp"/>
 
 
-            <com.example.sparsh23.laltern.ExpandableHeightGridView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
 
-                android:visibility="gone"
-                android:id="@+id/real_user_addr"></com.example.sparsh23.laltern.ExpandableHeightGridView>
-            <ExpandableListView
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="#f5f5f5"
-                android:visibility="gone"
-                android:id="@+id/requests"
-                android:layout_marginBottom="10dp"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </ExpandableListView>
-
-            <ExpandableListView
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/shadowmild"
-                android:layout_width="match_parent"
-                android:id="@+id/orderlistpro"
-                android:layout_height="wrap_content">
-
-            </ExpandableListView>
 
 
 

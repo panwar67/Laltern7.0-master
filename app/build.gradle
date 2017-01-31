@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    defaultConfig {
+        multiDexEnabled true
+    }
     signingConfigs {
         release {
             keyAlias 'panwar'
@@ -21,7 +24,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -69,6 +72,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:9.6.1'
     compile 'com.razorpay:checkout:1.2.0'
     compile 'com.nshmura:snappysmoothscroller:1.0.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

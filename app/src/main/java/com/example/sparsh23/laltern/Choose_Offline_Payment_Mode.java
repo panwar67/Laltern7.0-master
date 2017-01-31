@@ -35,8 +35,11 @@ public class Choose_Offline_Payment_Mode extends AppCompatActivity {
     Button place_order;
     ImageView back;
     String DOWN_URL2 = "http://www.4liontechosolutions.com/Receive_Order.php";
+    String DOWN_URL3 = "http://www.whydoweplay.com/lalten/Generating_Invoice.php";
     SessionManager sessionManager;
 
+    HashMap<String,String> add_data;
+    HashMap<String, String> map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +50,8 @@ public class Choose_Offline_Payment_Mode extends AppCompatActivity {
         final Intent intent = getIntent();
 
         sessionManager = new SessionManager(getApplicationContext());
-        final HashMap<String, String> map = (HashMap<String, String>)intent.getSerializableExtra("checkout");
-        final HashMap<String,String> add_data = (HashMap<String, String>)intent.getSerializableExtra("checkout_add");
+         map = (HashMap<String, String>)intent.getSerializableExtra("checkout");
+          add_data = (HashMap<String, String>)intent.getSerializableExtra("checkout_add");
         Log.d("inside_checkout",map.toString());
         place_order = (Button) findViewById(R.id.place_order_offline);
         place_order.setOnClickListener(new View.OnClickListener() {
@@ -143,16 +146,14 @@ public class Choose_Offline_Payment_Mode extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(s);
                             JSONArray jsonArray = jsonObject.getJSONArray("Order_Confirmation");
                             JSONObject jsonObject1 = jsonArray.getJSONObject(0);
-                            data.put("orderuid_server",jsonObject1.getString("ordid"));
+                            map.put("orderuid_server",jsonObject1.getString("ordid"));
+
+                            Generate_Invoice(map.get("orderuid_server"),map.get("product_list"));
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Intent intent1 = new Intent(Choose_Offline_Payment_Mode.this, Order_Successful.class);
-                        intent1.putExtra("data", data);
-                        intent1.putExtra("checkout_add",add_data);
-                        startActivity(intent1);
-                        finish();
+
 
 
 
@@ -176,14 +177,13 @@ public class Choose_Offline_Payment_Mode extends AppCompatActivity {
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
 
                 Keyvalue.put("payuid",payuid);
-                Keyvalue.put("prouid",prouid);
                 Keyvalue.put("useruid",useruid);
                 Keyvalue.put("ordadd",ordadd);
                 Keyvalue.put("grandtotal",grandtotal);
                 Keyvalue.put("user_email",user_email);
                 Keyvalue.put("user_name",user_name);
                 Keyvalue.put("pay_mode","OFFLINE");
-                Keyvalue.put("status","NOT PAID");
+                Keyvalue.put("status","Not Delivered");
                 //returning parameters
                 return Keyvalue;
             }
@@ -193,6 +193,58 @@ public class Choose_Offline_Payment_Mode extends AppCompatActivity {
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         //Adding request to the queue
         requestQueue.add(stringRequest);
+    }
+
+    public void Generate_Invoice(final String orderid, final String prouid)
+    {
+
+        final ProgressDialog loading = ProgressDialog.show(Choose_Offline_Payment_Mode.this,"Genrating Invoice...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s)
+                    {
+                        loading.dismiss();
+                        if(s!=null) {
+                            Intent intent1 = new Intent(Choose_Offline_Payment_Mode.this, Order_Successful.class);
+                            intent1.putExtra("data", map);
+                            intent1.putExtra("checkout_add", add_data);
+                            startActivity(intent1);
+                            finish();
+                            Log.d("response", s.toString());
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(),"Error Occured",Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast
+                        Toast.makeText(getApplicationContext(), "Error in generating invoice please contact support", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+                Keyvalue.put("ordid",orderid);
+                Keyvalue.put("proid",prouid);
+                //returning parameters
+                return Keyvalue;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+
+
     }
 
 

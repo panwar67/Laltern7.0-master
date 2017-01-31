@@ -41,6 +41,7 @@
                 <ImageView
                     android:src="@drawable/vector_drawable_logolal__"
                     android:layout_gravity="left"
+                    android:id="@+id/home_logo"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     tools:ignore="ContentDescription" />

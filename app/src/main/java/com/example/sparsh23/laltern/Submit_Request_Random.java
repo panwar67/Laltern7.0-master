@@ -162,10 +162,9 @@ public class Submit_Request_Random extends AppCompatActivity {
             public void onClick(View view)
             {
                 String uid=new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                dbHelper.InsertRequestData("ANY",sessionManager.getUserDetails().get("uid"),uid,description.getText().toString(),"https://www.whydoweplay.com/lalten/DirectRequestImages/"+uid+".jpeg","Under Review","WAIT",craftreq.getText().toString(),quantity.getText().toString());
+                //dbHelper.InsertRequestData("ANY",sessionManager.getUserDetails().get("uid"),uid,description.getText().toString(),"https://www.whydoweplay.com/lalten/DirectRequestImages/"+uid+".jpeg","Under Review","WAIT",craftreq.getText().toString(),quantity.getText().toString());
                 upload_data("any",sessionManager.getUserDetails().get("uid"),description.getText().toString(),craftreq.getText().toString(),quantity.getText().toString(),uid);
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
     }
@@ -240,7 +239,7 @@ public class Submit_Request_Random extends AppCompatActivity {
     public void upload_data(final String prouid, final String buyuid, final String des,  final String craft, final String quantity,final String uid)
 
     {
-        final ProgressDialog loading = ProgressDialog.show(this,"Registering User...","Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(this,"Submitting request...","Please wait...",false,false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -250,18 +249,22 @@ public class Submit_Request_Random extends AppCompatActivity {
                         //if (res.equals("Uploaded"))
 
 
+                        if((s!=null)&s.equals("uploaded"))
+                        {
+                            loading.dismiss();
 
                             Toast.makeText(getApplicationContext(),s.toString(),Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                            finish();
 
-                        Log.d("submit req", ""+s.toString());
+                            Log.d("submit req", ""+s.toString());
 
+                        }
+                        else
+                        {
 
-
-                        loading.dismiss();
-
-                        finish();
-
-
+                            Toast.makeText(getApplicationContext(),"Error Occured, please try later",Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 },

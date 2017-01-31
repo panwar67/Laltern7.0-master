@@ -86,6 +86,7 @@
                     android:layout_gravity="center"
                     android:textSize="12dp"
                     android:singleLine="true"
+                    android:visibility="gone"
                     android:textColor="#424242"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -95,15 +96,12 @@
                     android:id="@+id/cartprocolor"
                     />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="18dp"
-                    android:background="#424242"></View>
+
 
                 <TextView
                     android:layout_gravity="center"
                     android:id="@+id/cartprosize"
-                    android:paddingLeft="10dp"
+
                     android:layout_weight="1"
                     android:textColor="#424242"
                     android:textSize="12dp"

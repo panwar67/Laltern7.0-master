@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,14 +29,18 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import com.nostra13.universalimageloader.utils.L;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.paypal.android.sdk.payments.ProofOfPayment;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,20 +65,25 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
     TextView sub, tax, total;
     ImageView back;
     ImageButton card, paypal_checkout;
+    JSONArray Cart_Data = new JSONArray();
+
 
 
     private Tracker mTracker;
+
     String grand_total;
     EditText title, addr, area, city, dist, state, pin, cont, country;
     SessionManager sessionManager;
     String DOWN_URL = "http://www.whydoweplay.com/lalten/InsertAddr.php";
-    String DOWN_URL2 = "http://www.whydoweplay.com/lalten/Receive_Order.php";
+    String DOWN_URL2 = "http://www.4liontechosolutions.com/Receive_Order.php";
+    String DOWN_URL3 = "http://www.whydoweplay.com/lalten/Generating_Invoice.php";
+    String DOWN_URL4 = "http://www.whydoweplay.com/lalten/catchrazor.php";
     private boolean _paypalLibraryInit = false;
    private static PayPalConfiguration   config = new PayPalConfiguration()
     // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
     // or live (ENVIRONMENT_PRODUCTION)
-    .environment(PayPalConfiguration.ENVIRONMENT_PRODUCTION)
-    .clientId("Ac-BZVBz92hMs5VFLt266Z4w9WqJgR1i1zAjQPO6iSW4TN_NifUw9inxlp3iX94UsOggJHk3ESoXf60o");
+    .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+    .clientId("AS9HodPhOD6z1mWZJh7cxvVQe1VIpYE5ehvEFqbkh8k_xyHw5Uha1kXCuTBbYXiLzu2T0UmWDcaUyp-T");
 
     ;
 
@@ -111,6 +121,8 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
             }
         });
 
+        Cart_Data = dbHelper.GetCartDataJson();
+
         AnalyticsApplication application = (AnalyticsApplication)getApplication();
         mTracker = application.getDefaultTracker();
 
@@ -118,7 +130,6 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         Intent intent = getIntent();
-
 
         sub.setText( "Sub Total : "+intent.getDoubleExtra("sub",0));
         total.setText("Taxes : "+intent.getDoubleExtra("tax",0));
@@ -202,7 +213,7 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                     //map = ;
                     map.put("price", total);
                    // map.put("order_id", uid);
-                    map.put("product_list", pro_data.toString());
+                    map.put("product_list", Cart_Data.toString());
                     map.put("useradd", spinner.getSelectedItem().toString());
                     map.put("useruid", sessionManager.getUserDetails().get("uid"));
                     map.put("username",sessionManager.getUserDetails().get("name"));
@@ -345,10 +356,20 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                 if (confirm != null) {
                     //Getting the payment details
                     String paymentDetails = confirm.toJSONObject().toString();
+                    try {
+                        Log.i("confirm_paypal", confirm.getPayment().toJSONObject().toString(4));
+                        ProofOfPayment jsonObject = confirm.getProofOfPayment();
+
+                        String payid =  jsonObject.getPaymentId();
+                        Log.d("payuid_paypal",""+payid);
+                        Log.i("confirm_paypal_2", confirm.toJSONObject().toString(4));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     //Toast.makeText(getApplicationContext(),"payment successful",Toast.LENGTH_SHORT).show();
                     Log.i("paymentExample", paymentDetails);
 
-                    Generate_Order(paymentDetails,pro_data.toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total,"PAID","PayPal");
+                    Generate_Order(confirm.getProofOfPayment().getPaymentId().toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total,"Not Delivered","PayPal",grand_total);
 
                     //Starting a new activity for the payment details and also putting the payment details with intent
 
@@ -356,7 +377,10 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("paymentExample", "The user canceled.");
+                Toast.makeText(getApplicationContext(),"Payment Cancelled by User",Toast.LENGTH_SHORT).show();
             } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+
+                Toast.makeText(getApplicationContext(),"Error Occured ",Toast.LENGTH_SHORT).show();
                 Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             }
         }
@@ -464,6 +488,7 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
             options.put("name", "Lal 10");
             options.put("key","rzp_live_Sc3yj4ZA5y1zUY");
 
+
             /**
              * Description can be anything
              * eg: Order #123123
@@ -494,9 +519,12 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
     @Override
     public void onPaymentSuccess(String s)
     {
+
+
         Log.d("payment_Sucess"," "+s);
+        Catch_Razor(s,"100");
         Toast.makeText(getApplicationContext(),""+s,Toast.LENGTH_SHORT).show();
-        Generate_Order(s,pro_data.toString(),sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total,"PAID","Razor_Pay");
+        Generate_Order(s,sessionManager.getUserDetails().get("uid"),spinner.getSelectedItem().toString(),grand_total," Not Delivered ","Razor_Pay",grand_total);
 
     }
 
@@ -516,14 +544,24 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
 
     }
 
-    public void Generate_Order( final String payuid, final String prouid, final String useruid, final String ordadd, final String grand_total, final String status, final String pay_mode)
+
+    public boolean Catch_Razor(final String uid , final String amount)
     {
-        final ProgressDialog loading = ProgressDialog.show(this,"Generating Invoice...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
+        final ProgressDialog loading = ProgressDialog.show(this,"Generating Order...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL4,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
-                        loading.dismiss();
+                        Log.d("inside_response",""+s);
+                        if(s!=null)
+                        {
+                            loading.dismiss();
+                            Log.d("catch_response",""+s);
+
+                        }else {
+                            loading.dismiss();
+
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -533,7 +571,69 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                         loading.dismiss();
                         Log.d("voley error",volleyError.toString());
                         //Showing toast
-                        Toast.makeText(Checkout_Page.this, "Error In Connectivity four", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Checkout_Page.this, "Error in connectivity ", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+                Keyvalue.put("id",uid);
+                Keyvalue.put("amount",amount);
+                //returning parameters
+                return Keyvalue;
+
+
+
+            }
+        };
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+
+    return true;
+    }
+
+    public void Generate_Order( final String payuid, final String useruid, final String ordadd, final String grand_total, final String status, final String pay_mode, final String price)
+    {
+        final ProgressDialog loading = ProgressDialog.show(this,"Generating Order...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL2,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        Log.d("inside_response",""+s);
+                        if(s!=null)
+                        {
+
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                JSONArray jsonArray = jsonObject.getJSONArray("Order_Confirmation");
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+                                Generate_Invoice(jsonObject1.getString("ordid"),Cart_Data.toString(),price);
+                                loading.dismiss();
+
+                            } catch (JSONException e) {
+                                loading.dismiss();
+
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            loading.dismiss();
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+                        Log.d("voley error",volleyError.toString());
+                        //Showing toast
+                        Toast.makeText(Checkout_Page.this, "Error in connectivity ", Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
@@ -541,8 +641,8 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
                 //Converting Bitmap to String
                 HashMap<String,String> Keyvalue = new HashMap<String,String>();
                 Keyvalue.put("payuid",payuid);
-                Keyvalue.put("prouid",prouid);
                 Keyvalue.put("useruid",useruid);
+
                 Keyvalue.put("ordadd",ordadd);
                 Keyvalue.put("grandtotal",grand_total);
                 Keyvalue.put("user_name",sessionManager.getUserDetails().get("name"));
@@ -558,5 +658,59 @@ public class Checkout_Page extends AppCompatActivity  implements PaymentResultLi
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         //Adding request to the queue
         requestQueue.add(stringRequest);
+    }
+
+
+    public void Generate_Invoice(final String orderid, final String prouid, final String price)
+    {
+
+        final ProgressDialog loading = ProgressDialog.show(Checkout_Page.this,"Genrating Invoice...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOWN_URL3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s)
+                    {
+
+                        loading.dismiss();
+                        Log.d("response",s.toString());
+                        HashMap<String,String> map = new HashMap<String,String>();
+                        map.put("orderid",orderid);
+                        map.put("price",price);
+                       Intent intent  = new Intent(Checkout_Page.this,Order_Successful.class);
+                        intent.putExtra("data",map );
+                        intent.putExtra("checkout_add", (HashMap<String,String>)spinner.getSelectedItem());
+                        startActivity(new Intent(Checkout_Page.this, Order_Successful.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+
+                        finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast
+                        Toast.makeText(getApplicationContext(), "Error in generating invoice please contact support", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                HashMap<String,String> Keyvalue = new HashMap<String,String>();
+                Keyvalue.put("ordid",orderid);
+                Keyvalue.put("proid",prouid);
+                //returning parameters
+                return Keyvalue;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(0, -1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+
+
     }
 }
