@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundoff"
-    tools:context="com.example.sparsh23.laltern.RequestFragment">
+    tools:context="com.lions.sparsh23.laltern.RequestFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

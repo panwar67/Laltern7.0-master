@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:icon">@drawable/vector_drawable_lal___logo</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/maintheme</item>
         <item name="colorAccent">@color/maintheme</item>
@@ -10,7 +11,7 @@
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewLight</item>
-        <item name="android:icon">@android:color/transparent</item>
+
     </style>
 
 

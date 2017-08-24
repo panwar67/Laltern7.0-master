@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="#f5f5f5"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.sparsh23.laltern.Order_Successful">
+    tools:context="com.lions.sparsh23.laltern.Order_Successful">
 
     <TextView
         android:textAlignment="center"

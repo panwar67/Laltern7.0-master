@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     defaultConfig {
         multiDexEnabled true
+        applicationId 'com.lions.sparsh23.laltern'
     }
     signingConfigs {
         release {
@@ -12,10 +13,10 @@ android {
             storePassword 'qwerty'
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
     defaultConfig {
-        applicationId "com.example.sparsh23.laltern"
+        applicationId "com.lions.sparsh23.laltern"
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
@@ -72,7 +73,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-analytics:9.6.1'
     compile 'com.razorpay:checkout:1.2.0'
     compile 'com.nshmura:snappysmoothscroller:1.0.0'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

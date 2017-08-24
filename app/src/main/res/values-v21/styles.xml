@@ -2,6 +2,7 @@
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
+        <item name="android:icon">@drawable/vector_drawable_lal___logo</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/abc_search_url_text</item>

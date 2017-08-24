@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.sparsh23.laltern.R;
+import com.lions.sparsh23.laltern.R;
 
 /**
  * A simple {@link Fragment} subclass.

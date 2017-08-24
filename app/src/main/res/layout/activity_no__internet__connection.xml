@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@drawable/bg"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.sparsh23.laltern.No_Internet_Connection">
+    tools:context="com.lions.sparsh23.laltern.No_Internet_Connection">
 
 
     <TextView

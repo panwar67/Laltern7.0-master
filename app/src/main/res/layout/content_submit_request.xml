@@ -7,7 +7,7 @@
 
     android:background="#f5f5f5"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sparsh23.laltern.SubmitRequest"
+    tools:context="com.lions.sparsh23.laltern.SubmitRequest"
     tools:showIn="@layout/activity_submit_request">
 
 

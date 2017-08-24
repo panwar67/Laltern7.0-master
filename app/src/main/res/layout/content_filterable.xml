@@ -10,7 +10,7 @@
     android:paddingTop="10dp"
     android:background="@color/backgroundoff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sparsh23.laltern.FilterableActivity"
+    tools:context="com.lions.sparsh23.laltern.FilterableActivity"
     tools:showIn="@layout/activity_filterable">
 
 
@@ -216,7 +216,7 @@
                         android:layout_height="wrap_content"
                         android:text="Crafts"
                         android:textAlignment="center"/>
-                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                <com.lions.sparsh23.laltern.ExpandableHeightGridView
                     android:layout_width="match_parent"
 
 
@@ -224,7 +224,7 @@
                     android:background="@drawable/shadowbag_new"
                     android:layout_height="wrap_content">
 
-                </com.example.sparsh23.laltern.ExpandableHeightGridView>
+                </com.lions.sparsh23.laltern.ExpandableHeightGridView>
                 </LinearLayout>
 
 
@@ -239,7 +239,7 @@
                         android:layout_height="wrap_content"
                         android:text="Product Types"
                         android:textAlignment="center"/>
-                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                <com.lions.sparsh23.laltern.ExpandableHeightGridView
                     android:layout_width="match_parent"
                     android:layout_marginLeft="3dp"
                     android:id="@+id/protypelist"
@@ -247,7 +247,7 @@
                     android:layout_height="wrap_content"
                     >
 
-                </com.example.sparsh23.laltern.ExpandableHeightGridView>
+                </com.lions.sparsh23.laltern.ExpandableHeightGridView>
 
                 </LinearLayout>
 

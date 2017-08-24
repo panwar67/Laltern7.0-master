@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
 
     android:background="#f5f5f5"
-    tools:context="com.example.sparsh23.laltern.Contact_Us">
+    tools:context="com.lions.sparsh23.laltern.Contact_Us">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -98,7 +98,7 @@
         android:layout_height="match_parent"
 
 
-        tools:context="com.example.sparsh23.laltern.ItemFragment"
+        tools:context="com.lions.sparsh23.laltern.ItemFragment"
         />
 
 

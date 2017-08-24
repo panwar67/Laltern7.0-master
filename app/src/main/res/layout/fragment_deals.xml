@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/dealsfragments"
     android:background="@color/white"
-    tools:context="com.example.sparsh23.laltern.categoryFragment">
+    tools:context="com.lions.sparsh23.laltern.categoryFragment">
 
     <!-- TODO: Update blank fragment gridsubitem -->
 

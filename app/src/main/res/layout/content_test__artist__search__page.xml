@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sparsh23.laltern.Test_Artist_Search_Page"
+    tools:context="com.lions.sparsh23.laltern.Test_Artist_Search_Page"
     tools:showIn="@layout/activity_test__artist__search__page">
 
 

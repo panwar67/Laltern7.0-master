@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="#f5f5f5"
-    tools:context="com.example.sparsh23.laltern.Choose_Offline_Payment_Mode"
+    tools:context="com.lions.sparsh23.laltern.Choose_Offline_Payment_Mode"
     tools:showIn="@layout/activity_choose__offline__payment__mode">
 
     <ScrollView

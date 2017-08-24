@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.sparsh23.laltern.BannerArtist"
+    tools:context="com.lions.sparsh23.laltern.BannerArtist"
     tools:showIn="@layout/activity_banner_artist"
     android:id="@+id/artistrep">
     <LinearLayout

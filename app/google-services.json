@@ -8,25 +8,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:500773107013:android:6c3a4060f16a1563",
+        "mobilesdk_app_id": "1:500773107013:android:07037e3617fdb40b",
         "android_client_info": {
-          "package_name": "com.example.sparsh23.laltern"
+          "package_name": "com.lions.sparsh23.laltern"
         }
       },
       "oauth_client": [
         {
-          "client_id": "500773107013-janldd6h810rfds29nonb9cfj7b4s0nu.apps.googleusercontent.com",
+          "client_id": "500773107013-giiiqegdm90ef8ch6cbr2ffqr29c8895.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.sparsh23.laltern",
+            "package_name": "com.lions.sparsh23.laltern",
             "certificate_hash": "E957ADCCDDA86E3F882EC3F65304A96C2CA984C4"
           }
         },
         {
-          "client_id": "500773107013-hrpkq88gl3p8if4a0jvlo58q1gcn826d.apps.googleusercontent.com",
+          "client_id": "500773107013-il0fff78mqah9mpde4smttmgadu5hl6h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.sparsh23.laltern",
+            "package_name": "com.lions.sparsh23.laltern",
             "certificate_hash": "4274854490A09F1F5A6FC57126B40EA5F029EA5B"
           }
         },

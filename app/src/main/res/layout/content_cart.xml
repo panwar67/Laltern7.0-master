@@ -8,7 +8,7 @@
     android:paddingTop="5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="#f5f5f5"
-    tools:context="com.example.sparsh23.laltern.CartActivity"
+    tools:context="com.lions.sparsh23.laltern.CartActivity"
     tools:showIn="@layout/activity_cart">
 
 
@@ -37,18 +37,46 @@
         android:paddingTop="5dp"
         android:layout_marginBottom="5dp"/>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ifemptycart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <com.example.sparsh23.laltern.ExpandableHeightGridView
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sorry your cart is empty ! Add products to cart and come back"/>
+
+            <Button
+                android:id="@+id/continueshopping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue Shopping"
+                android:textColor="@color/white"
+                android:background="@color/maintheme"
+                android:layout_margin="20dp"/>
+
+
+
+
+        </LinearLayout>
+
+
+    <com.lions.sparsh23.laltern.ExpandableHeightGridView
         android:layout_width="match_parent"
         android:id="@+id/cartproducts"
         android:background="#f5f5f5"
         android:layout_height="wrap_content"
         >
 
-    </com.example.sparsh23.laltern.ExpandableHeightGridView>
+    </com.lions.sparsh23.laltern.ExpandableHeightGridView>
 
 
     <LinearLayout
+        android:id="@+id/cart_price"
         android:paddingBottom="3dp"
         android:layout_marginBottom="50dp"
         android:gravity="bottom"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundoff"
-    tools:context="com.example.sparsh23.laltern.FilterFragment">
+    tools:context="com.lions.sparsh23.laltern.FilterFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -26,19 +26,19 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                <com.lions.sparsh23.laltern.ExpandableHeightGridView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/filteroptionlist"
 
                     android:layout_weight="2">
-                </com.example.sparsh23.laltern.ExpandableHeightGridView>
+                </com.lions.sparsh23.laltern.ExpandableHeightGridView>
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="#424242"></View>
 
-                <com.example.sparsh23.laltern.ExpandableHeightGridView
+                <com.lions.sparsh23.laltern.ExpandableHeightGridView
                     android:layout_width="match_parent"
 
 
@@ -46,7 +46,7 @@
                     android:id="@+id/filteritemlist"
                     android:layout_weight="1">
 
-                </com.example.sparsh23.laltern.ExpandableHeightGridView>
+                </com.lions.sparsh23.laltern.ExpandableHeightGridView>
             </LinearLayout>
 
 
